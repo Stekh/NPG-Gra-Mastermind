@@ -1,0 +1,17 @@
+[project]
+name = "Gra-Mastermind"
+desription = "Projekt grupowy na zajęcia z NPG - temat: Gra Mastermind"
+readme = "README.md"
+dynamic = ["version"]
+requires-python = ">=3.10,<3.11"
+dependencies = [
+    "pygame-ce>=2.4.1,<2.5",
+]
+authors = [
+    {name = "Bartosz Steć", email = "420927@student.agh.edu.pl"},
+]
+
+[project.optional-dependencies]
+test = [
+    "pytest>=8.0.0,>8.1",
+]

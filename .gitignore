@@ -1,0 +1,10 @@
+# ignore PyCharm configs
+.idea/
+
+# ignore venv stuff
+.venv/
+*.egg-info/
+
+# ignore build files
+build/
+
