@@ -2,7 +2,7 @@
 
 ## Instrukcja przygotowania lokalnego środowiska:  
 
-1. Sklonuj repozytorium za pomocą komendy: `git clone <url-repo>`  
+1. Sklonuj repozytorium za pomocą komendy: `git clone https://github.com/Stekh/NPG-Gra-Mastermind.git`  
 2. Wewnątrz powstałego folderu wywołaj następującą komendę: `python -m venv .\.venv`  
 3. Ustaw swoje IDE by korzystało z powstałego wirtualnego środowiska  
 4. Wywołaj wewnątrz wirtualnego środowiska komendę: `pip install .`
