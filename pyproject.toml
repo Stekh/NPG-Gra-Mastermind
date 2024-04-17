@@ -1,6 +1,6 @@
 [project]
 name = "Gra-Mastermind"
-desription = "Projekt grupowy na zajęcia z NPG - temat: Gra Mastermind"
+description = "Projekt grupowy na zajęcia z NPG - temat: Gra Mastermind"
 readme = "README.md"
 dynamic = ["version"]
 requires-python = ">=3.10,<3.11"
