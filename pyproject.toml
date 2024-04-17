@@ -3,7 +3,7 @@ name = "Gra-Mastermind"
 description = "Projekt grupowy na zajęcia z NPG - temat: Gra Mastermind"
 readme = "README.md"
 dynamic = ["version"]
-requires-python = ">=3.10,<3.11"
+requires-python = ">=3.11,<3.12"
 dependencies = [
     "pygame-ce>=2.4.1,<2.5",
 ]
