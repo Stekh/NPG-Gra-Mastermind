@@ -6,6 +6,7 @@
 2. Wewnątrz powstałego folderu wywołaj następującą komendę: `python -m venv .\.venv`  
 3. Ustaw swoje IDE by korzystało z powstałego wirtualnego środowiska  
 4. Wywołaj wewnątrz wirtualnego środowiska komendę: `pip install .`
+5. Aby zainstalować moduły potrzebne do testów, wywołaj komendę `pip install .[test]`  
 
 ## Instrukcja ustawienia wirtualnego środowiska w IDE PyCharm:  
 
