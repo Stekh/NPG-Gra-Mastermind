@@ -15,3 +15,7 @@
 3. Naciśnij `Add Interpreter` następnie wybierz `Add Local Interpreter`  
 4. Wybierz opcję `Existing` i naciśnij `Ok`  
 
+## Instrukcja instalacji Pythona (w wersji 3.11)  
+
+1. Wywołaj komendę `winget install -e --id Python.Python.3.11`
+2. Zrestartuj komputer  
