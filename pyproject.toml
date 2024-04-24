@@ -12,6 +12,7 @@ authors = [
     {name = "Piotr Solarz", email = "piotrsolarz@student.agh.edu.pl"},
     {name = "Kacper Ślusarczyk", email = "421986@student.agh.edu.pl"},
     {name = "Jan Sosnowiec", email = "419606@student.agh.edu.pl"},
+    {name = "Franciszek Ślusarczyk", email = "frslusarczyk@student.agh.edu.pl"},
 ]
 
 [project.optional-dependencies]
