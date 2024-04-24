@@ -9,6 +9,7 @@ dependencies = [
 ]
 authors = [
     {name = "Bartosz Steć", email = "420927@student.agh.edu.pl"},
+    {name = "Kacper Ślusarczyk", email = "421986@student.agh.edu.pl"},
 ]
 
 [project.optional-dependencies]
