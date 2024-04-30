@@ -8,3 +8,5 @@
 # ignore build files
 build/
 
+#ignore pycache
+__pychache__/
