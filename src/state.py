@@ -14,3 +14,27 @@ class Game:
         self.__color_pin_matrix = [[0 for i in range(no_cols)] for j in range(no_rows)]
         self.__response_pin_matrix = [[0 for i in range(no_cols)] for j in range(no_rows)]
         self.combination_found = False
+
+    def get_color_pin_color(self, row: int, col: int):
+        """Color pin getter."""
+        return self.__color_pin_matrix[row][col]
+
+    def get_response_pin_color(self, row: int, col: int):
+        """Response pin getter."""
+        return self.__response_pin_matrix[row][col]
+
+    def get_active_row(self):
+        """Active row getter."""
+        return self.__active_row
+
+    def get_no_rows(self):
+        """Getter for number of rows."""
+        return self.__no_rows
+
+    def get_no_cols(self):
+        """Getter for number of cols."""
+        return self.__no_cols
+
+    def get_combination(self):
+        """Combination getter."""
+        return self.__combination
