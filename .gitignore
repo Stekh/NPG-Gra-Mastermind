@@ -9,4 +9,5 @@
 build/
 
 #ignore pycache
-pycache/*
+__pycache__/
+
