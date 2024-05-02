@@ -1,13 +1,12 @@
 class Game:
     """The core game state class.
 
-            Holds two 2D matrices of pins currently on the board:
-                color_pin_matrix -- colored pins used for guessing
-                response_pin_matrix -- black and white pins used for verifying guesses
-            Initialise with the size of the game and the target combination"""
+    Holds two 2D matrices of pins currently on the board:
+        color_pin_matrix -- colored pins used for guessing
+        response_pin_matrix -- black and white pins used for verifying guesses
+    Initialise with the size of the game and the target combination"""
+
     def __init__(self, no_rows: int, no_cols: int, combination: list[int]):
-
-
         self.__active_row = 0
         self.__no_rows = no_rows
         self.__no_cols = no_cols
