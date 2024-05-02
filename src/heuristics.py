@@ -26,5 +26,7 @@ def evaluate_row(player: list[int], secret: list[int]) -> (int, int):
             white_pins += 1
             mut_secret.pop(mut_secret.index(mut_player[i]))
             mut_player.pop(i)
+        else:
+            i += 1
 
     return black_pins, white_pins
