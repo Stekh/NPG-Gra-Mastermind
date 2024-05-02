@@ -11,11 +11,12 @@ pg.display.set_caption("Mastermind")
 
 run = True
 while run:
+    clicked = False
     for event in pg.event.get():
         if event.type == pg.QUIT:
             run = False
-
-    ui(screen)
-
+        if event.type == pg.MOUSEBUTTONDOWN:
+            clicked = True
+    ui(screen, (clicked, pg.mouse.get_pos()))
 
 pg.quit()
