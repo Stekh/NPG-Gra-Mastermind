@@ -38,3 +38,12 @@ class Game:
     def get_combination(self):
         """Combination getter."""
         return self.__combination
+
+    def place_color_pin(self, color: int, pos: int):
+        """Places a color pin in given position of active row."""
+        self.__color_pin_matrix[self.__active_row][pos] = color
+
+    def place_response_pin(self, color: int, pos: int):
+        """Places a response pin in given position of active row."""
+        self.__response_pin_matrix[self.__active_row][pos] = color
+
