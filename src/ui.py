@@ -1,7 +1,9 @@
 import pygame as pg
 
-BUTTON_WIDTH = 32
-BUTTON_HEIGHT = 32
+BIG_BUTTON_WIDTH = 32
+BIG_BUTTON_HEIGHT = 32
+SMALL_BUTTON_WIDTH = 16
+SMALL_BUTTON_HEIGHT = 16
 
 
 class button:
@@ -32,10 +34,20 @@ class button:
 buttons = []
 for j in range(1, 5):
     for i in range(1, 11):
-        x = 16 + 48 * i
-        y = 48 * j
+        x1 = 16 + 48 * i
+        y1 = 48 * j
         buttons.append(
-            button(x, y, BUTTON_WIDTH, BUTTON_HEIGHT, [(255, 255, 255), (0, 255, 0), (0, 0, 255)], (255, 0, 0)))
+            button(x1, y1, BIG_BUTTON_WIDTH, BIG_BUTTON_HEIGHT, [(255, 255, 255), (255, 0, 0), (255, 255, 0), (0, 255, 0), (127, 0, 255) ], (127, 127, 127)))
+
+        x2 = x1 + 8
+        y2 = 260 + 24 * j
+        buttons.append(
+            button(x2,y2, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT, [(64, 64, 64), (0, 64, 64), (255, 255, 255)], (127, 127, 127))
+        )
+
+
+
+
 
 
 def ui(screen, mouse_state):
