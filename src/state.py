@@ -4,6 +4,7 @@ class Game:
             Holds two 2D matrices of pins currently on the board:
                 color_pin_matrix -- colored pins used for guessing
                 response_pin_matrix -- black and white pins used for verifying guesses
+            Also holds the current combination and the current active row.
             Initialise with the size of the game and the target combination"""
 
     def __init__(self, no_rows: int, no_cols: int, combination: list[int]):
