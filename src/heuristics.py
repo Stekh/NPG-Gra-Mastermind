@@ -30,3 +30,15 @@ def evaluate_row(player: list[int], secret: list[int]) -> (int, int):
             i += 1
 
     return black_pins, white_pins
+
+
+def evaluate_round(player: list[int], secret: list[int]) -> (bool, int, int, int):
+    """Evaluates how many points to give, and whether the player has guessed the secret code
+    :param player: player's row of pins
+    :param secret: secret row of pins
+    :return: tuple of: boolean representing whether the player has guessed the secret code, number of points to give
+     to the secret code's maker, number of of black and white pins, in that order
+    """
+    black_pins, white_pins = evaluate_row(player, secret)
+
+    return False, 0, 0, 0
