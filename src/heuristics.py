@@ -39,6 +39,8 @@ def evaluate_round(player: list[int], secret: list[int]) -> (bool, int, int):
     :return: tuple of: boolean representing whether the player has guessed the secret code,
     number of black and white pins, in that order
     """
-    black_pins, white_pins = evaluate_row(player, secret)
-
-    return False, 0, 0
+    black_pins, white_pins = evaluate_row(player, secret)   # type: (int, int)
+    has_guessed = False                                     # type: bool
+    if black_pins == 4:
+        has_guessed = True
+    return has_guessed, black_pins, white_pins
