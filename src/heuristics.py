@@ -44,3 +44,14 @@ def evaluate_round(player: list[int], secret: list[int]) -> (bool, int, int):
     if black_pins == 4:
         has_guessed = True
     return has_guessed, black_pins, white_pins
+
+
+def assign_points(player: list[int], secret: list[int], round_no: int, round_limit: int) -> (int, int, int):
+    """Evaluate the round and assign the points accordingly
+    :param player: player's row of pins
+    :param secret: secret row of pins
+    :param round_no: current round number
+    :param round_limit: maximum amount of rounds
+    :return: tuple of: number of points to assign, number of black and white pins, in that order
+    """
+    return 0, 0, 0
