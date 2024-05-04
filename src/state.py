@@ -40,7 +40,7 @@ class Game:
         """
         return self.__active_row
 
-    def get_no_rows_turn_limit(self) -> int:
+    def get_no_rows(self) -> int:
         """Getter for number of rows, which is also the turn limit.
         :return: number of rows, which doubles as the turn limit
         """
