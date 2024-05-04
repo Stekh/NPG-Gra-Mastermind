@@ -1,4 +1,5 @@
 import pygame as pg
+
 from src.ui import ui
 
 pg.init()
