@@ -58,8 +58,9 @@ def ui(screen: pg.Surface, mouse_state: [bool, (int, int)], buttons: list[Button
     pg.display.flip()
 
 
-def construct_buttons(buttons: list[Button]) -> list[Button]:
+def construct_buttons() -> list[Button]:
     """constructs necessary buttons to be drawn on the screen"""
+    buttons = []
     for j in range(1, 5):
         for i in range(1, 11):
             # p1 buttons

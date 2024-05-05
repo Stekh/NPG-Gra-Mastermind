@@ -11,8 +11,7 @@ def test_button_draw() -> None:
 
     screen = pg.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
-    buttons = []
-    buttons = ui.construct_buttons(buttons)
+    buttons = ui.construct_buttons()
     ui.ui(screen,[0,(0,0)],buttons)
 
     assert (255, 255, 255) == screen.get_at((65, 49))

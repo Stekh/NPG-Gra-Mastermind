@@ -10,8 +10,7 @@ SCREEN_HEIGHT = 600
 screen = pg.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pg.display.set_caption("Mastermind")
 
-buttons = []
-buttons = ui.construct_buttons(buttons)
+buttons = ui.construct_buttons()
 
 run = True
 while run:
