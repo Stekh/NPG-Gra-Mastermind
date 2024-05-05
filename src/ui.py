@@ -40,7 +40,7 @@ class Button:
         self.click_count += 1
 
 
-def ui(screen: pg.Surface, mouse_state: (bool, [int, int]), buttons: list[Button]) -> None:
+def ui(screen: pg.Surface, mouse_state: [bool, (int, int)], buttons: list[Button]) -> None:
     """Updates UI based on mouse position"""
     for b in buttons:
 

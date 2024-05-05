@@ -1,3 +1,4 @@
+import pygame as pg
 import pytest
 from src import ui
 
@@ -10,19 +11,15 @@ def test_button_draw() -> None:
 
     screen = pg.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
-    buttons = ui.construct_buttons()
-    ui.ui(screen)
+    buttons = []
+    buttons = ui.construct_buttons(buttons)
+    ui.ui(screen,[0,(0,0)],buttons)
+
+    assert (255, 255, 255) == screen.get_at((65, 49))
+    assert (255, 255, 255) == screen.get_at((543, 527))
+    assert (0, 0 , 0) == screen.get_at((97,81))
 
 
-
-
-
-
-
-
-def test_button_mouse() -> None:
-    """Checks if button states update properly"""
 
 if __name__ == '__main__':
-    button_draw_test()
-    button_mouse_test()
+    test_button_draw()
