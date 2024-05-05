@@ -7,19 +7,19 @@ SMALL_BUTTON_WIDTH = 16
 SMALL_BUTTON_HEIGHT = 16
 
 
-class button:
+class Button:
     """Button is a singular object that represents an interactable button.
     Attributes: coordinates, size, hover and click colors
     Methods allow for drawing, updating and interpreting click count and hover state"""
 
-    def __init__(self, x: float, y: float, width: float, height: float, colors: tuple, hover_color: tuple, click_count=0, hover=False):
+    def __init__(self, x: float, y: float, width: float, height: float, colors: list[pg.color], hover_color: pg.color, click_count=0, hover=False):
         self.click_count = click_count
         self.hover = hover
         self.hover_color = hover_color
         self.colors = colors
         self.rect = pg.Rect(x, y, width, height)
 
-    def draw(self, screen) -> None:
+    def draw(self, screen: pg.Surface) -> None:
         """Puts the button on the screen in its place"""
         color = self.colors[self.click_count % len(self.colors)]
         if self.hover:
@@ -27,11 +27,11 @@ class button:
 
         pg.draw.rect(screen, color, self.rect)
 
-    def is_mouse_over(self, pos) -> bool:
+    def is_mouse_over(self, pos: (int, int)) -> bool:
         """Checks for mouse hover position relative to the button"""
         return self.rect.collidepoint(pos)
 
-    def set_hover(self, hover) -> None:
+    def set_hover(self, hover: bool) -> None:
         """Updates the mouse hover status"""
         self.hover = hover
 
@@ -40,25 +40,9 @@ class button:
         self.click_count += 1
 
 
-buttons = []  # array of all buttons to display on the screen
-for j in range(1, 5):
-    for i in range(1, 11):
-        # p1 buttons
-        x1 = 16 + 48 * i
-        y1 = 48 * j
-        buttons.append(
-            button(x1, y1, BIG_BUTTON_WIDTH, BIG_BUTTON_HEIGHT,
-                   [(255, 255, 255), (255, 0, 0), (255, 255, 0), (0, 255, 0), (127, 0, 255)], (127, 127, 127)))
+buttons = [Button] # array of all buttons to display on the screen
 
-        # p2 buttons
-        x2 = x1 + 8
-        y2 = 260 + 24 * j
-        buttons.append(
-            button(x2, y2, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT, [(64, 64, 64), (0, 64, 64), (255, 255, 255)],
-                   (127, 127, 127)))
-
-
-def ui(screen, mouse_state) -> None:
+def ui(screen: pg.Surface, mouse_state: (bool, [int, int])) -> None:
     """Updates UI based on mouse position"""
     for b in buttons:
 
@@ -74,3 +58,22 @@ def ui(screen, mouse_state) -> None:
         b.draw(screen)
 
     pg.display.flip()
+def construct_buttons() -> list[Button]:
+    for j in range(1, 5):
+        for i in range(1, 11):
+            # p1 buttons
+            x1 = 16 + 48 * i
+            y1 = 48 * j
+            buttons.append(
+                Button(x1, y1, BIG_BUTTON_WIDTH, BIG_BUTTON_HEIGHT,
+                       [(255, 255, 255), (255, 0, 0), (255, 255, 0), (0, 255, 0), (127, 0, 255)], (127, 127, 127)))
+
+            # p2 buttons
+            x2 = x1 + 8
+            y2 = 260 + 24 * j
+            buttons.append(
+                Button(x2, y2, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT, [(64, 64, 64), (0, 64, 64), (255, 255, 255)],
+                       (127, 127, 127)))
+    return buttons
+
+
