@@ -1,5 +1,4 @@
 import pygame as pg
-import void
 
 BIG_BUTTON_WIDTH = 32
 BIG_BUTTON_HEIGHT = 32
@@ -12,7 +11,8 @@ class Button:
     Attributes: coordinates, size, hover and click colors
     Methods allow for drawing, updating and interpreting click count and hover state"""
 
-    def __init__(self, x: float, y: float, width: float, height: float, colors: list[pg.color], hover_color: pg.color, click_count=0, hover=False):
+    def __init__(self, x: float, y: float, width: float, height: float, colors: list[pg.color], hover_color: pg.color,
+                 click_count=0, hover=False):
         self.click_count = click_count
         self.hover = hover
         self.hover_color = hover_color
@@ -40,9 +40,7 @@ class Button:
         self.click_count += 1
 
 
-buttons = [Button] # array of all buttons to display on the screen
-
-def ui(screen: pg.Surface, mouse_state: (bool, [int, int])) -> None:
+def ui(screen: pg.Surface, mouse_state: (bool, [int, int]), buttons: list[Button]) -> None:
     """Updates UI based on mouse position"""
     for b in buttons:
 
@@ -58,7 +56,10 @@ def ui(screen: pg.Surface, mouse_state: (bool, [int, int])) -> None:
         b.draw(screen)
 
     pg.display.flip()
-def construct_buttons() -> list[Button]:
+
+
+def construct_buttons(buttons: list[Button]) -> list[Button]:
+    """constructs necessary buttons to be drawn on the screen"""
     for j in range(1, 5):
         for i in range(1, 11):
             # p1 buttons
@@ -75,5 +76,3 @@ def construct_buttons() -> list[Button]:
                 Button(x2, y2, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT, [(64, 64, 64), (0, 64, 64), (255, 255, 255)],
                        (127, 127, 127)))
     return buttons
-
-

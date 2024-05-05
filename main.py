@@ -1,6 +1,6 @@
 import pygame as pg
 
-from src.ui import ui
+from src import ui
 
 pg.init()
 
@@ -10,6 +10,9 @@ SCREEN_HEIGHT = 600
 screen = pg.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pg.display.set_caption("Mastermind")
 
+buttons = []
+buttons = ui.construct_buttons(buttons)
+
 run = True
 while run:
     clicked = False
@@ -18,6 +21,6 @@ while run:
             run = False
         if event.type == pg.MOUSEBUTTONDOWN:
             clicked = True
-    ui(screen, (clicked, pg.mouse.get_pos()))
+    ui.ui(screen, (clicked, pg.mouse.get_pos()), buttons)
 
 pg.quit()
