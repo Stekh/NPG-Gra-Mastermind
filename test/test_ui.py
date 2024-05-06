@@ -24,6 +24,9 @@ def test_button_hover() -> None:
 
     # big buttons
     ui.ui(screen, [0, (65, 49)], buttons)
+    ui.ui(screen, [0, (65, 49)], buttons)
+    assert (127, 127, 127) == screen.get_at((65, 49))
+    ui.ui(screen, [0, (0, 0)], buttons)
     assert (127, 127, 127) == screen.get_at((65, 49))
     ui.ui(screen, [0, (497, 193)], buttons)
     assert (127, 127, 127) == screen.get_at((497, 193))
@@ -39,9 +42,37 @@ def test_button_hover() -> None:
     assert (0, 0, 0) == screen.get_at((90, 287))
 
 def test_button_click() -> None:
-    (screen, buttons) = ui.construct_display(SCREEN_WIDTH,SCREEN_HEIGHT)
+    (screen, buttons) = ui.construct_display(SCREEN_WIDTH, SCREEN_HEIGHT)
 
+    # big buttons
+    ui.ui(screen, [1, (65, 49)], buttons)
+    assert (255, 0, 0) == screen.get_at((65, 49))
+    ui.ui(screen, [0, (0, 0)], buttons)
 
-if __name__ == '__main__':
-    test_button_draw()
-    test_button_hover()
+    ui.ui(screen, [1, (65, 49)], buttons)
+    assert (255, 255, 0) == screen.get_at((65, 49))
+    ui.ui(screen, [0, (0, 0)], buttons)
+
+    ui.ui(screen, [1, (65, 49)], buttons)
+    assert (0, 255, 0) == screen.get_at((65, 49))
+    ui.ui(screen, [0, (0, 0)], buttons)
+
+    ui.ui(screen, [1, (65, 49)], buttons)
+    assert (127, 0, 255) == screen.get_at((65, 49))
+    ui.ui(screen, [0, (0, 0)], buttons)
+
+    ui.ui(screen, [1, (65, 49)], buttons)
+    assert (255, 255, 255) == screen.get_at((65, 49))
+
+    # small buttons
+    ui.ui(screen, [1, (73, 285)], buttons)
+    assert (0, 64, 64) == screen.get_at((73, 285))
+    ui.ui(screen, [0, (0, 0)], buttons)
+
+    ui.ui(screen, [1, (73, 285)], buttons)
+    assert (255, 255, 255) == screen.get_at((73, 285))
+    ui.ui(screen, [0, (0, 0)], buttons)
+
+    ui.ui(screen, [1, (73, 285)], buttons)
+    assert (64, 64, 64) == screen.get_at((73, 285))
+
