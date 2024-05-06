@@ -16,20 +16,20 @@ while run:
         elif event.type == pg.MOUSEBUTTONDOWN:
             clicked = True
             pos = event.pos
-            button = event.button
-            if button == 1:  # left click
+            mouse_button = event.button
+            if mouse_button == 1:  # left click
                 # put here actions associated with specific mouse position e.g. clicking a specific box on the screen
                 continue
-            elif button == 3:  # right click
+            elif mouse_button == 3:  # right click
                 # same as above
                 continue
         elif event.type == pg.MOUSEMOTION:
             pos = event.pos
             rel = event.rel
-            buttons = event.buttons
+            event_buttons = event.buttons
         elif event.type == pg.MOUSEBUTTONUP:
             pos = event.pos
-            button = event.button
+            mouse_button = event.button
         elif event.type == pg.KEYDOWN:
             unicode = event.unicode
             key = event.key
