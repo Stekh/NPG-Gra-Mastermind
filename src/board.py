@@ -15,4 +15,4 @@ class Board:
         self.y = y
         self.board_color = board_color
         self.pin_color = pin_color
-        self.rect = pg.Rect(x, y, width, height)
+        self.rect = pg.Rect(x, y, CELL_WIDTH*cols, CELL_HEIGHT*rows)
