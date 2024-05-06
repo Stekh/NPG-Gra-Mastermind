@@ -1,11 +1,14 @@
 import pygame as pg
 
 from src import ui
+from src import board
 
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
 
 (screen, buttons) = ui.construct_display()
+
+mm_board = board.Board(4, 10, 10, 10, (252, 178, 50))
 
 run = True
 while run:
@@ -39,8 +42,8 @@ while run:
             key = event.key
             mod = key.mod
             # event handling for specific key
-    
-    ui.ui(screen, (clicked, pg.mouse.get_pos()), buttons)
 
+    #ui.ui(screen, (clicked, pg.mouse.get_pos()), buttons)
+    mm_board.draw(screen, (clicked, pg.mouse.get_pos()))
 
 pg.quit()
