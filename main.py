@@ -1,15 +1,20 @@
 import pygame as pg
 
-pg.init()
+from src import ui
 
-screen = pg.display.set_mode((100, 100))
+SCREEN_WIDTH = 800
+SCREEN_HEIGHT = 600
+
+(screen, buttons) = ui.construct_display()
 
 run = True
 while run:
+    clicked = False
     for event in pg.event.get():
         if event.type == pg.QUIT:
             run = False
         elif event.type == pg.MOUSEBUTTONDOWN:
+            clicked = True
             pos = event.pos
             button = event.button
             if button == 1:  # left click
@@ -34,6 +39,8 @@ while run:
             key = event.key
             mod = key.mod
             # event handling for specific key
+    
+    ui.ui(screen, (clicked, pg.mouse.get_pos()), buttons)
 
 
 pg.quit()
