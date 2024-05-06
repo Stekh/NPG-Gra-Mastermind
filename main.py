@@ -39,7 +39,8 @@ while run:
             key = event.key
             mod = key.mod
             # event handling for specific key
-     ui.ui(screen, (clicked, pg.mouse.get_pos()), buttons)
+    
+    ui.ui(screen, (clicked, pg.mouse.get_pos()), buttons)
 
 
 pg.quit()
