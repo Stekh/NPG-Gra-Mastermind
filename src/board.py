@@ -24,7 +24,19 @@ class Board:
         self.pins: list[ui.Button]
         self.pins = [[ui.Button(init_pos_x + i*CELL_WIDTH, init_pos_y + j*CELL_HEIGHT, HOLE_WIDTH, HOLE_HEIGHT, [(120, 120, 120)], (120, 0, 120)) for i in range(0, cols)] for j in range(0, rows)]
 
-    def draw(self, screen: pg.Surface) -> None:
+    def draw(self, screen: pg.Surface, mouse_state: [bool, (int, int)]) -> None:
         pg.draw.rect(screen, self.board_color, self.rect)
-        for p in self.pins:
-            p.draw(screen)
+        for p_row in self.pins:
+            for p in p_row:
+
+                pos = mouse_state[1]
+                is_mouse_over = p.is_mouse_over(pos)
+                p.set_hover(is_mouse_over)
+
+                if is_mouse_over:
+                    clicked = mouse_state[0]
+                    if clicked:
+                        p.next_click()
+
+                p.draw(screen)
+        pg.display.flip()
