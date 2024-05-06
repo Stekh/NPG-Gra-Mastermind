@@ -13,9 +13,9 @@ def test_button_draw() -> None:
 
     buttons = ui.construct_buttons()
     ui.ui(screen,[0,(0,0)],buttons)
-
+    pg.display.flip()
     assert (255, 255, 255) == screen.get_at((65, 49))
-    assert (255, 255, 255) == screen.get_at((543, 527))
+    assert (255, 255, 255) == screen.get_at((497, 193))
     assert (0, 0 , 0) == screen.get_at((97,81))
 
 
