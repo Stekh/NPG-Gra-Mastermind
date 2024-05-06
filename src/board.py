@@ -43,9 +43,9 @@ class Board:
                     if self.pins[i][j].click_count == 1:
                         init_pos_x: float
                         init_pos_y: float
-                        init_pos_x = self.x + (CELL_WIDTH - HOLE_WIDTH) / 2
-                        init_pos_y = self.y + (CELL_HEIGHT - HOLE_HEIGHT) / 2
-                        self.pins[i][j].rect = pg.Rect(init_pos_x + j*CELL_WIDTH + HOLE_WIDTH/2 - PIN_WIDTH/2, init_pos_y + i*CELL_HEIGHT + HOLE_HEIGHT/2 - PIN_HEIGHT/2, PIN_WIDTH, PIN_HEIGHT)
+                        init_pos_x = self.x + CELL_WIDTH/ 2
+                        init_pos_y = self.y + CELL_HEIGHT / 2
+                        self.pins[i][j].rect = pg.Rect(init_pos_x + j*CELL_WIDTH - PIN_WIDTH/2, init_pos_y + i*CELL_HEIGHT - PIN_HEIGHT/2, PIN_WIDTH, PIN_HEIGHT)
 
                     if self.pins[i][j].click_count == 6:
                         self.pins[i][j].click_count = 0
