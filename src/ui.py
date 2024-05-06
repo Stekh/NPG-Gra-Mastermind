@@ -1,5 +1,9 @@
 import pygame as pg
 
+
+SCREEN_WIDTH = 800
+SCREEN_HEIGHT = 600
+
 BIG_BUTTON_WIDTH = 32
 BIG_BUTTON_HEIGHT = 32
 SMALL_BUTTON_WIDTH = 16
@@ -39,7 +43,6 @@ class Button:
         """Increments the amount of clicks on the button"""
         self.click_count += 1
 
-
 def ui(screen: pg.Surface, mouse_state: [bool, (int, int)], buttons: list[Button]) -> None:
     """Updates UI based on mouse position"""
     for b in buttons:
@@ -77,3 +80,13 @@ def construct_buttons() -> list[Button]:
                 Button(x2, y2, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT, [(64, 64, 64), (0, 64, 64), (255, 255, 255)],
                        (127, 127, 127)))
     return buttons
+
+
+def construct_display(SCREEN_WIDTH: int, SCREEN_HEIGHT: int) -> (pg.display, list[Button]):
+    pg.init()
+    screen = pg.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+    pg.display.set_caption("Mastermind")
+
+    buttons = construct_buttons()
+    pg.display.flip()
+    return (screen, buttons)

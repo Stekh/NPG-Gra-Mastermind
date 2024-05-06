@@ -2,23 +2,46 @@ import pygame as pg
 import pytest
 from src import ui
 
+SCREEN_WIDTH = 800
+SCREEN_HEIGHT = 600
 def test_button_draw() -> None:
     """Checks if buttons were drawn properly"""
-    pg.init()
-
-    SCREEN_WIDTH = 800
-    SCREEN_HEIGHT = 600
-
-    screen = pg.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-
-    buttons = ui.construct_buttons()
+    (screen, buttons) = ui.construct_display(SCREEN_WIDTH,SCREEN_HEIGHT)
     ui.ui(screen,[0,(0,0)],buttons)
-    pg.display.flip()
+
+    #big buttons
     assert (255, 255, 255) == screen.get_at((65, 49))
     assert (255, 255, 255) == screen.get_at((497, 193))
-    assert (0, 0 , 0) == screen.get_at((97,81))
+    assert (0, 0, 0) == screen.get_at((97,81))
 
+    #small buttons
+    assert (64, 64, 64) == screen.get_at((73, 285))
+    assert (64, 64, 64) == screen.get_at((456, 333))
+    assert (0, 0, 0) == screen.get_at((90,287))
+
+def test_button_hover() -> None:
+    (screen, buttons) = ui.construct_display(SCREEN_WIDTH,SCREEN_HEIGHT)
+
+    # big buttons
+    ui.ui(screen, [0, (65, 49)], buttons)
+    assert (127, 127, 127) == screen.get_at((65, 49))
+    ui.ui(screen, [0, (497, 193)], buttons)
+    assert (127, 127, 127) == screen.get_at((497, 193))
+    ui.ui(screen, [0, (97, 81)], buttons)
+    assert (0, 0, 0) == screen.get_at((97, 81))
+
+    # small buttons
+    ui.ui(screen, [0, (73, 285)], buttons)
+    assert (127, 127, 127) == screen.get_at((73, 285))
+    ui.ui(screen, [0, (456, 333)], buttons)
+    assert (127, 127, 127) == screen.get_at((456, 333))
+    ui.ui(screen, [0, (90, 287)], buttons)
+    assert (0, 0, 0) == screen.get_at((90, 287))
+
+def test_button_click() -> None:
+    (screen, buttons) = ui.construct_display(SCREEN_WIDTH,SCREEN_HEIGHT)
 
 
 if __name__ == '__main__':
     test_button_draw()
+    test_button_hover()
