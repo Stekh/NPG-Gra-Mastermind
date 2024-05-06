@@ -82,7 +82,7 @@ def construct_buttons() -> list[Button]:
     return buttons
 
 
-def construct_display(SCREEN_WIDTH: int, SCREEN_HEIGHT: int) -> (pg.display, list[Button]):
+def construct_display() -> (pg.display, list[Button]):
     pg.init()
     screen = pg.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     pg.display.set_caption("Mastermind")

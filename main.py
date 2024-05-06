@@ -5,7 +5,7 @@ from src import ui
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
 
-(screen, buttons) = ui.construct_display(SCREEN_WIDTH, SCREEN_HEIGHT)
+(screen, buttons) = ui.construct_display()
 
 run = True
 while run:
