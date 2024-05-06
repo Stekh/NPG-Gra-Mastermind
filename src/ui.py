@@ -43,6 +43,7 @@ class Button:
         """Increments the amount of clicks on the button"""
         self.click_count += 1
 
+
 def ui(screen: pg.Surface, mouse_state: [bool, (int, int)], buttons: list[Button]) -> None:
     """Updates UI based on mouse position"""
     for b in buttons:
@@ -89,4 +90,4 @@ def construct_display() -> (pg.display, list[Button]):
 
     buttons = construct_buttons()
     pg.display.flip()
-    return (screen, buttons)
+    return screen, buttons
