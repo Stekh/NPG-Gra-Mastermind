@@ -40,13 +40,12 @@ class Board:
         init_pos_x = x + (CELL_WIDTH - HOLE_WIDTH) / 2
         init_pos_y = y + (CELL_HEIGHT - HOLE_HEIGHT) / 2
         self.pins: list[ui.Button]
-        self.color_pins = [
-            [ui.Button(init_pos_x + i * CELL_WIDTH, init_pos_y + j * CELL_HEIGHT, HOLE_WIDTH, HOLE_HEIGHT,
-                       self.color_pin_colors, (219, 217, 217)) for i in range(0, cols)] for j in range(0, rows)]
-        self.response_pins = [
-            [ui.Button(init_pos_x + i * CELL_WIDTH, init_pos_y + (j + rows) * CELL_HEIGHT + 10,
-                       HOLE_WIDTH, HOLE_HEIGHT, self.response_pin_colors, (219, 217, 217)) for i in range(0, cols)] for
-            j in range(0, rows)]
+        self.color_pins = [[ui.Button(init_pos_x + i * CELL_WIDTH, init_pos_y + j * CELL_HEIGHT, HOLE_WIDTH,
+                                      HOLE_HEIGHT, self.color_pin_colors, (219, 217, 217)) for i in range(0, cols)] for
+                           j in range(0, rows)]
+        self.response_pins = [[ui.Button(init_pos_x + i * CELL_WIDTH, init_pos_y + (j + rows) * CELL_HEIGHT + 10,
+                                         HOLE_WIDTH, HOLE_HEIGHT, self.response_pin_colors, (219, 217, 217)) for i in
+                               range(0, cols)] for j in range(0, rows)]
         self.secret_line = [
             ui.Button(init_pos_x + cols * CELL_WIDTH, init_pos_y + i * CELL_HEIGHT, HOLE_WIDTH, HOLE_HEIGHT,
                       self.color_pin_colors, (219, 217, 217)) for i in range(0, rows)]
@@ -68,22 +67,15 @@ class Board:
                         self.color_pins[i][j].next_click()
 
                     if self.color_pins[i][j].click_count == 1:
-                        init_pos_x: float
-                        init_pos_y: float
-                        init_pos_x = self.x + CELL_WIDTH / 2
-                        init_pos_y = self.y + CELL_HEIGHT / 2
-                        self.color_pins[i][j].rect = pg.Rect(init_pos_x + j * CELL_WIDTH - self.color_pin_width / 2,
-                                                             init_pos_y + i * CELL_HEIGHT - self.color_pin_height / 2,
-                                                             self.color_pin_width, self.color_pin_height)
+                        pos_x = self.x + CELL_WIDTH / 2 + j * CELL_WIDTH - self.color_pin_width / 2
+                        pos_y = self.y + CELL_HEIGHT / 2 + i * CELL_HEIGHT - self.color_pin_height / 2
+                        self.color_pins[i][j].rect = pg.Rect(pos_x, pos_y, self.color_pin_width, self.color_pin_height)
 
                     if self.color_pins[i][j].click_count == len(self.color_pin_colors):
                         self.color_pins[i][j].click_count = 0
-                        init_pos_x: float
-                        init_pos_y: float
-                        init_pos_x = self.x + (CELL_WIDTH - HOLE_WIDTH) / 2
-                        init_pos_y = self.y + (CELL_HEIGHT - HOLE_HEIGHT) / 2
-                        self.color_pins[i][j].rect = pg.Rect(init_pos_x + j * CELL_WIDTH, init_pos_y + i * CELL_HEIGHT,
-                                                             HOLE_WIDTH, HOLE_HEIGHT)
+                        pos_x = self.x + (CELL_WIDTH - HOLE_WIDTH) / 2 + j * CELL_WIDTH
+                        pos_y = self.y + (CELL_HEIGHT - HOLE_HEIGHT) / 2 + i * CELL_HEIGHT
+                        self.color_pins[i][j].rect = pg.Rect(pos_x, pos_y, HOLE_WIDTH, HOLE_HEIGHT)
 
                 is_mouse_over = self.response_pins[i][j].is_mouse_over(pos)
                 self.response_pins[i][j].set_hover(is_mouse_over)
@@ -94,24 +86,17 @@ class Board:
                         self.response_pins[i][j].next_click()
 
                     if self.response_pins[i][j].click_count == 1:
-                        init_pos_x: float
-                        init_pos_y: float
-                        init_pos_x = self.x + CELL_WIDTH / 2
-                        init_pos_y = self.y + CELL_HEIGHT / 2
-                        self.response_pins[i][j].rect = pg.Rect(
-                            init_pos_x + j * CELL_WIDTH - self.response_pin_width / 2,
-                            init_pos_y + (i + self.rows) * CELL_HEIGHT + 10 - self.response_pin_height / 2,
-                            self.response_pin_width, self.response_pin_height)
+                        pos_x = self.x + CELL_WIDTH / 2 + j * CELL_WIDTH - self.response_pin_width / 2
+                        pos_y = self.y + CELL_HEIGHT / 2 + (
+                                i + self.rows) * CELL_HEIGHT + 10 - self.response_pin_height / 2
+                        self.response_pins[i][j].rect = pg.Rect(pos_x, pos_y, self.response_pin_width,
+                                                                self.response_pin_height)
 
                     if self.response_pins[i][j].click_count == len(self.response_pin_colors):
                         self.response_pins[i][j].click_count = 0
-                        init_pos_x: float
-                        init_pos_y: float
-                        init_pos_x = self.x + (CELL_WIDTH - HOLE_WIDTH) / 2
-                        init_pos_y = self.y + (CELL_HEIGHT - HOLE_HEIGHT) / 2
-                        self.response_pins[i][j].rect = pg.Rect(init_pos_x + j * CELL_WIDTH,
-                                                                init_pos_y + (i + self.rows) * CELL_HEIGHT + 10,
-                                                                HOLE_WIDTH, HOLE_HEIGHT)
+                        pos_x = self.x + (CELL_WIDTH - HOLE_WIDTH) / 2 + j * CELL_WIDTH
+                        pos_y = self.y + (CELL_HEIGHT - HOLE_HEIGHT) / 2 + (i + self.rows) * CELL_HEIGHT + 10
+                        self.response_pins[i][j].rect = pg.Rect(pos_x, pos_y, HOLE_WIDTH, HOLE_HEIGHT)
 
                 self.color_pins[i][j].draw(screen)
                 self.response_pins[i][j].draw(screen)
@@ -126,23 +111,15 @@ class Board:
                     self.secret_line[i].next_click()
 
                 if self.secret_line[i].click_count == 1:
-                    init_pos_x: float
-                    init_pos_y: float
-                    init_pos_x = self.x + CELL_WIDTH / 2
-                    init_pos_y = self.y + CELL_HEIGHT / 2
-                    self.secret_line[i].rect = pg.Rect(init_pos_x + self.cols * CELL_WIDTH - self.color_pin_width / 2,
-                                                       init_pos_y + i * CELL_HEIGHT - self.color_pin_height / 2,
-                                                       self.color_pin_width, self.color_pin_height)
+                    pos_x = self.x + CELL_WIDTH / 2 + self.cols * CELL_WIDTH - self.color_pin_width / 2
+                    pos_y = self.y + CELL_HEIGHT / 2 + i * CELL_HEIGHT - self.color_pin_height / 2
+                    self.secret_line[i].rect = pg.Rect(pos_x, pos_y, self.color_pin_width, self.color_pin_height)
 
                 if self.secret_line[i].click_count == len(self.color_pin_colors):
                     self.secret_line[i].click_count = 0
-                    init_pos_x: float
-                    init_pos_y: float
-                    init_pos_x = self.x + (CELL_WIDTH - HOLE_WIDTH) / 2
-                    init_pos_y = self.y + (CELL_HEIGHT - HOLE_HEIGHT) / 2
-                    self.secret_line[i].rect = pg.Rect(init_pos_x + self.cols * CELL_WIDTH,
-                                                         init_pos_y + i * CELL_HEIGHT,
-                                                         HOLE_WIDTH, HOLE_HEIGHT)
+                    pos_x = self.x + (CELL_WIDTH - HOLE_WIDTH) / 2 + self.cols * CELL_WIDTH
+                    pos_y = self.y + (CELL_HEIGHT - HOLE_HEIGHT) / 2 + i * CELL_HEIGHT
+                    self.secret_line[i].rect = pg.Rect(pos_x, pos_y, HOLE_WIDTH, HOLE_HEIGHT)
 
             self.secret_line[i].draw(screen)
 
