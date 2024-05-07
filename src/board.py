@@ -59,7 +59,7 @@ class Board:
                                                        init_pos_y + i * CELL_HEIGHT - self.pin_height / 2,
                                                        self.pin_width, self.pin_height)
 
-                    if self.pins[i][j].click_count == 6:
+                    if self.pins[i][j].click_count == len(self.pin_colors):
                         self.pins[i][j].click_count = 0
                         init_pos_x: float
                         init_pos_y: float
