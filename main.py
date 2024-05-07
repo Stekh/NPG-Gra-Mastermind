@@ -8,7 +8,8 @@ SCREEN_HEIGHT = 600
 
 (screen, buttons) = ui.construct_display()
 
-mm_board = board.Board(4, 10, 10, 10, (252, 178, 50))
+main_board = board.Board(4, 10, 10, 10, (252, 178, 50))
+evaluate_board = board.Board(4, 10, 10, 280, (252, 178, 50), board.SMALL_PIN_WIDTH, board.SMALL_PIN_HEIGHT)
 
 run = True
 while run:
@@ -43,7 +44,8 @@ while run:
             mod = key.mod
             # event handling for specific key
 
-    #ui.ui(screen, (clicked, pg.mouse.get_pos()), buttons)
-    mm_board.draw(screen, (clicked, pg.mouse.get_pos()))
+    # ui.ui(screen, (clicked, pg.mouse.get_pos()), buttons)
+    main_board.draw(screen, (clicked, pg.mouse.get_pos()))
+    evaluate_board.draw(screen, (clicked, pg.mouse.get_pos()))
 
 pg.quit()
