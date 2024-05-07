@@ -1,5 +1,6 @@
 import pygame as pg
 from src import ui
+from src import state
 
 CELL_WIDTH = 64
 CELL_HEIGHT = 64
@@ -35,11 +36,9 @@ class Board:
         self.board = pg.Rect(x, y, CELL_WIDTH * cols, CELL_HEIGHT * rows * 2 + 10)
         self.line = pg.Rect(x + 2, y + rows * CELL_HEIGHT + 3, CELL_WIDTH * cols - 4, 4)
         self.secret = pg.Rect(x + cols * CELL_WIDTH, y, CELL_WIDTH, rows * CELL_HEIGHT)
-        init_pos_x: float
-        init_pos_y: float
+        self.state = state.Game(rows, cols, [0 for i in range(0, cols)])
         init_pos_x = x + (CELL_WIDTH - HOLE_WIDTH) / 2
         init_pos_y = y + (CELL_HEIGHT - HOLE_HEIGHT) / 2
-        self.pins: list[ui.Button]
         self.color_pins = [[ui.Button(init_pos_x + i * CELL_WIDTH, init_pos_y + j * CELL_HEIGHT, HOLE_WIDTH,
                                       HOLE_HEIGHT, self.color_pin_colors, (219, 217, 217)) for i in range(0, cols)] for
                            j in range(0, rows)]
@@ -55,6 +54,7 @@ class Board:
         pg.draw.rect(screen, self.line_color, self.line)
         pg.draw.rect(screen, self.board_color, self.secret)
         for i in range(0, self.rows):
+            self.state.set_active_row(i)
             for j in range(0, self.cols):
 
                 pos = mouse_state[1]
@@ -100,6 +100,8 @@ class Board:
 
                 self.color_pins[i][j].draw(screen)
                 self.response_pins[i][j].draw(screen)
+                self.state.place_color_pin(self.color_pins[i][j].click_count, j)
+                self.state.place_response_pin(self.response_pins[i][j].click_count, j)
 
             pos = mouse_state[1]
             is_mouse_over = self.secret_line[i].is_mouse_over(pos)
