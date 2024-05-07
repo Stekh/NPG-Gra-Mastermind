@@ -81,5 +81,6 @@ class Game:
 
     def set_active_row(self, pos: int):  # Probably won't need this but will help with tests
         """Sets the active row to a specified location.
-        :param pos: the active row's destination"""
+        :param pos: the active row's destination
+        """
         self.__active_row = pos
