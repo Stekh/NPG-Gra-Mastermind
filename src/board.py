@@ -34,6 +34,7 @@ class Board:
         self.color_pin_colors = color_pin_colors
         self.response_pin_colors = response_pin_colors
         self.rect = pg.Rect(x, y, CELL_WIDTH * cols, CELL_HEIGHT * rows * 2 + 10)
+        self.line = pg.Rect(x + 2, y + rows * CELL_HEIGHT + 3, CELL_WIDTH * cols - 4, 4)
         init_pos_x: float
         init_pos_y: float
         init_pos_x = x + (CELL_WIDTH - HOLE_WIDTH) / 2
@@ -49,6 +50,7 @@ class Board:
 
     def draw(self, screen: pg.Surface, mouse_state: [bool, (int, int)]) -> None:
         pg.draw.rect(screen, self.board_color, self.rect)
+        pg.draw.rect(screen, (158, 121, 0), self.line)
         for i in range(0, self.rows):
             for j in range(0, self.cols):
 
@@ -98,9 +100,10 @@ class Board:
                         init_pos_y: float
                         init_pos_x = self.x + CELL_WIDTH / 2
                         init_pos_y = self.y + CELL_HEIGHT / 2
-                        self.response_pins[i][j].rect = pg.Rect(init_pos_x + j * CELL_WIDTH - self.response_pin_width / 2,
-                                                                init_pos_y + (i + self.rows) * CELL_HEIGHT + 10 - self.response_pin_height / 2,
-                                                                self.response_pin_width, self.response_pin_height)
+                        self.response_pins[i][j].rect = pg.Rect(
+                            init_pos_x + j * CELL_WIDTH - self.response_pin_width / 2,
+                            init_pos_y + (i + self.rows) * CELL_HEIGHT + 10 - self.response_pin_height / 2,
+                            self.response_pin_width, self.response_pin_height)
 
                     if self.response_pins[i][j].click_count == len(self.response_pin_colors):
                         self.response_pins[i][j].click_count = 0
