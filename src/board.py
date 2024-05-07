@@ -3,12 +3,14 @@ from src import ui
 
 CELL_WIDTH = 64
 CELL_HEIGHT = 64
-BIG_PIN_WIDTH = 32
-BIG_PIN_HEIGHT = 32
-SMALL_PIN_WIDTH = 16
-SMALL_PIN_HEIGHT = 16
+COLOR_PIN_WIDTH = 32
+COLOR_PIN_HEIGHT = 32
+RESPONSE_PIN_WIDTH = 16
+RESPONSE_PIN_HEIGHT = 16
 HOLE_WIDTH = 8
 HOLE_HEIGHT = 8
+BOARD_COLOR = (252, 178, 50)
+LINE_COLOR = (158, 121, 0)
 COLOR_PINS_LIST = [(0, 0, 0), (255, 23, 23), (246, 250, 42), (22, 245, 33), (10, 216, 252),
                    (255, 0, 255)]
 RESPONSE_PINS_LIST = [(0, 0, 0), (255, 255, 255), (0, 0, 0)]
@@ -17,22 +19,19 @@ RESPONSE_PINS_LIST = [(0, 0, 0), (255, 255, 255), (0, 0, 0)]
 class Board:
     """Board is made out of board"""
 
-    def __init__(self, rows: int, cols: int, x: float, y: float, board_color: pg.color,
-                 color_pin_width: int = BIG_PIN_WIDTH,
-                 color_pin_height: int = BIG_PIN_HEIGHT, response_pin_width: int = SMALL_PIN_WIDTH,
-                 response_pin_height: int = SMALL_PIN_HEIGHT, color_pin_colors: list[pg.color] = COLOR_PINS_LIST,
-                 response_pin_colors: list[pg.color] = RESPONSE_PINS_LIST):
+    def __init__(self, rows: int, cols: int, x: float, y: float):
         self.rows = rows
         self.cols = cols
         self.x = x
         self.y = y
-        self.color_pin_width = color_pin_width
-        self.color_pin_height = color_pin_height
-        self.response_pin_width = response_pin_width
-        self.response_pin_height = response_pin_height
-        self.board_color = board_color
-        self.color_pin_colors = color_pin_colors
-        self.response_pin_colors = response_pin_colors
+        self.color_pin_width = COLOR_PIN_WIDTH
+        self.color_pin_height = COLOR_PIN_HEIGHT
+        self.response_pin_width = RESPONSE_PIN_WIDTH
+        self.response_pin_height = RESPONSE_PIN_HEIGHT
+        self.board_color = BOARD_COLOR
+        self.line_color = LINE_COLOR
+        self.color_pin_colors = COLOR_PINS_LIST
+        self.response_pin_colors = RESPONSE_PINS_LIST
         self.rect = pg.Rect(x, y, CELL_WIDTH * cols, CELL_HEIGHT * rows * 2 + 10)
         self.line = pg.Rect(x + 2, y + rows * CELL_HEIGHT + 3, CELL_WIDTH * cols - 4, 4)
         init_pos_x: float
@@ -50,7 +49,7 @@ class Board:
 
     def draw(self, screen: pg.Surface, mouse_state: [bool, (int, int)]) -> None:
         pg.draw.rect(screen, self.board_color, self.rect)
-        pg.draw.rect(screen, (158, 121, 0), self.line)
+        pg.draw.rect(screen, self.line_color, self.line)
         for i in range(0, self.rows):
             for j in range(0, self.cols):
 

@@ -8,7 +8,7 @@ SCREEN_HEIGHT = 600
 
 (screen, buttons) = ui.construct_display()
 
-main_board = board.Board(4, 10, 10, 10, (252, 178, 50))
+main_board = board.Board(4, 10, 10, 10)
 # evaluate_board = board.Board(4, 10, 10, 280, (252, 178, 50), board.SMALL_PIN_WIDTH, board.SMALL_PIN_HEIGHT,
 #                             board.RESPONSE_PINS_LIST)
 
