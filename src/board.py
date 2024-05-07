@@ -3,19 +3,23 @@ from src import ui
 
 CELL_WIDTH = 64
 CELL_HEIGHT = 64
-PIN_WIDTH = 32
-PIN_HEIGHT = 32
+BIG_PIN_WIDTH = 32
+BIG_PIN_HEIGHT = 32
+SMALL_PIN_WIDTH = 32
+SMALL_PIN_HEIGHT = 32
 HOLE_WIDTH = 8
 HOLE_HEIGHT = 8
 
 
 class Board:
     """Board is made out of board"""
-    def __init__(self, rows: int, cols: int, x: float, y: float, board_color: pg.color):
+    def __init__(self, rows: int, cols: int, x: float, y: float, board_color: pg.color, pin_width: int = BIG_PIN_WIDTH, pin_height: int = BIG_PIN_HEIGHT):
         self.rows = rows
         self.cols = cols
         self.x = x
         self.y = y
+        self.pin_width=pin_width;
+        self.pin_height = pin_height;
         self.board_color = board_color
         self.rect = pg.Rect(x, y, CELL_WIDTH*cols, CELL_HEIGHT*rows)
         init_pos_x: float
@@ -45,7 +49,7 @@ class Board:
                         init_pos_y: float
                         init_pos_x = self.x + CELL_WIDTH/ 2
                         init_pos_y = self.y + CELL_HEIGHT / 2
-                        self.pins[i][j].rect = pg.Rect(init_pos_x + j*CELL_WIDTH - PIN_WIDTH/2, init_pos_y + i*CELL_HEIGHT - PIN_HEIGHT/2, PIN_WIDTH, PIN_HEIGHT)
+                        self.pins[i][j].rect = pg.Rect(init_pos_x + j*CELL_WIDTH - self.pin_width/2, init_pos_y + i*CELL_HEIGHT - self.pin_height/2, self.pin_width, self.pin_height)
 
                     if self.pins[i][j].click_count == 6:
                         self.pins[i][j].click_count = 0
