@@ -34,7 +34,7 @@ class Board:
         self.response_pin_colors = RESPONSE_PINS_LIST
         self.board = pg.Rect(x, y, CELL_WIDTH * cols, CELL_HEIGHT * rows * 2 + 10)
         self.line = pg.Rect(x + 2, y + rows * CELL_HEIGHT + 3, CELL_WIDTH * cols - 4, 4)
-        #self.secret = pg.Rect(x + cols * CELL_WIDTH, y, CELL_WIDTH, rows * CELL_HEIGHT)
+        self.secret = pg.Rect(x + cols * CELL_WIDTH, y, CELL_WIDTH, rows * CELL_HEIGHT)
         init_pos_x: float
         init_pos_y: float
         init_pos_x = x + (CELL_WIDTH - HOLE_WIDTH) / 2
@@ -47,14 +47,14 @@ class Board:
             [ui.Button(init_pos_x + i * CELL_WIDTH, init_pos_y + (j + rows) * CELL_HEIGHT + 10,
                        HOLE_WIDTH, HOLE_HEIGHT, self.response_pin_colors, (219, 217, 217)) for i in range(0, cols)] for
             j in range(0, rows)]
-        #self.secret_line = [
-            #ui.Button(init_pos_x + cols * CELL_WIDTH, init_pos_y + i * CELL_HEIGHT, HOLE_WIDTH, HOLE_HEIGHT,
-            #          self.color_pin_colors, (219, 217, 217)) for i in range(0, rows)]
+        self.secret_line = [
+            ui.Button(init_pos_x + cols * CELL_WIDTH, init_pos_y + i * CELL_HEIGHT, HOLE_WIDTH, HOLE_HEIGHT,
+                      self.color_pin_colors, (219, 217, 217)) for i in range(0, rows)]
 
     def draw(self, screen: pg.Surface, mouse_state: [bool, (int, int)]) -> None:
         pg.draw.rect(screen, self.board_color, self.board)
         pg.draw.rect(screen, self.line_color, self.line)
-        #pg.draw.rect(screen, self.board_color, self.secret)
+        pg.draw.rect(screen, self.board_color, self.secret)
         for i in range(0, self.rows):
             for j in range(0, self.cols):
 
@@ -115,5 +115,35 @@ class Board:
 
                 self.color_pins[i][j].draw(screen)
                 self.response_pins[i][j].draw(screen)
+
+            pos = mouse_state[1]
+            is_mouse_over = self.secret_line[i].is_mouse_over(pos)
+            self.secret_line[i].set_hover(is_mouse_over)
+
+            if is_mouse_over:
+                clicked = mouse_state[0]
+                if clicked:
+                    self.secret_line[i].next_click()
+
+                if self.secret_line[i].click_count == 1:
+                    init_pos_x: float
+                    init_pos_y: float
+                    init_pos_x = self.x + CELL_WIDTH / 2
+                    init_pos_y = self.y + CELL_HEIGHT / 2
+                    self.secret_line[i].rect = pg.Rect(init_pos_x + self.cols * CELL_WIDTH - self.color_pin_width / 2,
+                                                       init_pos_y + i * CELL_HEIGHT - self.color_pin_height / 2,
+                                                       self.color_pin_width, self.color_pin_height)
+
+                if self.secret_line[i].click_count == len(self.color_pin_colors):
+                    self.secret_line[i].click_count = 0
+                    init_pos_x: float
+                    init_pos_y: float
+                    init_pos_x = self.x + (CELL_WIDTH - HOLE_WIDTH) / 2
+                    init_pos_y = self.y + (CELL_HEIGHT - HOLE_HEIGHT) / 2
+                    self.secret_line[i].rect = pg.Rect(init_pos_x + self.cols * CELL_WIDTH,
+                                                         init_pos_y + i * CELL_HEIGHT,
+                                                         HOLE_WIDTH, HOLE_HEIGHT)
+
+            self.secret_line[i].draw(screen)
 
         pg.display.flip()
