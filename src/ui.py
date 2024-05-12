@@ -50,10 +50,8 @@ def ui(screen: pg.Surface, mouse_state: [bool, (int, int)], buttons: list[Button
         is_mouse_over = b.is_mouse_over(pos)
         b.set_hover(is_mouse_over)
 
-        if is_mouse_over:
-            clicked = mouse_state[0]
-            if clicked:
-                b.next_click()
+        if is_mouse_over and mouse_state[0]:
+            b.next_click()
 
         b.draw(screen)
 
