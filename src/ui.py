@@ -1,13 +1,11 @@
 import pygame as pg
 
 
-SCREEN_WIDTH = 800
-SCREEN_HEIGHT = 600
+SCREEN_WIDTH: int = 800
+SCREEN_HEIGHT: int = 600
 
-BIG_BUTTON_WIDTH = 32
-BIG_BUTTON_HEIGHT = 32
-SMALL_BUTTON_WIDTH = 16
-SMALL_BUTTON_HEIGHT = 16
+BIG_BUTTON_SIZE: int = 32
+SMALL_BUTTON_SIZE: int = 16
 
 
 class Button:
@@ -71,14 +69,14 @@ def construct_buttons() -> list[Button]:
             x1 = 16 + 48 * i
             y1 = 48 * j
             buttons.append(
-                Button(x1, y1, BIG_BUTTON_WIDTH, BIG_BUTTON_HEIGHT,
+                Button(x1, y1, BIG_BUTTON_SIZE, BIG_BUTTON_SIZE,
                        [(255, 255, 255), (255, 0, 0), (255, 255, 0), (0, 255, 0), (127, 0, 255)], (127, 127, 127)))
 
             # p2 buttons
             x2 = x1 + 8
             y2 = 260 + 24 * j
             buttons.append(
-                Button(x2, y2, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT, [(64, 64, 64), (0, 64, 64), (255, 255, 255)],
+                Button(x2, y2, SMALL_BUTTON_SIZE, SMALL_BUTTON_SIZE, [(64, 64, 64), (0, 64, 64), (255, 255, 255)],
                        (127, 127, 127)))
     return buttons
 
