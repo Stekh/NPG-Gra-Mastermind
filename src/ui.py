@@ -12,8 +12,14 @@ SMALL_BUTTON_HEIGHT = 16
 
 class Button:
     """Button is a singular object that represents an interactable button.
-    Attributes: coordinates, size, hover and click colors
-    Methods allow for drawing, updating and interpreting click count and hover state"""
+
+    Parameters:
+    x, y - coordinates of the button.
+    width, height - size of the button.
+    hover_color - color of the button when hovered
+    colors - colors of the button got after each click
+    hover - checks whether the button is hovered over
+    click_count - keeps track of the amount of times button has been pressed"""
 
     def __init__(self, x: float, y: float, width: float, height: float, colors: list[pg.color], hover_color: pg.color,
                  click_count=0, hover=False):
@@ -24,7 +30,11 @@ class Button:
         self.rect = pg.Rect(x, y, width, height)
 
     def draw(self, screen: pg.Surface) -> None:
-        """Puts the button on the screen in its place"""
+        """Puts the button on the screen in its place
+
+        screen - surface on which the button is being drawn
+        returns None"""
+
         color = self.colors[self.click_count % len(self.colors)]
         if self.hover:
             color = self.hover_color
@@ -32,20 +42,35 @@ class Button:
         pg.draw.rect(screen, color, self.rect)
 
     def is_mouse_over(self, pos: (int, int)) -> bool:
-        """Checks for mouse hover position relative to the button"""
+        """Checks for mouse hover position relative to the button
+
+        pos - coordinates of mouse position
+        returns bool
+        1 - mouse is over the button,
+        0 - mouse is not over the button"""
         return self.rect.collidepoint(pos)
 
     def set_hover(self, hover: bool) -> None:
-        """Updates the mouse hover status"""
+        """Updates the mouse hover status
+
+        hover - checks whether the button is hovered over
+        returns None"""
         self.hover = hover
 
     def next_click(self) -> None:
-        """Increments the amount of clicks on the button"""
+        """Increments the amount of clicks on the button
+
+        Returns None"""
         self.click_count += 1
 
 
 def ui(screen: pg.Surface, mouse_state: [bool, (int, int)], buttons: list[Button]) -> None:
-    """Updates UI based on mouse position"""
+    """Updates UI based on mouse position
+
+    screen - surface on which the button is being drawn
+    mouse_state - coordinates of mouse
+    buttons - list of buttons
+    returns None"""
     for b in buttons:
 
         pos = mouse_state[1]
@@ -63,7 +88,10 @@ def ui(screen: pg.Surface, mouse_state: [bool, (int, int)], buttons: list[Button
 
 
 def construct_buttons() -> list[Button]:
-    """constructs necessary buttons to be drawn on the screen"""
+    """constructs necessary buttons to be drawn on the screen
+
+    parameters: None
+    returns list of buttons"""
     buttons = []
     for j in range(1, 5):
         for i in range(1, 11):
@@ -84,6 +112,10 @@ def construct_buttons() -> list[Button]:
 
 
 def construct_display() -> (pg.display, list[Button]):
+    """Constructs everything necessary to be displayed on the screen
+
+    paremeters: None
+    returns screen -the surface to display and buttons - the list of buttons"""
     pg.init()
     screen = pg.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     pg.display.set_caption("Mastermind")
