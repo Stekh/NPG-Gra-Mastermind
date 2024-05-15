@@ -42,20 +42,16 @@ class Board:
         init_pos_x = x + (CELL_WIDTH - HOLE_WIDTH) / 2
         init_pos_y = y + (CELL_HEIGHT - HOLE_HEIGHT) / 2
         self.color_pins = [
-            [ui.Button(init_pos_x + i * CELL_WIDTH, init_pos_y + j * CELL_HEIGHT, HOLE_WIDTH, HOLE_HEIGHT) for i in
+            [ui.Button(init_pos_x + i * CELL_WIDTH, init_pos_y + j * CELL_HEIGHT, HOLE_WIDTH, HOLE_HEIGHT,self.color_pin_colors,(255, 255, 255)) for i in
              range(0, cols)] for j in range(0, rows)]
         self.response_pins = [
-            [ui.Button(init_pos_x + (i + cols) * CELL_WIDTH + 10, init_pos_y + j * CELL_HEIGHT, HOLE_WIDTH, HOLE_HEIGHT)
+            [ui.Button(init_pos_x + (i + cols) * CELL_WIDTH + 10, init_pos_y + j * CELL_HEIGHT, HOLE_WIDTH, HOLE_HEIGHT,self.response_pin_colors,(255, 255, 255) )
              for i in range(0, cols)] for j in range(0, rows)]
         self.secret_line = [
-            ui.Button(init_pos_x + i * CELL_WIDTH, init_pos_y + rows * CELL_HEIGHT, HOLE_WIDTH, HOLE_HEIGHT) for i in
+            ui.Button(init_pos_x + i * CELL_WIDTH, init_pos_y + rows * CELL_HEIGHT, HOLE_WIDTH, HOLE_HEIGHT,self.color_pin_colors,(255, 255, 255)) for i in
             range(0, cols)]
 
-    def draw(self, screen: pg.Surface, mouse_state: [bool, (int, int)]) -> None:
-        pg.draw.rect(screen, self.board_color, self.board)
-        pg.draw.rect(screen, self.line_color, self.line)
-        pg.draw.rect(screen, self.board_color, self.secret)
-
+    def update_state(self, mouse_state: [bool, (int, int)]) -> None:
         for i in range(0, self.rows):
             self.state.set_active_row(i)
             for j in range(0, self.cols):
@@ -101,8 +97,6 @@ class Board:
                         pos_y = self.y + (CELL_HEIGHT - HOLE_HEIGHT) / 2 + i * CELL_HEIGHT
                         self.response_pins[i][j].rect = pg.Rect(pos_x, pos_y, HOLE_WIDTH, HOLE_HEIGHT)
 
-                self.color_pins[i][j].draw(screen)
-                self.response_pins[i][j].draw(screen)
                 self.state.place_color_pin(self.color_pins[i][j].click_count, j)
                 self.state.place_response_pin(self.response_pins[i][j].click_count, j)
 
@@ -127,8 +121,20 @@ class Board:
                     pos_y = self.y + (CELL_HEIGHT - HOLE_HEIGHT) / 2 + self.rows * CELL_HEIGHT
                     self.secret_line[i].rect = pg.Rect(pos_x, pos_y, HOLE_WIDTH, HOLE_HEIGHT)
 
+
+    def draw(self, screen: pg.Surface, mouse_state: [bool, (int, int)]) -> None:
+
+        self.update_state(mouse_state)
+
+        pg.draw.rect(screen, self.board_color, self.board)
+        pg.draw.rect(screen, self.line_color, self.line)
+        pg.draw.rect(screen, self.board_color, self.secret)
+
+        for i in range(0, self.rows):
+            self.state.set_active_row(i)
+            for j in range(0, self.cols):
+                self.color_pins[i][j].draw(screen)
+                self.response_pins[i][j].draw(screen)
+
+        for i in range(0, self.cols):
             self.secret_line[i].draw(screen)
-
-        pg.display.flip()
-
-        #def update_display(self, screen: pg.Surface, mouse_state: [bool, (int, int)]) -> None

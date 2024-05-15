@@ -45,6 +45,7 @@ while run:
             mod: int = event.mod
             # event handling for specific key
 
+    pg.display.flip()
     # ui.ui(screen, (clicked, pg.mouse.get_pos()), buttons)
     main_board.draw(screen, (clicked, pg.mouse.get_pos()))
     # evaluate_board.draw(screen, (clicked, pg.mouse.get_pos()))
