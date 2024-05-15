@@ -1,55 +1,86 @@
 import pygame as pg
 
-SCREEN_WIDTH: int = 800
-SCREEN_HEIGHT: int = 600
 
-BIG_BUTTON_SIZE: int = 32
-SMALL_BUTTON_SIZE: int = 16
+SCREEN_WIDTH = 800
+SCREEN_HEIGHT = 600
+
+BIG_BUTTON_WIDTH = 32
+BIG_BUTTON_HEIGHT = 32
+SMALL_BUTTON_WIDTH = 16
+SMALL_BUTTON_HEIGHT = 16
 
 
 class Button:
     """Button is a singular object that represents an interactable button.
-    Attributes: coordinates, size, hover and click colors
-    Methods allow for drawing, updating and interpreting click count and hover state"""
 
-    def __init__(self, x: int, y: int, width: int, height: int, colors: list[pg.Color], hover_color: pg.Color,
+    Parameters:
+    x, y - coordinates of the button.
+    width, height - size of the button.
+    hover_color - color of the button when hovered
+    colors - colors of the button got after each click
+    hover - checks whether the button is hovered over
+    click_count - keeps track of the amount of times button has been pressed"""
+
+    def __init__(self, x: float, y: float, width: float, height: float, colors: list[pg.color], hover_color: pg.color,
                  click_count=0, hover=False):
-        self.click_count: int = click_count
-        self.hover: bool = hover
-        self.hover_color: pg.Color = hover_color
-        self.colors: list[pg.Color] = colors
-        self.rect: pg.Rect = pg.Rect(x, y, width, height)
+        self.click_count = click_count
+        self.hover = hover
+        self.hover_color = hover_color
+        self.colors = colors
+        self.rect = pg.Rect(x, y, width, height)
 
     def draw(self, screen: pg.Surface) -> None:
-        """Puts the button on the screen in its place"""
-        color: pg.Color = self.colors[self.click_count % len(self.colors)]
+        """Puts the button on the screen in its place
+
+        screen - surface on which the button is being drawn
+        returns None"""
+
+        color = self.colors[self.click_count % len(self.colors)]
         if self.hover:
             color = self.hover_color
 
         pg.draw.rect(screen, color, self.rect)
 
     def is_mouse_over(self, pos: (int, int)) -> bool:
-        """Checks for mouse hover position relative to the button"""
+        """Checks for mouse hover position relative to the button
+
+        pos - coordinates of mouse position
+        returns bool
+        1 - mouse is over the button,
+        0 - mouse is not over the button"""
         return self.rect.collidepoint(pos)
 
     def set_hover(self, hover: bool) -> None:
-        """Updates the mouse hover status"""
+        """Updates the mouse hover status
+
+        hover - checks whether the button is hovered over
+        returns None"""
         self.hover = hover
 
     def next_click(self) -> None:
-        """Increments the amount of clicks on the button"""
+        """Increments the amount of clicks on the button
+
+        Returns None"""
         self.click_count += 1
 
 
 def ui(screen: pg.Surface, mouse_state: [bool, (int, int)], buttons: list[Button]) -> None:
-    """Updates UI based on mouse position"""
+    """Updates UI based on mouse position
+
+    screen - surface on which the button is being drawn
+    mouse_state - coordinates of mouse
+    buttons - list of buttons
+    returns None"""
     for b in buttons:
-        pos: (int, int) = mouse_state[1]
-        is_mouse_over: bool = b.is_mouse_over(pos)
+
+        pos = mouse_state[1]
+        is_mouse_over = b.is_mouse_over(pos)
         b.set_hover(is_mouse_over)
 
-        if is_mouse_over and mouse_state[0]:
-            b.next_click()
+        if is_mouse_over:
+            clicked = mouse_state[0]
+            if clicked:
+                b.next_click()
 
         b.draw(screen)
 
@@ -57,33 +88,39 @@ def ui(screen: pg.Surface, mouse_state: [bool, (int, int)], buttons: list[Button
 
 
 def construct_buttons() -> list[Button]:
-    """constructs necessary buttons to be drawn on the screen"""
-    buttons: list[Button] = []
+    """constructs necessary buttons to be drawn on the screen
+
+    parameters: None
+    returns list of buttons"""
+    buttons = []
     for j in range(1, 5):
         for i in range(1, 11):
             # p1 buttons
-            x1: int = 16 + 48 * i
-            y1: int = 48 * j
+            x1 = 16 + 48 * i
+            y1 = 48 * j
             buttons.append(
-                Button(x1, y1, BIG_BUTTON_SIZE, BIG_BUTTON_SIZE,
-                       [pg.Color(255, 255, 255), (255, 0, 0), (255, 255, 0), (0, 255, 0), (127, 0, 255)],
-                       pg.Color(127, 127, 127)))
+                Button(x1, y1, BIG_BUTTON_WIDTH, BIG_BUTTON_HEIGHT,
+                       [(255, 255, 255), (255, 0, 0), (255, 255, 0), (0, 255, 0), (127, 0, 255)], (127, 127, 127)))
 
             # p2 buttons
-            x2: int = x1 + 8
-            y2: int = 260 + 24 * j
+            x2 = x1 + 8
+            y2 = 260 + 24 * j
             buttons.append(
-                Button(x2, y2, SMALL_BUTTON_SIZE, SMALL_BUTTON_SIZE,
-                       [pg.Color(64, 64, 64), (0, 64, 64), (255, 255, 255)], pg.Color(127, 127, 127)))
+                Button(x2, y2, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT, [(64, 64, 64), (0, 64, 64), (255, 255, 255)],
+                       (127, 127, 127)))
     return buttons
 
 
 def construct_display() -> (pg.display, list[Button]):
+    """Constructs everything necessary to be displayed on the screen
+
+    paremeters: None
+    returns screen -the surface to display and buttons - the list of buttons"""
     pg.init()
-    screen: pg.Surface = pg.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+    screen = pg.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     pg.display.set_caption("Mastermind")
 
-    buttons: list[Button] = construct_buttons()
+    buttons = construct_buttons()
     pg.display.flip()
     return screen, buttons
 

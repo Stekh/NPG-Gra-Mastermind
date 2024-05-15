@@ -48,9 +48,13 @@ while run:
             mod: int = event.mod
             # event handling for specific key
 
+
     adv_button.update([clicked, pg.mouse.get_pos()])
     if adv_button.clicked:
         hr.advance_row(main_board)
+
+    pg.display.flip()
+    
     # ui.ui(screen, (clicked, pg.mouse.get_pos()), buttons)
     main_board.draw(screen, (clicked, pg.mouse.get_pos()))
     adv_button.draw(screen)
