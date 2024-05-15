@@ -54,7 +54,6 @@ class Board:
         pg.draw.rect(screen, self.line_color, self.line)
         pg.draw.rect(screen, self.board_color, self.secret)
         for i in range(0, self.rows):
-            self.state.set_active_row(i)
             for j in range(0, self.cols):
 
                 pos = mouse_state[1]
