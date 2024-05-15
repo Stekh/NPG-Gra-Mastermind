@@ -57,7 +57,7 @@ class Board:
                       self.color_pin_colors, (255, 255, 255)) for i in
             range(0, cols)]
 
-    def update_state_after_click(self, mouse_state: [bool, (int, int)]) -> None:
+    def update_state(self, mouse_state: [bool, (int, int)]) -> None:
 
         self.active_row_backlight = pg.Rect(self.x + 2, self.y + CELL_HEIGHT * self.state.get_active_row_no() + 2,
                                             CELL_WIDTH * self.cols - 4, CELL_HEIGHT - 4)
@@ -85,9 +85,6 @@ class Board:
                     pos_x = self.x + (CELL_WIDTH - HOLE_WIDTH) / 2 + i * CELL_WIDTH
                     pos_y = self.y + (CELL_HEIGHT - HOLE_HEIGHT) / 2 + modified_row * CELL_HEIGHT
                     self.color_pins[modified_row][i].rect = pg.Rect(pos_x, pos_y, HOLE_WIDTH, HOLE_HEIGHT)
-
-            is_mouse_over = self.response_pins[modified_row][i].is_mouse_over(pos)
-            self.response_pins[modified_row][i].set_hover(is_mouse_over)
 
             self.state.place_color_pin(self.color_pins[modified_row][i].click_count, i)
 
@@ -121,8 +118,10 @@ class Board:
 
         self.active_row_backlight = pg.Rect(self.x + 2, self.y + CELL_HEIGHT * self.state.get_active_row_no() + 2,
                                             CELL_WIDTH * self.cols - 4, CELL_HEIGHT - 4)
-
-        modified_row = self.state.get_active_row_no() - 1
+        if self.state.end_row_reached:
+            modified_row = self.state.get_active_row_no()
+        else:
+            modified_row = self.state.get_active_row_no() - 1
         for i in range(0, self.cols):
 
             self.response_pins[modified_row][i].click_count = self.state.get_response_pin_color(modified_row, i)
@@ -139,7 +138,7 @@ class Board:
                 self.response_pins[modified_row][i].rect = pg.Rect(pos_x, pos_y, HOLE_WIDTH, HOLE_HEIGHT)
 
     def draw(self, screen: pg.Surface, mouse_state: [bool, (int, int)]) -> None:
-        self.update_state_after_click(mouse_state)
+        self.update_state(mouse_state)
 
         pg.draw.rect(screen, self.board_color, self.board)
         pg.draw.rect(screen, self.line_color, self.line)
