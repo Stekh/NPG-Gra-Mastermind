@@ -60,9 +60,10 @@ def advance_row(board: board.Board) -> None:
     """Evaluates current round, places response pins and moves to the next row
     :param board: board is made of board"""
     score: (int, int) = evaluate_row(board.state.get_active_row(), board.state.get_combination())
+    print(score)
     for i in range(score[0]):
         board.state.place_response_pin(2, i)
     for i in range(score[0], score[1]):
-        board.state.place_pin(1, score[0]+i)
+        board.state.place_response_pin(1, score[0]+i)
     board.state.advance_active_row()
     board.update_state_after_evaluation()
