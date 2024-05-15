@@ -11,8 +11,9 @@ RESPONSE_PIN_HEIGHT = 16
 HOLE_WIDTH = 8
 HOLE_HEIGHT = 8
 BOARD_COLOR = (252, 178, 50)
-HOVER_COLORS_VECTOR = (10, 10, 10)
+# HOVER_COLORS_VECTOR = (10, 10, 10)
 LINE_COLOR = (158, 121, 0)
+BACKLIGHT_COLOR = (250, 211, 142)
 COLOR_PINS_COLORS = [(0, 0, 0), (255, 23, 23), (246, 250, 42), (22, 245, 33), (10, 216, 252),
                      (255, 0, 255)]
 RESPONSE_PINS_COLORS = [(0, 0, 0), (255, 255, 255), (0, 0, 0)]
@@ -32,23 +33,28 @@ class Board:
         self.response_pin_height = RESPONSE_PIN_HEIGHT
         self.board_color = BOARD_COLOR
         self.line_color = LINE_COLOR
+        self.backlight_color = BACKLIGHT_COLOR
         self.color_pin_colors = COLOR_PINS_COLORS
         self.response_pin_colors = RESPONSE_PINS_COLORS
-        self.hover_colors_vector = HOVER_COLORS_VECTOR
+        # self.hover_colors_vector = HOVER_COLORS_VECTOR
         self.board = pg.Rect(x, y, CELL_WIDTH * cols * 2 + 10, CELL_HEIGHT * rows)
         self.line = pg.Rect(x + cols * CELL_WIDTH + 3, y + 2, 4, CELL_HEIGHT * rows - 4)
         self.secret = pg.Rect(x, y + rows * CELL_HEIGHT, CELL_WIDTH * cols, CELL_HEIGHT)
+        self.active_row_backlight = pg.Rect(x + 2, y + 2, CELL_WIDTH * cols - 4, CELL_HEIGHT - 4)
         self.state = state.Game(rows, cols, [0 for i in range(0, cols)])
         init_pos_x = x + (CELL_WIDTH - HOLE_WIDTH) / 2
         init_pos_y = y + (CELL_HEIGHT - HOLE_HEIGHT) / 2
         self.color_pins = [
-            [ui.Button(init_pos_x + i * CELL_WIDTH, init_pos_y + j * CELL_HEIGHT, HOLE_WIDTH, HOLE_HEIGHT,self.color_pin_colors,(255, 255, 255)) for i in
+            [ui.Button(init_pos_x + i * CELL_WIDTH, init_pos_y + j * CELL_HEIGHT, HOLE_WIDTH, HOLE_HEIGHT,
+                       self.color_pin_colors, (255, 255, 255)) for i in
              range(0, cols)] for j in range(0, rows)]
         self.response_pins = [
-            [ui.Button(init_pos_x + (i + cols) * CELL_WIDTH + 10, init_pos_y + j * CELL_HEIGHT, HOLE_WIDTH, HOLE_HEIGHT,self.response_pin_colors,(255, 255, 255) )
+            [ui.Button(init_pos_x + (i + cols) * CELL_WIDTH + 10, init_pos_y + j * CELL_HEIGHT, HOLE_WIDTH, HOLE_HEIGHT,
+                       self.response_pin_colors, (255, 255, 255))
              for i in range(0, cols)] for j in range(0, rows)]
         self.secret_line = [
-            ui.Button(init_pos_x + i * CELL_WIDTH, init_pos_y + rows * CELL_HEIGHT, HOLE_WIDTH, HOLE_HEIGHT,self.color_pin_colors,(255, 255, 255)) for i in
+            ui.Button(init_pos_x + i * CELL_WIDTH, init_pos_y + rows * CELL_HEIGHT, HOLE_WIDTH, HOLE_HEIGHT,
+                      self.color_pin_colors, (255, 255, 255)) for i in
             range(0, cols)]
 
     def update_state(self, mouse_state: [bool, (int, int)]) -> None:
@@ -121,7 +127,6 @@ class Board:
                     pos_y = self.y + (CELL_HEIGHT - HOLE_HEIGHT) / 2 + self.rows * CELL_HEIGHT
                     self.secret_line[i].rect = pg.Rect(pos_x, pos_y, HOLE_WIDTH, HOLE_HEIGHT)
 
-
     def draw(self, screen: pg.Surface, mouse_state: [bool, (int, int)]) -> None:
 
         self.update_state(mouse_state)
@@ -129,6 +134,7 @@ class Board:
         pg.draw.rect(screen, self.board_color, self.board)
         pg.draw.rect(screen, self.line_color, self.line)
         pg.draw.rect(screen, self.board_color, self.secret)
+        pg.draw.rect(screen, self.backlight_color, self.active_row_backlight)
 
         for i in range(0, self.rows):
             self.state.set_active_row(i)
