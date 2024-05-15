@@ -88,26 +88,7 @@ class Board:
             is_mouse_over = self.response_pins[modified_row][i].is_mouse_over(pos)
             self.response_pins[modified_row][i].set_hover(is_mouse_over)
 
-            if is_mouse_over:
-                clicked = mouse_state[0]
-                if clicked:
-                    self.response_pins[modified_row][i].next_click()
-
-                if self.response_pins[modified_row][i].click_count == 1:
-                    pos_x = self.x + CELL_WIDTH / 2 + (
-                                i + self.cols) * CELL_WIDTH + 10 - self.response_pin_width / 2
-                    pos_y = self.y + CELL_HEIGHT / 2 + modified_row * CELL_HEIGHT - self.response_pin_height / 2
-                    self.response_pins[modified_row][i].rect = pg.Rect(pos_x, pos_y, self.response_pin_width,
-                                                                self.response_pin_height)
-
-                if self.response_pins[modified_row][i].click_count == len(self.response_pin_colors):
-                    self.response_pins[modified_row][i].click_count = 0
-                    pos_x = self.x + (CELL_WIDTH - HOLE_WIDTH) / 2 + (i + self.cols) * CELL_WIDTH + 10
-                    pos_y = self.y + (CELL_HEIGHT - HOLE_HEIGHT) / 2 + modified_row * CELL_HEIGHT
-                    self.response_pins[modified_row][i].rect = pg.Rect(pos_x, pos_y, HOLE_WIDTH, HOLE_HEIGHT)
-
             self.state.place_color_pin(self.color_pins[modified_row][i].click_count, i)
-            self.state.place_response_pin(self.response_pins[modified_row][i].click_count, i)
 
         new_combination = []
         for i in range(0, self.cols):
