@@ -2,6 +2,8 @@ import pygame as pg
 
 from src import ui
 from src import board
+from src.ui import UniversalButton
+from src import heuristics as hr
 
 # SCREEN_WIDTH = 800
 # SCREEN_HEIGHT = 600
@@ -9,6 +11,7 @@ from src import board
 (screen, buttons) = ui.construct_display()
 
 main_board: board.Board = board.Board(8, 4, 10, 10)
+adv_button: UniversalButton = UniversalButton(700, 500, 40, 20, (252, 178, 50), (200, 178, 50), )
 # evaluate_board = board.Board(4, 10, 10, 280, (252, 178, 50), board.SMALL_PIN_WIDTH, board.SMALL_PIN_HEIGHT,
 #                             board.RESPONSE_PINS_LIST)
 
@@ -45,8 +48,14 @@ while run:
             mod: int = event.mod
             # event handling for specific key
 
+    #adv_button.update([clicked, pg.mouse.get_pos()])
+    #if adv_button.clicked:
+    #    hr.evaluate_row(main_board.state.)
+
     # ui.ui(screen, (clicked, pg.mouse.get_pos()), buttons)
     main_board.draw(screen, (clicked, pg.mouse.get_pos()))
+    adv_button.draw(screen)
+
     # evaluate_board.draw(screen, (clicked, pg.mouse.get_pos()))
 
 pg.quit()
