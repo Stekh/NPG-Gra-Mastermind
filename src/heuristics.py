@@ -1,4 +1,5 @@
 from src import board
+from src import state
 
 
 def evaluate_row(player: list[int], secret: list[int]) -> (int, int):
@@ -63,3 +64,4 @@ def advance_row(board: board.Board) -> None:
         board.state.place_response_pin(2, i)
     for i in range(score[0], score[1]):
         board.state.place_pin(1, score[0]+i)
+    board.state.advance_active_row()

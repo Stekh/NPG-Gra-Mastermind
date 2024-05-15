@@ -58,7 +58,13 @@ class Board:
             range(0, cols)]
 
     def update_state(self, mouse_state: [bool, (int, int)]) -> None:
+
+        self.active_row_backlight = pg.Rect(self.x + 2, self.y + CELL_HEIGHT * self.state.get_active_row_no() + 2,
+                                            CELL_WIDTH * self.cols - 4, CELL_HEIGHT - 4)
+
+        active_row_storage = self.state.get_active_row_no() #temporary
         for i in range(0, self.rows):
+            self.state.set_active_row(i)
             for j in range(0, self.cols):
 
                 pos = mouse_state[1]
@@ -126,6 +132,8 @@ class Board:
                     pos_y = self.y + (CELL_HEIGHT - HOLE_HEIGHT) / 2 + self.rows * CELL_HEIGHT
                     self.secret_line[i].rect = pg.Rect(pos_x, pos_y, HOLE_WIDTH, HOLE_HEIGHT)
 
+        self.state.set_active_row(active_row_storage) #temporary
+
     def draw(self, screen: pg.Surface, mouse_state: [bool, (int, int)]) -> None:
 
         self.update_state(mouse_state)
@@ -136,7 +144,6 @@ class Board:
         pg.draw.rect(screen, self.backlight_color, self.active_row_backlight)
 
         for i in range(0, self.rows):
-            self.state.set_active_row(i)
             for j in range(0, self.cols):
                 self.color_pins[i][j].draw(screen)
                 self.response_pins[i][j].draw(screen)
