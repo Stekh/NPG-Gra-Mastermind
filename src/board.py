@@ -20,7 +20,21 @@ RESPONSE_PINS_COLORS = [(0, 0, 0), (255, 255, 255), (0, 0, 0)]
 
 
 class Board:
-    """Board is made out of board"""
+    """The class representing board for Mastermind game
+
+    Holds:
+        state -- Game class object, actual state of game
+        color_pins -- matrix of Button class objects - color pins matrix visualization
+        response_pins -- matrix of Button class objects - response pins matrix visualization
+        secret_line -- list of Button class objects - combination visualization
+        board,
+        line,
+        secret,
+        active_row_backlight -- elements displaying on screen to draw a Mastermind board
+        rows, cols, x, y -- size and position parameters for board
+        color_pin_width, board_color, etc. -- bunch of additional parameters to customize the board
+    Initialise with size of game and the position on the screen
+    """
 
     def __init__(self, rows: int, cols: int, x: float, y: float):
         self.rows = rows
@@ -58,36 +72,44 @@ class Board:
             range(0, cols)]
 
     def update_state(self, mouse_state: [bool, (int, int)]) -> None:
-
-        self.active_row_backlight = pg.Rect(self.x + 2, self.y + CELL_HEIGHT * self.state.get_active_row_no() + 2,
-                                            CELL_WIDTH * self.cols - 4, CELL_HEIGHT - 4)
+        """Game state updater.
+        :param mouse_state: including mouse button state and cursor position
+        :return: None
+        """
 
         modified_row = self.state.get_active_row_no()
         for i in range(0, self.cols):
-
+            """Check if the cursor is over the button"""
             pos = mouse_state[1]
             is_mouse_over = self.color_pins[modified_row][i].is_mouse_over(pos)
             self.color_pins[modified_row][i].set_hover(is_mouse_over)
 
             if is_mouse_over:
+                """Check if the mouse button is down"""
                 clicked = mouse_state[0]
                 if clicked:
+                    """Change color of the button"""
                     self.color_pins[modified_row][i].next_click()
 
+                """Change the size and position of the button from hole size to pin size"""
                 if self.color_pins[modified_row][i].click_count == 1:
                     pos_x = self.x + CELL_WIDTH / 2 + i * CELL_WIDTH - self.color_pin_width / 2
                     pos_y = self.y + CELL_HEIGHT / 2 + modified_row * CELL_HEIGHT - self.color_pin_height / 2
                     self.color_pins[modified_row][i].rect = pg.Rect(pos_x, pos_y, self.color_pin_width,
                                                                     self.color_pin_height)
 
+                """Change the size and position of the button from pin size to hole size"""
                 if self.color_pins[modified_row][i].click_count == len(self.color_pin_colors):
                     self.color_pins[modified_row][i].click_count = 0
                     pos_x = self.x + (CELL_WIDTH - HOLE_WIDTH) / 2 + i * CELL_WIDTH
                     pos_y = self.y + (CELL_HEIGHT - HOLE_HEIGHT) / 2 + modified_row * CELL_HEIGHT
                     self.color_pins[modified_row][i].rect = pg.Rect(pos_x, pos_y, HOLE_WIDTH, HOLE_HEIGHT)
 
+            """Update the state of the game"""
             self.state.place_color_pin(self.color_pins[modified_row][i].click_count, i)
 
+        """Variable used to create the new combination of secret line - after clicking or hovering a button"""
+        """Everything just like in the loop above, but for secret line"""
         new_combination = []
         for i in range(0, self.cols):
             pos = mouse_state[1]
@@ -112,10 +134,15 @@ class Board:
 
             new_combination.append(self.secret_line[i].click_count)
 
+        """Combination update"""
         self.state.set_combination(new_combination)
 
     def update_state_after_evaluation(self) -> None:
+        """Game state updater after row's evaluation.
+        :return: None
+        """
 
+        """Backlight position change"""
         self.active_row_backlight = pg.Rect(self.x + 2, self.y + CELL_HEIGHT * self.state.get_active_row_no() + 2,
                                             CELL_WIDTH * self.cols - 4, CELL_HEIGHT - 4)
         if self.state.end_row_reached:
@@ -124,8 +151,10 @@ class Board:
             modified_row = self.state.get_active_row_no() - 1
         for i in range(0, self.cols):
 
+            """Updating response pins color after evaluation"""
             self.response_pins[modified_row][i].click_count = self.state.get_response_pin_color(modified_row, i)
 
+            """Updating response pins color size from hole size to pin size"""
             if self.response_pins[modified_row][i].click_count > 0:
                 pos_x = self.x + CELL_WIDTH / 2 + (
                         i + self.cols) * CELL_WIDTH + 10 - self.response_pin_width / 2
@@ -133,22 +162,33 @@ class Board:
                 self.response_pins[modified_row][i].rect = pg.Rect(pos_x, pos_y, self.response_pin_width,
                                                                    self.response_pin_height)
             else:
+                """Updating response pins color size from pin size to hole size"""
                 pos_x = self.x + (CELL_WIDTH - HOLE_WIDTH) / 2 + (i + self.cols) * CELL_WIDTH + 10
                 pos_y = self.y + (CELL_HEIGHT - HOLE_HEIGHT) / 2 + modified_row * CELL_HEIGHT
                 self.response_pins[modified_row][i].rect = pg.Rect(pos_x, pos_y, HOLE_WIDTH, HOLE_HEIGHT)
 
     def draw(self, screen: pg.Surface, mouse_state: [bool, (int, int)]) -> None:
+        """Draws board on the screen.
+        :param screen: where board will be drawn
+        :param mouse_state: including mouse button state and cursor position
+        :return: None
+        """
+
+        """Updating game state"""
         self.update_state(mouse_state)
 
+        """Draw board core"""
         pg.draw.rect(screen, self.board_color, self.board)
         pg.draw.rect(screen, self.line_color, self.line)
         pg.draw.rect(screen, self.board_color, self.secret)
         pg.draw.rect(screen, self.backlight_color, self.active_row_backlight)
 
+        """Draw color and response pins"""
         for i in range(0, self.rows):
             for j in range(0, self.cols):
                 self.color_pins[i][j].draw(screen)
                 self.response_pins[i][j].draw(screen)
 
+        """Draw secret line"""
         for i in range(0, self.cols):
             self.secret_line[i].draw(screen)
