@@ -15,12 +15,20 @@ class Button:
     Attributes: coordinates, size, hover and click colors
     Methods allow for drawing, updating and interpreting click count and hover state"""
 
-    def __init__(self, x: float, y: float, width: float, height: float, hover=False):
+    def __init__(self, x: float, y: float, width: float, height: float, colors: list[pg.color], hover_color: pg.color,
+                 click_count=0, hover=False):
+        self.click_count = click_count
         self.hover = hover
+        self.hover_color = hover_color
+        self.colors = colors
         self.rect = pg.Rect(x, y, width, height)
 
-    def draw(self, screen: pg.Surface, color: pg.color) -> None:
+    def draw(self, screen: pg.Surface) -> None:
         """Puts the button on the screen in its place"""
+        color = self.colors[self.click_count % len(self.colors)]
+        if self.hover:
+            color = self.hover_color
+
         pg.draw.rect(screen, color, self.rect)
 
     def is_mouse_over(self, pos: (int, int)) -> bool:
@@ -31,11 +39,13 @@ class Button:
         """Updates the mouse hover status"""
         self.hover = hover
 
+    def next_click(self) -> None:
+        """Increments the amount of clicks on the button"""
+        self.click_count += 1
 
 
-"""
 def ui(screen: pg.Surface, mouse_state: [bool, (int, int)], buttons: list[Button]) -> None:
-    Updates UI based on mouse position - comment
+    """Updates UI based on mouse position"""
     for b in buttons:
 
         pos = mouse_state[1]
@@ -53,7 +63,7 @@ def ui(screen: pg.Surface, mouse_state: [bool, (int, int)], buttons: list[Button
 
 
 def construct_buttons() -> list[Button]:
-    constructs necessary buttons to be drawn on the screen - comment
+    """constructs necessary buttons to be drawn on the screen"""
     buttons = []
     for j in range(1, 5):
         for i in range(1, 11):
@@ -81,4 +91,3 @@ def construct_display() -> (pg.display, list[Button]):
     buttons = construct_buttons()
     pg.display.flip()
     return screen, buttons
-"""

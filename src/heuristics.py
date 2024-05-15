@@ -4,11 +4,11 @@ def evaluate_row(player: list[int], secret: list[int]) -> (int, int):
     :param secret: secret row of pins
     :return: number of black and white pins, in that order
     """
-    black_pins = 0                  # type: int
-    white_pins = 0                  # type: int
-    mut_player = player.copy()      # type: list[int]
-    mut_secret = secret.copy()      # type: list[int]
-    i = 0                           # type: int
+    black_pins: int = 0
+    white_pins: int = 0
+    mut_player: list[int] = player.copy()
+    mut_secret: list[int] = secret.copy()
+    i: int = 0
 
     # evaluate number of black pins
     while i < len(mut_player):
@@ -40,8 +40,10 @@ def assign_points(player: list[int], secret: list[int], round_no: int, round_lim
     :param round_limit: maximum amount of rounds
     :return: tuple of: number of points to assign, number of black and white pins, in that order
     """
-    black_pins, white_pins = evaluate_row(player, secret)    # type: int, int
-    points = 0  # type: int
+    black_pins: int
+    white_pins: int
+    black_pins, white_pins = evaluate_row(player, secret)
+    points: int = 0
     if round_no == round_limit:
         points = 2
     elif black_pins < 4:
