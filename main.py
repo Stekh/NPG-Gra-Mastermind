@@ -11,7 +11,7 @@ from src import heuristics as hr
 (screen, buttons) = ui.construct_display()
 
 main_board: board.Board = board.Board(8, 4, 10, 10)
-adv_button: UniversalButton = UniversalButton(700, 500, 40, 20, (252, 178, 50), (200, 178, 50), )
+adv_button: UniversalButton = UniversalButton(700, 50, 80, 40, (252, 178, 50), (200, 178, 50), )
 # evaluate_board = board.Board(4, 10, 10, 280, (252, 178, 50), board.SMALL_PIN_WIDTH, board.SMALL_PIN_HEIGHT,
 #                             board.RESPONSE_PINS_LIST)
 
@@ -48,10 +48,9 @@ while run:
             mod: int = event.mod
             # event handling for specific key
 
-    #adv_button.update([clicked, pg.mouse.get_pos()])
-    #if adv_button.clicked:
-    #    hr.evaluate_row(main_board.state.)
-
+    adv_button.update([clicked, pg.mouse.get_pos()])
+    if adv_button.clicked:
+        hr.advance_row(main_board)
     # ui.ui(screen, (clicked, pg.mouse.get_pos()), buttons)
     main_board.draw(screen, (clicked, pg.mouse.get_pos()))
     adv_button.draw(screen)
