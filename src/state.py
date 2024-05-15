@@ -30,12 +30,11 @@ class Game:
         """Active row getter.
         :return: the active row's color pins"""
         return self.__color_pin_matrix[self.__active_row]
-    
+
     def get_active_response_row(self) -> list[int]:
         """Active row getter.
         :return: the active row's black and white pins"""
         return self.__response_pin_matrix[self.__active_row]
-
 
     def get_response_pin_color(self, row: int, col: int) -> int:
         """Response pin getter.
