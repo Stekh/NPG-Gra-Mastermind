@@ -62,54 +62,52 @@ class Board:
         self.active_row_backlight = pg.Rect(self.x + 2, self.y + CELL_HEIGHT * self.state.get_active_row_no() + 2,
                                             CELL_WIDTH * self.cols - 4, CELL_HEIGHT - 4)
 
-        active_row_storage = self.state.get_active_row_no()  # temporary
-        for i in range(0, self.rows):
-            self.state.set_active_row(i)
-            for j in range(0, self.cols):
+        modified_row = self.state.get_active_row_no()
+        for i in range(0, self.cols):
 
-                pos = mouse_state[1]
-                is_mouse_over = self.color_pins[i][j].is_mouse_over(pos)
-                self.color_pins[i][j].set_hover(is_mouse_over)
+            pos = mouse_state[1]
+            is_mouse_over = self.color_pins[modified_row][i].is_mouse_over(pos)
+            self.color_pins[modified_row][i].set_hover(is_mouse_over)
 
-                if is_mouse_over:
-                    clicked = mouse_state[0]
-                    if clicked:
-                        self.color_pins[i][j].next_click()
+            if is_mouse_over:
+                clicked = mouse_state[0]
+                if clicked:
+                    self.color_pins[modified_row][i].next_click()
 
-                    if self.color_pins[i][j].click_count == 1:
-                        pos_x = self.x + CELL_WIDTH / 2 + j * CELL_WIDTH - self.color_pin_width / 2
-                        pos_y = self.y + CELL_HEIGHT / 2 + i * CELL_HEIGHT - self.color_pin_height / 2
-                        self.color_pins[i][j].rect = pg.Rect(pos_x, pos_y, self.color_pin_width, self.color_pin_height)
+                if self.color_pins[modified_row][i].click_count == 1:
+                    pos_x = self.x + CELL_WIDTH / 2 + i * CELL_WIDTH - self.color_pin_width / 2
+                    pos_y = self.y + CELL_HEIGHT / 2 + modified_row * CELL_HEIGHT - self.color_pin_height / 2
+                    self.color_pins[modified_row][i].rect = pg.Rect(pos_x, pos_y, self.color_pin_width, self.color_pin_height)
 
-                    if self.color_pins[i][j].click_count == len(self.color_pin_colors):
-                        self.color_pins[i][j].click_count = 0
-                        pos_x = self.x + (CELL_WIDTH - HOLE_WIDTH) / 2 + j * CELL_WIDTH
-                        pos_y = self.y + (CELL_HEIGHT - HOLE_HEIGHT) / 2 + i * CELL_HEIGHT
-                        self.color_pins[i][j].rect = pg.Rect(pos_x, pos_y, HOLE_WIDTH, HOLE_HEIGHT)
+                if self.color_pins[modified_row][i].click_count == len(self.color_pin_colors):
+                    self.color_pins[modified_row][i].click_count = 0
+                    pos_x = self.x + (CELL_WIDTH - HOLE_WIDTH) / 2 + i * CELL_WIDTH
+                    pos_y = self.y + (CELL_HEIGHT - HOLE_HEIGHT) / 2 + modified_row * CELL_HEIGHT
+                    self.color_pins[modified_row][i].rect = pg.Rect(pos_x, pos_y, HOLE_WIDTH, HOLE_HEIGHT)
 
-                is_mouse_over = self.response_pins[i][j].is_mouse_over(pos)
-                self.response_pins[i][j].set_hover(is_mouse_over)
+            is_mouse_over = self.response_pins[modified_row][i].is_mouse_over(pos)
+            self.response_pins[modified_row][i].set_hover(is_mouse_over)
 
-                if is_mouse_over:
-                    clicked = mouse_state[0]
-                    if clicked:
-                        self.response_pins[i][j].next_click()
+            if is_mouse_over:
+                clicked = mouse_state[0]
+                if clicked:
+                    self.response_pins[modified_row][i].next_click()
 
-                    if self.response_pins[i][j].click_count == 1:
-                        pos_x = self.x + CELL_WIDTH / 2 + (
-                                j + self.cols) * CELL_WIDTH + 10 - self.response_pin_width / 2
-                        pos_y = self.y + CELL_HEIGHT / 2 + i * CELL_HEIGHT - self.response_pin_height / 2
-                        self.response_pins[i][j].rect = pg.Rect(pos_x, pos_y, self.response_pin_width,
+                if self.response_pins[modified_row][i].click_count == 1:
+                    pos_x = self.x + CELL_WIDTH / 2 + (
+                                i + self.cols) * CELL_WIDTH + 10 - self.response_pin_width / 2
+                    pos_y = self.y + CELL_HEIGHT / 2 + modified_row * CELL_HEIGHT - self.response_pin_height / 2
+                    self.response_pins[modified_row][i].rect = pg.Rect(pos_x, pos_y, self.response_pin_width,
                                                                 self.response_pin_height)
 
-                    if self.response_pins[i][j].click_count == len(self.response_pin_colors):
-                        self.response_pins[i][j].click_count = 0
-                        pos_x = self.x + (CELL_WIDTH - HOLE_WIDTH) / 2 + (j + self.cols) * CELL_WIDTH + 10
-                        pos_y = self.y + (CELL_HEIGHT - HOLE_HEIGHT) / 2 + i * CELL_HEIGHT
-                        self.response_pins[i][j].rect = pg.Rect(pos_x, pos_y, HOLE_WIDTH, HOLE_HEIGHT)
+                if self.response_pins[modified_row][i].click_count == len(self.response_pin_colors):
+                    self.response_pins[modified_row][i].click_count = 0
+                    pos_x = self.x + (CELL_WIDTH - HOLE_WIDTH) / 2 + (i + self.cols) * CELL_WIDTH + 10
+                    pos_y = self.y + (CELL_HEIGHT - HOLE_HEIGHT) / 2 + modified_row * CELL_HEIGHT
+                    self.response_pins[modified_row][i].rect = pg.Rect(pos_x, pos_y, HOLE_WIDTH, HOLE_HEIGHT)
 
-                self.state.place_color_pin(self.color_pins[i][j].click_count, j)
-                self.state.place_response_pin(self.response_pins[i][j].click_count, j)
+            self.state.place_color_pin(self.color_pins[modified_row][i].click_count, i)
+            self.state.place_response_pin(self.response_pins[modified_row][i].click_count, i)
 
         new_combination = []
         for i in range(0, self.cols):
@@ -136,7 +134,6 @@ class Board:
             new_combination.append(self.secret_line[i].click_count)
 
         self.state.set_combination(new_combination)
-        self.state.set_active_row(active_row_storage)  # temporary
 
     def update_state_after_evaluation(self) -> None:
 
