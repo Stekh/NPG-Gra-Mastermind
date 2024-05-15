@@ -138,9 +138,6 @@ class Board:
                 pos_y = self.y + (CELL_HEIGHT - HOLE_HEIGHT) / 2 + modified_row * CELL_HEIGHT
                 self.response_pins[modified_row][i].rect = pg.Rect(pos_x, pos_y, HOLE_WIDTH, HOLE_HEIGHT)
 
-            self.state.place_color_pin(self.color_pins[modified_row][i].click_count, i)
-            self.state.place_response_pin(self.response_pins[modified_row][i].click_count, i)
-
     def draw(self, screen: pg.Surface, mouse_state: [bool, (int, int)]) -> None:
         self.update_state_after_click(mouse_state)
 
