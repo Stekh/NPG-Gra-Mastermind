@@ -123,3 +123,45 @@ def construct_display() -> (pg.display, list[Button]):
     buttons = construct_buttons()
     pg.display.flip()
     return screen, buttons
+
+
+class UniversalButton:
+    """A generic button class"""
+
+    def __init__(self, x: int, y: int, width: int, height: int,
+                 color: pg.Color, hover_color: pg.Color, hover: bool = False):
+        self.x: int = x
+        self.y: int = y
+        self.width: int = width
+        self.height: int = height
+        self.hover_color: pg.Color = hover_color
+        self.color: pg.Color = color
+        self.clicked: bool = False
+        self.hover: bool = hover
+        self.rect: pg.Rect = pg.Rect(x, y, width, height)
+
+    def draw(self, screen: pg.Surface) -> None:
+        """Puts the button on the screen in its place"""
+        if self.hover:
+            pg.draw.rect(screen, self.hover_color, self.rect)
+        else:
+            pg.draw.rect(screen, self.color, self.rect)
+
+    def is_mouse_over(self, pos: (int, int)) -> bool:
+        """Checks for mouse hover position relative to the button"""
+        return self.rect.collidepoint(pos)
+
+    def set_hover(self, hover: bool) -> None:
+        """Updates the mouse hover status"""
+        self.hover = hover
+
+    def update(self, mouse_state: [bool, (int, int)]):
+        """Updates the hover and click button status"""
+        pos: (int, int) = mouse_state[1]
+        is_mouse_over: bool = self.is_mouse_over(pos)
+        self.set_hover(is_mouse_over)
+
+        if is_mouse_over and mouse_state[0]:
+            self.clicked = True
+        else:
+            self.clicked = False

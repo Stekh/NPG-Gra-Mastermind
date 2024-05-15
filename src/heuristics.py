@@ -1,3 +1,6 @@
+from src import board
+
+
 def evaluate_row(player: list[int], secret: list[int]) -> (int, int):
     """Evaluate given row against the given secret row
     :param player: player's row of pins
@@ -50,3 +53,13 @@ def assign_points(player: list[int], secret: list[int], round_no: int, round_lim
         points = 1
 
     return points, black_pins, white_pins
+
+
+def advance_row(board: board.Board) -> None:
+    """Evaluates current round, places response pins and moves to the next row
+    :param board: board is made of board"""
+    score: (int, int) = evaluate_row(board.state.get_active_row(), board.state.get_combination())
+    for i in range(score[0]):
+        board.state.place_response_pin(2, i)
+    for i in range(score[0], score[1]):
+        board.state.place_pin(1, score[0]+i)

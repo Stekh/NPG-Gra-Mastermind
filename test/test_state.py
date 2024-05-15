@@ -9,7 +9,7 @@ def test_getters():
     assert game.get_combination() == [2, 1, 3, 7]
     assert game.get_no_cols() == 4
     assert game.get_no_rows_turn_limit() == 10
-    assert game.get_active_row() == 0
+    assert game.get_active_row_no() == 0
     assert game.get_color_pin_color(0, 2) == 3
     assert game.get_response_pin_color(0, 3) == 2
 
@@ -31,5 +31,5 @@ def test_end_of_space():
     game = state.Game(10, 4, [5, 6, 7, 3])
     game.set_active_row(9)
     game.advance_active_row()
-    assert game.get_active_row() == 9
+    assert game.get_active_row_no() == 9
     assert game.end_row_reached

@@ -59,7 +59,6 @@ class Board:
 
     def update_state(self, mouse_state: [bool, (int, int)]) -> None:
         for i in range(0, self.rows):
-            self.state.set_active_row(i)
             for j in range(0, self.cols):
 
                 pos = mouse_state[1]
