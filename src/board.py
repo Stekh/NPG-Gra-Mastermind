@@ -57,12 +57,12 @@ class Board:
                       self.color_pin_colors, (255, 255, 255)) for i in
             range(0, cols)]
 
-    def update_state(self, mouse_state: [bool, (int, int)]) -> None:
+    def update_state_after_click(self, mouse_state: [bool, (int, int)]) -> None:
 
         self.active_row_backlight = pg.Rect(self.x + 2, self.y + CELL_HEIGHT * self.state.get_active_row_no() + 2,
                                             CELL_WIDTH * self.cols - 4, CELL_HEIGHT - 4)
 
-        active_row_storage = self.state.get_active_row_no() #temporary
+        active_row_storage = self.state.get_active_row_no()  # temporary
         for i in range(0, self.rows):
             self.state.set_active_row(i)
             for j in range(0, self.cols):
@@ -111,6 +111,7 @@ class Board:
                 self.state.place_color_pin(self.color_pins[i][j].click_count, j)
                 self.state.place_response_pin(self.response_pins[i][j].click_count, j)
 
+        new_combination = []
         for i in range(0, self.cols):
             pos = mouse_state[1]
             is_mouse_over = self.secret_line[i].is_mouse_over(pos)
@@ -132,11 +133,41 @@ class Board:
                     pos_y = self.y + (CELL_HEIGHT - HOLE_HEIGHT) / 2 + self.rows * CELL_HEIGHT
                     self.secret_line[i].rect = pg.Rect(pos_x, pos_y, HOLE_WIDTH, HOLE_HEIGHT)
 
-        self.state.set_active_row(active_row_storage) #temporary
+            new_combination.append(self.secret_line[i].click_count)
+
+        self.state.set_combination(new_combination)
+        self.state.set_active_row(active_row_storage)  # temporary
+
+    def update_state_after_evaluation(self) -> None:
+
+        self.active_row_backlight = pg.Rect(self.x + 2, self.y + CELL_HEIGHT * self.state.get_active_row_no() + 2,
+                                            CELL_WIDTH * self.cols - 4, CELL_HEIGHT - 4)
+
+        active_row_storage = self.state.get_active_row_no()  # temporary
+        for i in range(0, self.rows):
+            self.state.set_active_row(i)
+            for j in range(0, self.cols):
+
+                self.response_pins[i][j].click_count = self.state.get_response_pin_color(i, j)
+
+                if self.response_pins[i][j].click_count > 0:
+                    pos_x = self.x + CELL_WIDTH / 2 + (
+                            j + self.cols) * CELL_WIDTH + 10 - self.response_pin_width / 2
+                    pos_y = self.y + CELL_HEIGHT / 2 + i * CELL_HEIGHT - self.response_pin_height / 2
+                    self.response_pins[i][j].rect = pg.Rect(pos_x, pos_y, self.response_pin_width,
+                                                            self.response_pin_height)
+                else:
+                    pos_x = self.x + (CELL_WIDTH - HOLE_WIDTH) / 2 + (j + self.cols) * CELL_WIDTH + 10
+                    pos_y = self.y + (CELL_HEIGHT - HOLE_HEIGHT) / 2 + i * CELL_HEIGHT
+                    self.response_pins[i][j].rect = pg.Rect(pos_x, pos_y, HOLE_WIDTH, HOLE_HEIGHT)
+
+            self.state.place_color_pin(self.color_pins[i][j].click_count, j)
+            self.state.place_response_pin(self.response_pins[i][j].click_count, j)
+
+        self.state.set_active_row(active_row_storage)  # temporary
 
     def draw(self, screen: pg.Surface, mouse_state: [bool, (int, int)]) -> None:
-
-        self.update_state(mouse_state)
+        self.update_state_after_click(mouse_state)
 
         pg.draw.rect(screen, self.board_color, self.board)
         pg.draw.rect(screen, self.line_color, self.line)

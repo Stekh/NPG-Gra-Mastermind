@@ -63,6 +63,11 @@ class Game:
         """
         return self.__combination
 
+    def set_combination(self, new_combination: list[int]) -> None:
+        """temporary, for test
+        """
+        self.__combination = new_combination
+
     def place_color_pin(self, color: int, pos: int) -> None:
         """Places a color pin in given position of active row.
         :param color: color of the pin
