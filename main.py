@@ -8,7 +8,8 @@ from src import heuristics as hr
 # SCREEN_WIDTH = 800
 # SCREEN_HEIGHT = 600
 
-(screen, buttons) = ui.construct_display()
+#(screen, buttons) = ui.construct_display()
+screen = ui.construct_display()
 
 main_board: board.Board = board.Board(8, 4, 10, 10)
 adv_button: UniversalButton = UniversalButton(700, 50, 80, 40, (252, 178, 50), (200, 178, 50), )

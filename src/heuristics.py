@@ -66,5 +66,6 @@ def advance_row(board: board.Board) -> None:
         board.state.place_response_pin(1, score[0]+i)
     for i in range(score[1]+score[0],board.cols):
         board.state.place_response_pin(0, i)
-    board.state.advance_active_row()
-    board.update_state_after_evaluation()
+        board.update_state_before_evaluation()
+        board.state.advance_active_row()
+

@@ -20,7 +20,7 @@ class Pin:
     hover - checks whether the button is hovered over
     click_count - keeps track of the amount of times button has been pressed"""
 
-    def __init__(self, x: float, y: float, width: float, height: float, hover=False):
+    def __init__(self, x: float, y: float, width: float, height: float, hover: bool = False):
         self.hover = hover
         self.rect = pg.Rect(x, y, width, height)
 
@@ -48,13 +48,14 @@ class Pin:
         self.hover = hover
 
 
+"""
 def ui(screen: pg.Surface, mouse_state: [bool, (int, int)], buttons: list[Button]) -> None:
-    """Updates UI based on mouse position
+    """"""Updates UI based on mouse position
 
     screen - surface on which the button is being drawn
     mouse_state - coordinates of mouse
     buttons - list of buttons
-    returns None"""
+    returns None""""""
     for b in buttons:
 
         pos = mouse_state[1]
@@ -72,10 +73,10 @@ def ui(screen: pg.Surface, mouse_state: [bool, (int, int)], buttons: list[Button
 
 
 def construct_buttons() -> list[Button]:
-    """constructs necessary buttons to be drawn on the screen
+    """"""constructs necessary buttons to be drawn on the screen
 
     parameters: None
-    returns list of buttons"""
+    returns list of buttons""""""
     buttons = []
     for j in range(1, 5):
         for i in range(1, 11):
@@ -94,8 +95,8 @@ def construct_buttons() -> list[Button]:
                        (127, 127, 127)))
     return buttons
 
-
-def construct_display() -> (pg.display, list[Button]):
+"""
+def construct_display() -> pg.display: #-> (pg.display, list[Button]):
     """Constructs everything necessary to be displayed on the screen
 
     paremeters: None
@@ -104,10 +105,12 @@ def construct_display() -> (pg.display, list[Button]):
     screen = pg.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     pg.display.set_caption("Mastermind")
 
-    buttons = construct_buttons()
+    #buttons = construct_buttons()
     pg.display.flip()
-    return screen, buttons
-
+    #return screen, buttons
+    return screen
+"""
+"""
 
 class UniversalButton:
     """A generic button class"""
