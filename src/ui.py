@@ -1,6 +1,5 @@
 import pygame as pg
 
-
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
 
@@ -10,7 +9,7 @@ SMALL_BUTTON_WIDTH = 16
 SMALL_BUTTON_HEIGHT = 16
 
 
-class Button:
+class Pin:
     """Button is a singular object that represents an interactable button.
 
     Parameters:
@@ -21,24 +20,15 @@ class Button:
     hover - checks whether the button is hovered over
     click_count - keeps track of the amount of times button has been pressed"""
 
-    def __init__(self, x: float, y: float, width: float, height: float, colors: list[pg.color], hover_color: pg.color,
-                 click_count=0, hover=False):
-        self.click_count = click_count
+    def __init__(self, x: float, y: float, width: float, height: float, hover=False):
         self.hover = hover
-        self.hover_color = hover_color
-        self.colors = colors
         self.rect = pg.Rect(x, y, width, height)
 
-    def draw(self, screen: pg.Surface) -> None:
+    def draw(self, screen: pg.Surface, color: pg.color) -> None:
         """Puts the button on the screen in its place
 
         screen - surface on which the button is being drawn
         returns None"""
-
-        color = self.colors[self.click_count % len(self.colors)]
-        if self.hover:
-            color = self.hover_color
-
         pg.draw.rect(screen, color, self.rect)
 
     def is_mouse_over(self, pos: (int, int)) -> bool:
@@ -56,12 +46,6 @@ class Button:
         hover - checks whether the button is hovered over
         returns None"""
         self.hover = hover
-
-    def next_click(self) -> None:
-        """Increments the amount of clicks on the button
-
-        Returns None"""
-        self.click_count += 1
 
 
 def ui(screen: pg.Surface, mouse_state: [bool, (int, int)], buttons: list[Button]) -> None:
