@@ -138,8 +138,10 @@ class Board:
         """
 
         """Backlight position change"""
-        self.active_row_backlight = pg.Rect(self.x + 2, self.y + CELL_HEIGHT * (self.state.get_active_row_no() + 1) + 2,
-                                            CELL_WIDTH * self.cols - 4, CELL_HEIGHT - 4)
+        if self.state.get_active_row_no() < self.rows - 1:
+            self.active_row_backlight = pg.Rect(self.x + 2,
+                                                self.y + CELL_HEIGHT * (self.state.get_active_row_no() + 1) + 2,
+                                                CELL_WIDTH * self.cols - 4, CELL_HEIGHT - 4)
 
         modified_row = self.state.get_active_row_no()
         for i in range(0, self.cols):
