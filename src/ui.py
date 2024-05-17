@@ -10,26 +10,22 @@ SMALL_BUTTON_HEIGHT = 16
 
 
 class Pin:
-    """Button is a singular object that represents an interactable button.
+    """Pim is a singular object that represents an interactable button.
 
 
     :param x:, :param y: - coordinates of the button.
     :param width:, :param height: - size of the button.
-    :param hover_color: - color of the button when hovered
-    :param colors: - colors of the button got after each click
-    :param hover: - checks whether the button is hovered over
-    :param click_count: - keeps track of the amount of times button has been pressed"""
-
+    :param hover: - checks whether the button is hovered over"""
 
     def __init__(self, x: float, y: float, width: float, height: float, hover: bool = False):
-        self.hover = hover
-        self.rect = pg.Rect(x, y, width, height)
+        self.hover: bool = hover
+        self.rect: pg.Rect = pg.Rect(x, y, width, height)
 
-    def draw(self, screen: pg.Surface, color: pg.color) -> None:
+    def draw(self, screen: pg.Surface, color: pg.Color) -> None:
         """Puts the button on the screen in its place
 
         :param screen: - surface on which the button is being drawn
-        :param color: - 
+        :param color: - color of the pin
         :return: None"""
 
         pg.draw.rect(screen, color, self.rect)
@@ -108,7 +104,7 @@ def construct_display() -> pg.display:  # -> (pg.display, list[Button]):
 
     :return: screen -the surface to display and buttons - the list of buttons"""
     pg.init()
-    screen : pg.surface = pg.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+    screen: pg.surface = pg.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     pg.display.set_caption("Mastermind")
 
     # buttons = construct_buttons()
@@ -122,7 +118,14 @@ def construct_display() -> pg.display:  # -> (pg.display, list[Button]):
 
 
 class UniversalButton:
-    """A generic button class"""
+    """An elaboration on Pin class
+
+    :param x:, :param y: - coordinates of the button.
+    :param width:, :param height: - size of the button.
+    :param hover: - checks whether the button is hovered over
+    :param color: - color of the button
+    :param hover_color: - color of the button when hovered
+    :param hover: - checks whether the button is hovered over"""
 
     def __init__(self, x: int, y: int, width: int, height: int,
                  color: pg.Color, hover_color: pg.Color, hover: bool = False):
@@ -137,22 +140,34 @@ class UniversalButton:
         self.rect: pg.Rect = pg.Rect(x, y, width, height)
 
     def draw(self, screen: pg.Surface) -> None:
-        """Puts the button on the screen in its place"""
+        """Puts the button on the screen in its place
+
+        :param screen: - surface on which the button is being drawn
+        :return: None"""
         if self.hover:
             pg.draw.rect(screen, self.hover_color, self.rect)
         else:
             pg.draw.rect(screen, self.color, self.rect)
 
     def is_mouse_over(self, pos: (int, int)) -> bool:
-        """Checks for mouse hover position relative to the button"""
+        """Checks for mouse hover position relative to the button
+
+        :param pos: - coordinates of the cursor
+        :return: T/F of whether mouse is hovering the button"""
         return self.rect.collidepoint(pos)
 
     def set_hover(self, hover: bool) -> None:
-        """Updates the mouse hover status"""
+        """Updates the mouse hover status
+
+        :param hover: - checks if cursor is over the button
+        :return: None"""
         self.hover = hover
 
-    def update(self, mouse_state: [bool, (int, int)]):
-        """Updates the hover and click button status"""
+    def update(self, mouse_state: [bool, (int, int)]) -> None:
+        """Updates the hover and click button status
+
+        :param mouse_state: - holds full information about the mouse (clicked status, position)
+        :return: None"""
         pos: (int, int) = mouse_state[1]
         is_mouse_over: bool = self.is_mouse_over(pos)
         self.set_hover(is_mouse_over)
