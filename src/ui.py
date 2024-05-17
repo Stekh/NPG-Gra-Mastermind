@@ -96,7 +96,9 @@ def construct_buttons() -> list[Button]:
     return buttons
 
 """
-def construct_display() -> pg.display: #-> (pg.display, list[Button]):
+
+
+def construct_display() -> pg.display:  # -> (pg.display, list[Button]):
     """Constructs everything necessary to be displayed on the screen
 
     paremeters: None
@@ -105,12 +107,15 @@ def construct_display() -> pg.display: #-> (pg.display, list[Button]):
     screen = pg.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     pg.display.set_caption("Mastermind")
 
-    #buttons = construct_buttons()
+    # buttons = construct_buttons()
     pg.display.flip()
-    #return screen, buttons
+    # return screen, buttons
     return screen
+
+
 """
 """
+
 
 class UniversalButton:
     """A generic button class"""
