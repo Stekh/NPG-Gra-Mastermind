@@ -1,6 +1,5 @@
 import pygame as pg
 
-
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
 
@@ -23,11 +22,11 @@ class Button:
 
     def __init__(self, x: float, y: float, width: float, height: float, colors: list[pg.color], hover_color: pg.color,
                  click_count=0, hover=False):
-        self.click_count = click_count
-        self.hover = hover
-        self.hover_color = hover_color
-        self.colors = colors
-        self.rect = pg.Rect(x, y, width, height)
+        self.click_count: int = click_count
+        self.hover: bool = hover
+        self.hover_color: pg.color = hover_color
+        self.colors: list[pg.color] = colors
+        self.rect: pg.rect = pg.Rect(x, y, width, height)
 
     def draw(self, screen: pg.Surface) -> None:
         """Puts the button on the screen in its place
@@ -73,18 +72,19 @@ def ui(screen: pg.Surface, mouse_state: [bool, (int, int)], buttons: list[Button
     returns None"""
     for b in buttons:
 
-        pos = mouse_state[1]
-        is_mouse_over = b.is_mouse_over(pos)
-        b.set_hover(is_mouse_over)
+    pos: (int, int) = mouse_state[1]
+    is_mouse_over: bool = b.is_mouse_over(pos)
+    b.set_hover(is_mouse_over)
 
-        if is_mouse_over:
-            clicked = mouse_state[0]
-            if clicked:
-                b.next_click()
+    if is_mouse_over:
+        clicked: bool = mouse_state[0]
+        if clicked:
+            b.next_click()
 
-        b.draw(screen)
+    b.draw(screen)
 
-    pg.display.flip()
+
+pg.display.flip()
 
 
 def construct_buttons() -> list[Button]:
@@ -96,15 +96,15 @@ def construct_buttons() -> list[Button]:
     for j in range(1, 5):
         for i in range(1, 11):
             # p1 buttons
-            x1 = 16 + 48 * i
-            y1 = 48 * j
+            x1: int = 16 + 48 * i
+            y1: int = 48 * j
             buttons.append(
                 Button(x1, y1, BIG_BUTTON_WIDTH, BIG_BUTTON_HEIGHT,
                        [(255, 255, 255), (255, 0, 0), (255, 255, 0), (0, 255, 0), (127, 0, 255)], (127, 127, 127)))
 
             # p2 buttons
-            x2 = x1 + 8
-            y2 = 260 + 24 * j
+            x2: int = x1 + 8
+            y2: int = 260 + 24 * j
             buttons.append(
                 Button(x2, y2, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT, [(64, 64, 64), (0, 64, 64), (255, 255, 255)],
                        (127, 127, 127)))
@@ -117,7 +117,7 @@ def construct_display() -> (pg.display, list[Button]):
     paremeters: None
     returns screen -the surface to display and buttons - the list of buttons"""
     pg.init()
-    screen = pg.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+    screen : pg.surface = pg.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     pg.display.set_caption("Mastermind")
 
     buttons = construct_buttons()
