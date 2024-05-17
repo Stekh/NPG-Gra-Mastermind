@@ -9,7 +9,7 @@ SMALL_BUTTON_WIDTH = 16
 SMALL_BUTTON_HEIGHT = 16
 
 
-class Button:
+class Pin:
     """Button is a singular object that represents an interactable button.
 
 
@@ -20,23 +20,17 @@ class Button:
     :param hover: - checks whether the button is hovered over
     :param click_count: - keeps track of the amount of times button has been pressed"""
 
-    def __init__(self, x: float, y: float, width: float, height: float, colors: list[pg.color], hover_color: pg.color,
-                 click_count=0, hover=False):
-        self.click_count: int = click_count
-        self.hover: bool = hover
-        self.hover_color: pg.color = hover_color
-        self.colors: list[pg.color] = colors
-        self.rect: pg.rect = pg.Rect(x, y, width, height)
 
-    def draw(self, screen: pg.Surface) -> None:
+    def __init__(self, x: float, y: float, width: float, height: float, hover: bool = False):
+        self.hover = hover
+        self.rect = pg.Rect(x, y, width, height)
+
+    def draw(self, screen: pg.Surface, color: pg.color) -> None:
         """Puts the button on the screen in its place
 
         :param screen: - surface on which the button is being drawn
+        :param color: - 
         :return: None"""
-
-        color = self.colors[self.click_count % len(self.colors)]
-        if self.hover:
-            color = self.hover_color
 
         pg.draw.rect(screen, color, self.rect)
 
@@ -56,20 +50,16 @@ class Button:
         :return: None"""
         self.hover = hover
 
-    def next_click(self) -> None:
-        """Increments the amount of clicks on the button
 
-        :return: None"""
-        self.click_count += 1
-
-
+"""
 def ui(screen: pg.Surface, mouse_state: [bool, (int, int)], buttons: list[Button]) -> None:
-    """Updates UI based on mouse position
+    """"""Updates UI based on mouse position
 
     :param screen: - surface on which the button is being drawn
     :param mouse_state: - coordinates of mouse
     :param buttons: - list of buttons
-    :return: None"""
+    :return: None""""""
+
     for b in buttons:
 
     pos: (int, int) = mouse_state[1]
@@ -88,9 +78,10 @@ pg.display.flip()
 
 
 def construct_buttons() -> list[Button]:
-    """constructs necessary buttons to be drawn on the screen
+    """"""constructs necessary buttons to be drawn on the screen
 
-    :return: list of buttons"""
+    :return: list of buttons""""""
+
     buttons = []
     for j in range(1, 5):
         for i in range(1, 11):
@@ -109,8 +100,10 @@ def construct_buttons() -> list[Button]:
                        (127, 127, 127)))
     return buttons
 
+"""
 
-def construct_display() -> (pg.display, list[Button]):
+
+def construct_display() -> pg.display:  # -> (pg.display, list[Button]):
     """Constructs everything necessary to be displayed on the screen
 
     :return: screen -the surface to display and buttons - the list of buttons"""
@@ -118,6 +111,53 @@ def construct_display() -> (pg.display, list[Button]):
     screen : pg.surface = pg.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     pg.display.set_caption("Mastermind")
 
-    buttons = construct_buttons()
+    # buttons = construct_buttons()
     pg.display.flip()
-    return screen, buttons
+    # return screen, buttons
+    return screen
+
+
+"""
+"""
+
+
+class UniversalButton:
+    """A generic button class"""
+
+    def __init__(self, x: int, y: int, width: int, height: int,
+                 color: pg.Color, hover_color: pg.Color, hover: bool = False):
+        self.x: int = x
+        self.y: int = y
+        self.width: int = width
+        self.height: int = height
+        self.hover_color: pg.Color = hover_color
+        self.color: pg.Color = color
+        self.clicked: bool = False
+        self.hover: bool = hover
+        self.rect: pg.Rect = pg.Rect(x, y, width, height)
+
+    def draw(self, screen: pg.Surface) -> None:
+        """Puts the button on the screen in its place"""
+        if self.hover:
+            pg.draw.rect(screen, self.hover_color, self.rect)
+        else:
+            pg.draw.rect(screen, self.color, self.rect)
+
+    def is_mouse_over(self, pos: (int, int)) -> bool:
+        """Checks for mouse hover position relative to the button"""
+        return self.rect.collidepoint(pos)
+
+    def set_hover(self, hover: bool) -> None:
+        """Updates the mouse hover status"""
+        self.hover = hover
+
+    def update(self, mouse_state: [bool, (int, int)]):
+        """Updates the hover and click button status"""
+        pos: (int, int) = mouse_state[1]
+        is_mouse_over: bool = self.is_mouse_over(pos)
+        self.set_hover(is_mouse_over)
+
+        if is_mouse_over and mouse_state[0]:
+            self.clicked = True
+        else:
+            self.clicked = False
