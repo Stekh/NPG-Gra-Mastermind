@@ -2,14 +2,10 @@ import pygame as pg
 from src import ui
 from src import state
 
-CELL_WIDTH = 64
-CELL_HEIGHT = 64
-COLOR_PIN_WIDTH = 32
-COLOR_PIN_HEIGHT = 32
-RESPONSE_PIN_WIDTH = 16
-RESPONSE_PIN_HEIGHT = 16
-HOLE_WIDTH = 8
-HOLE_HEIGHT = 8
+CELL_SIZE = 64
+COLOR_PIN_SIZE = 32
+RESPONSE_PIN_SIZE = 16
+HOLE_SIZE = 8
 BOARD_COLOR = (252, 178, 50)
 HOVER_COLORS_VECTOR = (-50, -50, -50)
 LINE_COLOR = (158, 121, 0)
@@ -37,35 +33,44 @@ class Board:
     """
 
     def __init__(self, rows: int, cols: int, x: float, y: float):
+        """Size of the game"""
         self.rows: int = rows
         self.cols: int = cols
+
+        """Position of the board"""
         self.x: float = x
         self.y: float = y
-        self.color_pin_width: float = COLOR_PIN_WIDTH
-        self.color_pin_height: float = COLOR_PIN_HEIGHT
-        self.response_pin_width: float = RESPONSE_PIN_WIDTH
-        self.response_pin_height: float = RESPONSE_PIN_HEIGHT
+
+        """Pin's parameters"""
+        self.color_pin_size: float = COLOR_PIN_SIZE
+        self.response_pin_size: float = RESPONSE_PIN_SIZE
         self.board_color: pg.Color = pg.Color(BOARD_COLOR)
         self.line_color: pg.Color = pg.Color(LINE_COLOR)
         self.backlight_color: pg.Color = pg.Color(BACKLIGHT_COLOR)
         self.color_pin_colors: list[(int, int, int)] = COLOR_PINS_COLORS
         self.response_pin_colors: list[(int, int, int)] = RESPONSE_PINS_COLORS
         self.hover_colors_vector: (int, int, int) = HOVER_COLORS_VECTOR
-        self.board: pg.Rect = pg.Rect(x, y, CELL_WIDTH * cols * 2 + 10, CELL_HEIGHT * rows)
-        self.line: pg.Rect = pg.Rect(x + cols * CELL_WIDTH + 3, y + 2, 4, CELL_HEIGHT * rows - 4)
-        self.secret: pg.Rect = pg.Rect(x, y + rows * CELL_HEIGHT, CELL_WIDTH * cols, CELL_HEIGHT)
-        self.active_row_backlight: pg.Rect = pg.Rect(x + 2, y + 2, CELL_WIDTH * cols - 4, CELL_HEIGHT - 4)
-        self.state: state.Game = state.Game(rows, cols, [0 for i in range(0, cols)])
-        init_pos_x: float = x + (CELL_WIDTH - HOLE_WIDTH) / 2
-        init_pos_y: float = y + (CELL_HEIGHT - HOLE_HEIGHT) / 2
+
+        "Parts of board"
+        self.board: pg.Rect = pg.Rect(x, y, CELL_SIZE * cols * 2 + 10, CELL_SIZE * rows)
+        self.line: pg.Rect = pg.Rect(x + cols * CELL_SIZE + 3, y + 2, 4, CELL_SIZE * rows - 4)
+        self.secret: pg.Rect = pg.Rect(x, y + rows * CELL_SIZE, CELL_SIZE * cols, CELL_SIZE)
+        self.active_row_backlight: pg.Rect = pg.Rect(x + 2, y + 2, CELL_SIZE * cols - 4, CELL_SIZE - 4)
+
+        "State of the game"
+        self.state: state.Game = state.Game(rows, cols, [0 for _i in range(0, cols)])
+
+        "All pins on the board"
+        init_pos_x: float = x + (CELL_SIZE - HOLE_SIZE) / 2
+        init_pos_y: float = y + (CELL_SIZE - HOLE_SIZE) / 2
         self.color_pins: list[list[ui.Pin]] = [
-            [ui.Pin(init_pos_x + i * CELL_WIDTH, init_pos_y + j * CELL_HEIGHT, HOLE_WIDTH, HOLE_HEIGHT) for i in
+            [ui.Pin(init_pos_x + i * CELL_SIZE, init_pos_y + j * CELL_SIZE, HOLE_SIZE, HOLE_SIZE) for i in
              range(0, cols)] for j in range(0, rows)]
         self.response_pins: list[list[ui.Pin]] = [
-            [ui.Pin(init_pos_x + (i + cols) * CELL_WIDTH + 10, init_pos_y + j * CELL_HEIGHT, HOLE_WIDTH, HOLE_HEIGHT)
+            [ui.Pin(init_pos_x + (i + cols) * CELL_SIZE + 10, init_pos_y + j * CELL_SIZE, HOLE_SIZE, HOLE_SIZE)
              for i in range(0, cols)] for j in range(0, rows)]
         self.secret_line: list[ui.Pin] = [
-            ui.Pin(init_pos_x + i * CELL_WIDTH, init_pos_y + rows * CELL_HEIGHT, HOLE_WIDTH, HOLE_HEIGHT) for i in
+            ui.Pin(init_pos_x + i * CELL_SIZE, init_pos_y + rows * CELL_SIZE, HOLE_SIZE, HOLE_SIZE) for i in
             range(0, cols)]
 
     def update_state(self, mouse_state: [bool, (int, int)]) -> None:
@@ -90,16 +95,16 @@ class Board:
 
                 """Change the size and position of the button from hole size to pin size"""
                 if self.state.get_color_pin_color(modified_row, i) == 1:
-                    pos_x: float = self.x + CELL_WIDTH / 2 + i * CELL_WIDTH - self.color_pin_width / 2
-                    pos_y: float = self.y + CELL_HEIGHT / 2 + modified_row * CELL_HEIGHT - self.color_pin_height / 2
-                    self.color_pins[modified_row][i].rect = pg.Rect(pos_x, pos_y, self.color_pin_width,
-                                                                    self.color_pin_height)
+                    pos_x: float = self.x + CELL_SIZE / 2 + i * CELL_SIZE - self.color_pin_size / 2
+                    pos_y: float = self.y + CELL_SIZE / 2 + modified_row * CELL_SIZE - self.color_pin_size / 2
+                    self.color_pins[modified_row][i].rect = pg.Rect(pos_x, pos_y, self.color_pin_size,
+                                                                    self.color_pin_size)
 
                 """Change the size and position of the button from pin size to hole size"""
                 if self.state.get_color_pin_color(modified_row, i) == 0:
-                    pos_x: float = self.x + (CELL_WIDTH - HOLE_WIDTH) / 2 + i * CELL_WIDTH
-                    pos_y: float = self.y + (CELL_HEIGHT - HOLE_HEIGHT) / 2 + modified_row * CELL_HEIGHT
-                    self.color_pins[modified_row][i].rect = pg.Rect(pos_x, pos_y, HOLE_WIDTH, HOLE_HEIGHT)
+                    pos_x: float = self.x + (CELL_SIZE - HOLE_SIZE) / 2 + i * CELL_SIZE
+                    pos_y: float = self.y + (CELL_SIZE - HOLE_SIZE) / 2 + modified_row * CELL_SIZE
+                    self.color_pins[modified_row][i].rect = pg.Rect(pos_x, pos_y, HOLE_SIZE, HOLE_SIZE)
 
         """Variable used to create the new combination of secret line - after clicking or hovering a button"""
         """Everything just like in the loop above, but for secret line"""
@@ -118,14 +123,14 @@ class Board:
                     new_combination.append(current_combination[i])
 
                 if new_combination[i] == 1:
-                    pos_x: float = self.x + CELL_WIDTH / 2 + i * CELL_WIDTH - self.color_pin_width / 2
-                    pos_y: float = self.y + CELL_HEIGHT / 2 + self.rows * CELL_HEIGHT - self.color_pin_height / 2
-                    self.secret_line[i].rect = pg.Rect(pos_x, pos_y, self.color_pin_width, self.color_pin_height)
+                    pos_x: float = self.x + CELL_SIZE / 2 + i * CELL_SIZE - self.color_pin_size / 2
+                    pos_y: float = self.y + CELL_SIZE / 2 + self.rows * CELL_SIZE - self.color_pin_size / 2
+                    self.secret_line[i].rect = pg.Rect(pos_x, pos_y, self.color_pin_size, self.color_pin_size)
 
                 if new_combination[i] == 0:
-                    pos_x: float = self.x + (CELL_WIDTH - HOLE_WIDTH) / 2 + i * CELL_WIDTH
-                    pos_y: float = self.y + (CELL_HEIGHT - HOLE_HEIGHT) / 2 + self.rows * CELL_HEIGHT
-                    self.secret_line[i].rect = pg.Rect(pos_x, pos_y, HOLE_WIDTH, HOLE_HEIGHT)
+                    pos_x: float = self.x + (CELL_SIZE - HOLE_SIZE) / 2 + i * CELL_SIZE
+                    pos_y: float = self.y + (CELL_SIZE - HOLE_SIZE) / 2 + self.rows * CELL_SIZE
+                    self.secret_line[i].rect = pg.Rect(pos_x, pos_y, HOLE_SIZE, HOLE_SIZE)
             else:
                 new_combination.append(current_combination[i])
 
@@ -140,23 +145,23 @@ class Board:
         """Backlight position change"""
         if self.state.get_active_row_no() < self.rows - 1:
             self.active_row_backlight = pg.Rect(self.x + 2,
-                                                self.y + CELL_HEIGHT * (self.state.get_active_row_no() + 1) + 2,
-                                                CELL_WIDTH * self.cols - 4, CELL_HEIGHT - 4)
+                                                self.y + CELL_SIZE * (self.state.get_active_row_no() + 1) + 2,
+                                                CELL_SIZE * self.cols - 4, CELL_SIZE - 4)
 
         modified_row: int = self.state.get_active_row_no()
         for i in range(0, self.cols):
 
             """Updating response pins color size from hole size to pin size"""
             if self.state.get_response_pin_color(modified_row, i) > 0:
-                pos_x: float = self.x + CELL_WIDTH / 2 + (i + self.cols) * CELL_WIDTH + 10 - self.response_pin_width / 2
-                pos_y: float = self.y + CELL_HEIGHT / 2 + modified_row * CELL_HEIGHT - self.response_pin_height / 2
-                self.response_pins[modified_row][i].rect = pg.Rect(pos_x, pos_y, self.response_pin_width,
-                                                                   self.response_pin_height)
+                pos_x: float = self.x + CELL_SIZE / 2 + (i + self.cols) * CELL_SIZE + 10 - self.response_pin_size / 2
+                pos_y: float = self.y + CELL_SIZE / 2 + modified_row * CELL_SIZE - self.response_pin_size / 2
+                self.response_pins[modified_row][i].rect = pg.Rect(pos_x, pos_y, self.response_pin_size,
+                                                                   self.response_pin_size)
             else:
                 """Updating response pins color size from pin size to hole size"""
-                pos_x: float = self.x + (CELL_WIDTH - HOLE_WIDTH) / 2 + (i + self.cols) * CELL_WIDTH + 10
-                pos_y: float = self.y + (CELL_HEIGHT - HOLE_HEIGHT) / 2 + modified_row * CELL_HEIGHT
-                self.response_pins[modified_row][i].rect = pg.Rect(pos_x, pos_y, HOLE_WIDTH, HOLE_HEIGHT)
+                pos_x: float = self.x + (CELL_SIZE - HOLE_SIZE) / 2 + (i + self.cols) * CELL_SIZE + 10
+                pos_y: float = self.y + (CELL_SIZE - HOLE_SIZE) / 2 + modified_row * CELL_SIZE
+                self.response_pins[modified_row][i].rect = pg.Rect(pos_x, pos_y, HOLE_SIZE, HOLE_SIZE)
 
     def pick_color_for_pin(self, board_part: str, i: int, j: int = -1) -> pg.Color:
         """Function picking color for the Pin before drawing, depending on the game state
