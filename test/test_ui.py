@@ -37,6 +37,15 @@ class TestUniversalButton:
         assert pin.clicked is False
         assert pin.rect == pg.Rect(10, 10, 32, 32)
 
+    def test_draw(self):
+        pin = ui.UniversalButton(10, 10, 32, 32, pg.Color(0, 255, 0), pg.Color(255, 0, 0))
+        screen = ui.construct_display()
+        pin.draw(screen)
+        assert pg.Color(0, 255, 0) == screen.get_at((15, 15))
+        pin.hover = True
+        pin.draw(screen)
+        assert pg.Color(255, 0, 0) == screen.get_at((15, 15))
+
 # def test_button_draw() -> None:
 #     """Checks if buttons were drawn properly"""
 #     (screen, buttons) = ui.construct_display()
