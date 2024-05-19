@@ -33,34 +33,36 @@ class Board:
     """
 
     def __init__(self, rows: int, cols: int, x: float, y: float):
-        """Size of the game"""
+        # Size of the game
         self.rows: int = rows
         self.cols: int = cols
 
-        """Position of the board"""
+        # Position of the board
         self.x: float = x
         self.y: float = y
 
-        """Pin's parameters"""
+        # Pin's parameters
         self.color_pin_size: float = COLOR_PIN_SIZE
         self.response_pin_size: float = RESPONSE_PIN_SIZE
-        self.board_color: pg.Color = pg.Color(BOARD_COLOR)
-        self.line_color: pg.Color = pg.Color(LINE_COLOR)
-        self.backlight_color: pg.Color = pg.Color(BACKLIGHT_COLOR)
         self.color_pin_colors: list[(int, int, int)] = COLOR_PINS_COLORS
         self.response_pin_colors: list[(int, int, int)] = RESPONSE_PINS_COLORS
         self.hover_colors_vector: (int, int, int) = HOVER_COLORS_VECTOR
 
-        "Parts of board"
+        # Parts of board
         self.board: pg.Rect = pg.Rect(x, y, CELL_SIZE * cols * 2 + 10, CELL_SIZE * rows)
         self.line: pg.Rect = pg.Rect(x + cols * CELL_SIZE + 3, y + 2, 4, CELL_SIZE * rows - 4)
         self.secret: pg.Rect = pg.Rect(x, y + rows * CELL_SIZE, CELL_SIZE * cols, CELL_SIZE)
         self.active_row_backlight: pg.Rect = pg.Rect(x + 2, y + 2, CELL_SIZE * cols - 4, CELL_SIZE - 4)
 
-        "State of the game"
+        # Parts of board parameters
+        self.board_color: pg.Color = pg.Color(BOARD_COLOR)
+        self.line_color: pg.Color = pg.Color(LINE_COLOR)
+        self.backlight_color: pg.Color = pg.Color(BACKLIGHT_COLOR)
+
+        # State of the game
         self.state: state.Game = state.Game(rows, cols, [0 for _i in range(0, cols)])
 
-        "All pins on the board"
+        # All pins on the board
         init_pos_x: float = x + (CELL_SIZE - HOLE_SIZE) / 2
         init_pos_y: float = y + (CELL_SIZE - HOLE_SIZE) / 2
         self.color_pins: list[list[ui.Pin]] = [
@@ -78,39 +80,36 @@ class Board:
         :param mouse_state: including mouse button state and cursor position
         :return: None
         """
-        print(self.response_pins[0][0].rect)  # only for tests
-        print(self.response_pins[0][1].rect)
-        print(self.response_pins[0][2].rect)
-        print(self.response_pins[0][3].rect,"----------------")
+
         modified_row: int = self.state.get_active_row_no()
         for i in range(0, self.cols):
-            """Check if the cursor is over the button"""
+            # Check if the cursor is over the button
             pos: (int, int) = mouse_state[1]
             is_mouse_over: bool = self.color_pins[modified_row][i].is_mouse_over(pos)
             self.color_pins[modified_row][i].set_hover(is_mouse_over)
 
             if is_mouse_over:
-                """Check if the mouse button is down"""
+                # Check if the mouse button is down
                 clicked: bool = mouse_state[0]
                 if clicked:
-                    """Change color of the button and the game state"""
+                    # Change color of the button and the game state
                     self.state.place_color_pin((self.state.get_color_pin_color(modified_row, i) + 1) % 6, i)
 
-                """Change the size and position of the button from hole size to pin size"""
+                # Change the size and position of the button from hole size to pin size
                 if self.state.get_color_pin_color(modified_row, i) == 1:
                     pos_x: float = self.x + CELL_SIZE / 2 + i * CELL_SIZE - self.color_pin_size / 2
                     pos_y: float = self.y + CELL_SIZE / 2 + modified_row * CELL_SIZE - self.color_pin_size / 2
                     self.color_pins[modified_row][i].rect = pg.Rect(pos_x, pos_y, self.color_pin_size,
                                                                     self.color_pin_size)
 
-                """Change the size and position of the button from pin size to hole size"""
+                # Change the size and position of the button from pin size to hole size
                 if self.state.get_color_pin_color(modified_row, i) == 0:
                     pos_x: float = self.x + (CELL_SIZE - HOLE_SIZE) / 2 + i * CELL_SIZE
                     pos_y: float = self.y + (CELL_SIZE - HOLE_SIZE) / 2 + modified_row * CELL_SIZE
                     self.color_pins[modified_row][i].rect = pg.Rect(pos_x, pos_y, HOLE_SIZE, HOLE_SIZE)
 
-        """Variable used to create the new combination of secret line - after clicking or hovering a button"""
-        """Everything just like in the loop above, but for secret line"""
+        """Variable used to create the new combination of secret line - after clicking or hovering a button.
+        Everything just like in the loop above, but for secret line"""
         current_combination: list[int] = self.state.get_combination()
         new_combination: list[int] = []
         for i in range(0, self.cols):
@@ -137,7 +136,7 @@ class Board:
             else:
                 new_combination.append(current_combination[i])
 
-        """Combination update"""
+        # Combination update
         self.state.set_combination(new_combination)
 
     def update_state_before_row_advance(self) -> None:
@@ -145,7 +144,7 @@ class Board:
         :return: None
         """
 
-        """Backlight position change"""
+        # Backlight position change
         if self.state.get_active_row_no() < self.rows - 1:
             self.active_row_backlight = pg.Rect(self.x + 2,
                                                 self.y + CELL_SIZE * (self.state.get_active_row_no() + 1) + 2,
@@ -154,14 +153,14 @@ class Board:
         modified_row: int = self.state.get_active_row_no()
         for i in range(0, self.cols):
 
-            """Updating response pins size from hole size to pin size"""
+            # Updating response pins size from hole size to pin size
             if self.state.get_response_pin_color(modified_row, i) > 0:
                 pos_x: float = self.x + CELL_SIZE / 2 + (i + self.cols) * CELL_SIZE + 10 - self.response_pin_size / 2
                 pos_y: float = self.y + CELL_SIZE / 2 + modified_row * CELL_SIZE - self.response_pin_size / 2
                 self.response_pins[modified_row][i].rect = pg.Rect(pos_x, pos_y, self.response_pin_size,
                                                                    self.response_pin_size)
             else:
-                """Updating response pins size from pin size to hole size"""
+                # Updating response pins size from pin size to hole size
                 pos_x: float = self.x + (CELL_SIZE - HOLE_SIZE) / 2 + (i + self.cols) * CELL_SIZE + 10
                 pos_y: float = self.y + (CELL_SIZE - HOLE_SIZE) / 2 + modified_row * CELL_SIZE
                 self.response_pins[modified_row][i].rect = pg.Rect(pos_x, pos_y, HOLE_SIZE, HOLE_SIZE)
@@ -207,21 +206,21 @@ class Board:
         :return: None
         """
 
-        """Updating game state"""
+        # Updating game state
         self.update_state(mouse_state)
 
-        """Draw board core"""
+        # Draw board core
         pg.draw.rect(screen, self.board_color, self.board)
         pg.draw.rect(screen, self.line_color, self.line)
         pg.draw.rect(screen, self.board_color, self.secret)
         pg.draw.rect(screen, self.backlight_color, self.active_row_backlight)
 
-        """Draw color and response pins"""
+        # Draw color and response pins
         for i in range(0, self.rows):
             for j in range(0, self.cols):
                 self.color_pins[i][j].draw(screen, self.pick_color_for_pin("color_pin", i, j))
                 self.response_pins[i][j].draw(screen, self.pick_color_for_pin("response_pin", i, j))
 
-        """Draw secret line"""
+        # Draw secret line
         for i in range(0, self.cols):
             self.secret_line[i].draw(screen, self.pick_color_for_pin("secret_pin", i))
