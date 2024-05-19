@@ -56,16 +56,16 @@ def assign_points(player: list[int], secret: list[int], round_no: int, round_lim
     return points, black_pins, white_pins
 
 
-def advance_row(board: board.Board) -> None:
+def advance_row(board1: board.Board) -> None:
     """Evaluates current round, places response pins and moves to the next row
-    :param board: board is made of board"""
-    score: (int, int) = evaluate_row(board.state.get_active_color_row(), board.state.get_combination())
+    :param board1: object that desribes the current state of the board"""
+    score: (int, int) = evaluate_row(board1.state.get_active_color_row(), board1.state.get_combination())
     for i in range(score[0]):
-        board.state.place_response_pin(2, i)
+        board1.state.place_response_pin(2, i)
     for i in range(score[1]):
-        board.state.place_response_pin(1, score[0]+i)
-    for i in range(score[1]+score[0],board.cols):
-        board.state.place_response_pin(0, i)
-    board.update_state_before_row_advance()
-    board.state.advance_active_row()
+        board1.state.place_response_pin(1, score[0] + i)
+    for i in range(score[1]+score[0], board1.cols):
+        board1.state.place_response_pin(0, i)
+    board1.update_state_before_row_advance()
+    board1.state.advance_active_row()
 
