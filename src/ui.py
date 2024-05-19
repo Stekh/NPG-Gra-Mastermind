@@ -3,19 +3,22 @@ import pygame as pg
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
 
-BIG_BUTTON_WIDTH = 32
-BIG_BUTTON_HEIGHT = 32
-SMALL_BUTTON_WIDTH = 16
-SMALL_BUTTON_HEIGHT = 16
+
+# BIG_BUTTON_WIDTH = 32
+# BIG_BUTTON_HEIGHT = 32
+# SMALL_BUTTON_WIDTH = 16
+# SMALL_BUTTON_HEIGHT = 16
 
 
 class Pin:
     """Pim is a singular object that represents an interactable button.
 
 
-    :param x:, :param y: - coordinates of the button.
-    :param width:, :param height: - size of the button.
-    :param hover: - checks whether the button is hovered over"""
+    :param x: - x coordinate of the button
+    :param y: - y coordinate of the button.
+    :param width: - width of the button
+    :param height: - height of the button.
+    :param hover: - indicates whether the button is hovered over"""
 
     def __init__(self, x: float, y: float, width: float, height: float, hover: bool = False):
         self.hover: bool = hover
@@ -34,9 +37,7 @@ class Pin:
         """Checks if mouse hover position is over the button
 
         :param pos: - coordinates of mouse position
-        :return: bool
-        1 - mouse is over the button,
-        0 - mouse is not over the button"""
+        :return: boolean that indicates if mouse is hovering over the button"""
         return self.rect.collidepoint(pos)
 
     def set_hover(self, hover: bool) -> None:
@@ -102,9 +103,9 @@ def construct_buttons() -> list[Button]:
 def construct_display() -> pg.Surface:  # -> (pg.display, list[Button]):
     """Constructs everything necessary to be displayed on the screen
 
-    :return: screen -the surface to display and buttons - the list of buttons"""
+    :return: screen -the surface to display UI elements on"""
     pg.init()
-    screen: pg.surface = pg.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+    screen: pg.Surface = pg.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     pg.display.set_caption("Mastermind")
 
     # buttons = construct_buttons()
@@ -120,12 +121,13 @@ def construct_display() -> pg.Surface:  # -> (pg.display, list[Button]):
 class UniversalButton:
     """An elaboration on Pin class
 
-    :param x:, :param y: - coordinates of the button.
-    :param width:, :param height: - size of the button.
-    :param hover: - checks whether the button is hovered over
+    :param x: - x coordinate of the button
+    :param y: - y coordinate of the button.
+    :param width: - width of the button
+    :param height: - height of the button.
+    :param hover: - indicates whether the button is hovered over
     :param color: - color of the button
-    :param hover_color: - color of the button when hovered
-    :param hover: - checks whether the button is hovered over"""
+    :param hover_color: - color of the button when hovered"""
 
     def __init__(self, x: int, y: int, width: int, height: int,
                  color: pg.Color, hover_color: pg.Color, hover: bool = False):
