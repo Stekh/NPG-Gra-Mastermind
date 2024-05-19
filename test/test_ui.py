@@ -17,6 +17,18 @@ class TestPin:
         pin.draw(screen, pg.Color(100, 100, 100))
         assert pg.Color(100, 100, 100) == screen.get_at((15, 15))
 
+    def test_is_mouse_over(self):
+        pin = ui.Pin(10, 10, 32, 32)
+        assert pin.is_mouse_over((30, 30)) is True
+        assert pin.is_mouse_over((0, 0)) is False
+
+    def test_set_hover(self):
+        pin = ui.Pin(10, 10, 32, 32)
+        pin.set_hover(True)
+        assert pin.hover is True
+        pin.set_hover(False)
+        assert pin.hover is False
+
 # def test_button_draw() -> None:
 #     """Checks if buttons were drawn properly"""
 #     (screen, buttons) = ui.construct_display()
