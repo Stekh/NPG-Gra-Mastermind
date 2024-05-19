@@ -78,7 +78,10 @@ class Board:
         :param mouse_state: including mouse button state and cursor position
         :return: None
         """
-        #print(mouse_state[1])  # only for tests
+        print(self.response_pins[0][0].rect)  # only for tests
+        print(self.response_pins[0][1].rect)
+        print(self.response_pins[0][2].rect)
+        print(self.response_pins[0][3].rect,"----------------")
         modified_row: int = self.state.get_active_row_no()
         for i in range(0, self.cols):
             """Check if the cursor is over the button"""
@@ -137,8 +140,8 @@ class Board:
         """Combination update"""
         self.state.set_combination(new_combination)
 
-    def update_state_before_evaluation(self) -> None:
-        """Game state updater to use before row's evaluation.
+    def update_state_before_row_advance(self) -> None:
+        """Game state updater to use before row advancement.
         :return: None
         """
 
@@ -151,14 +154,14 @@ class Board:
         modified_row: int = self.state.get_active_row_no()
         for i in range(0, self.cols):
 
-            """Updating response pins color size from hole size to pin size"""
+            """Updating response pins size from hole size to pin size"""
             if self.state.get_response_pin_color(modified_row, i) > 0:
                 pos_x: float = self.x + CELL_SIZE / 2 + (i + self.cols) * CELL_SIZE + 10 - self.response_pin_size / 2
                 pos_y: float = self.y + CELL_SIZE / 2 + modified_row * CELL_SIZE - self.response_pin_size / 2
                 self.response_pins[modified_row][i].rect = pg.Rect(pos_x, pos_y, self.response_pin_size,
                                                                    self.response_pin_size)
             else:
-                """Updating response pins color size from pin size to hole size"""
+                """Updating response pins size from pin size to hole size"""
                 pos_x: float = self.x + (CELL_SIZE - HOLE_SIZE) / 2 + (i + self.cols) * CELL_SIZE + 10
                 pos_y: float = self.y + (CELL_SIZE - HOLE_SIZE) / 2 + modified_row * CELL_SIZE
                 self.response_pins[modified_row][i].rect = pg.Rect(pos_x, pos_y, HOLE_SIZE, HOLE_SIZE)
