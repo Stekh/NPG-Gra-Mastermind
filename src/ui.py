@@ -105,7 +105,7 @@ def construct_display() -> pg.Surface:  # -> (pg.display, list[Button]):
 
     :return: screen -the surface to display UI elements on"""
     pg.init()
-    screen: pg.surface = pg.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+    screen: pg.Surface = pg.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     pg.display.set_caption("Mastermind")
 
     # buttons = construct_buttons()
