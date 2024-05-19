@@ -10,13 +10,13 @@ class Game:
 
     def __init__(self, no_rows: int, no_cols: int, combination: list[int]):
 
-        self.__active_row = 0
-        self.__no_rows = no_rows  # Doubles as turn limit
-        self.__no_cols = no_cols
-        self.__combination = combination
-        self.__color_pin_matrix = [[0 for i in range(no_cols)] for j in range(no_rows)]
-        self.__response_pin_matrix = [[0 for i in range(no_cols)] for j in range(no_rows)]
-        self.end_row_reached = False
+        self.__active_row: int = 0
+        self.__no_rows: int = no_rows  # Doubles as turn limit
+        self.__no_cols: int = no_cols
+        self.__combination: list[int] = combination
+        self.__color_pin_matrix: list[list[int]] = [[0 for i in range(no_cols)] for j in range(no_rows)]
+        self.__response_pin_matrix: list[list[int]] = [[0 for i in range(no_cols)] for j in range(no_rows)]
+        self.end_row_reached: bool = False
 
     def get_color_pin_color(self, row: int, col: int) -> int:
         """Color pin getter.
@@ -26,6 +26,16 @@ class Game:
         """
         return self.__color_pin_matrix[row][col]
 
+    def get_active_color_row(self) -> list[int]:
+        """Active row getter.
+        :return: the active row's color pins"""
+        return self.__color_pin_matrix[self.__active_row]
+
+    def get_active_response_row(self) -> list[int]:
+        """Active row getter.
+        :return: the active row's black and white pins"""
+        return self.__response_pin_matrix[self.__active_row]
+
     def get_response_pin_color(self, row: int, col: int) -> int:
         """Response pin getter.
         :param row: the pin's row
@@ -34,8 +44,8 @@ class Game:
         """
         return self.__response_pin_matrix[row][col]
 
-    def get_active_row(self) -> int:
-        """Active row getter.
+    def get_active_row_no(self) -> int:
+        """Active row position getter.
         :return: the active row's position
         """
         return self.__active_row
@@ -58,28 +68,33 @@ class Game:
         """
         return self.__combination
 
-    def place_color_pin(self, color: int, pos: int):
+    def set_combination(self, new_combination: list[int]) -> None:
+        """temporary, for test
+        """
+        self.__combination = new_combination
+
+    def place_color_pin(self, color: int, pos: int) -> None:
         """Places a color pin in given position of active row.
         :param color: color of the pin
         :param pos: position in the active row
         """
         self.__color_pin_matrix[self.__active_row][pos] = color
 
-    def place_response_pin(self, color: int, pos: int):
+    def place_response_pin(self, color: int, pos: int) -> None:
         """Places a response pin in given position of active row.
         :param color: color of the pin
         :param pos: position in the active row
         """
         self.__response_pin_matrix[self.__active_row][pos] = color
 
-    def advance_active_row(self):
+    def advance_active_row(self) -> None:
         """Moves game to the next row, or records end of game if the last row is reached."""
         if self.__active_row < self.__no_rows - 1:
             self.__active_row += 1
         else:
             self.end_row_reached = True
 
-    def set_active_row(self, pos: int):  # Probably won't need this but will help with tests
+    def set_active_row(self, pos: int) -> None:  # Probably won't need this but will help with tests
         """Sets the active row to a specified location.
         :param pos: the active row's destination
         """

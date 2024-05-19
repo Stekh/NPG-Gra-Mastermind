@@ -1,14 +1,17 @@
+from src import board
+
+
 def evaluate_row(player: list[int], secret: list[int]) -> (int, int):
     """Evaluate given row against the given secret row
     :param player: player's row of pins
     :param secret: secret row of pins
     :return: number of black and white pins, in that order
     """
-    black_pins = 0                  # type: int
-    white_pins = 0                  # type: int
-    mut_player = player.copy()      # type: list[int]
-    mut_secret = secret.copy()      # type: list[int]
-    i = 0                           # type: int
+    black_pins: int = 0
+    white_pins: int = 0
+    mut_player: list[int] = player.copy()
+    mut_secret: list[int] = secret.copy()
+    i: int = 0
 
     # evaluate number of black pins
     while i < len(mut_player):
@@ -40,11 +43,27 @@ def assign_points(player: list[int], secret: list[int], round_no: int, round_lim
     :param round_limit: maximum amount of rounds
     :return: tuple of: number of points to assign, number of black and white pins, in that order
     """
-    black_pins, white_pins = evaluate_row(player, secret)    # type: int, int
-    points = 0  # type: int
+    black_pins: int
+    white_pins: int
+    black_pins, white_pins = evaluate_row(player, secret)
+    points: int = 0
     if round_no == round_limit:
         points = 2
     elif black_pins < 4:
         points = 1
 
     return points, black_pins, white_pins
+
+
+def advance_row(board1: board.Board) -> None:
+    """Evaluates current round, places response pins and moves to the next row
+    :param board1: object that describes the current state of the board"""
+    score: (int, int) = evaluate_row(board1.state.get_active_color_row(), board1.state.get_combination())
+    for i in range(score[0]):
+        board1.state.place_response_pin(2, i)
+    for i in range(score[1]):
+        board1.state.place_response_pin(1, score[0] + i)
+    for i in range(score[1] + score[0], board1.cols):
+        board1.state.place_response_pin(0, i)
+    board1.update_state_before_row_advance()
+    board1.state.advance_active_row()
