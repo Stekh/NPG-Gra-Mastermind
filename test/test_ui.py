@@ -51,6 +51,14 @@ class TestUniversalButton:
         assert button.is_mouse_over((30, 30)) is True
         assert button.is_mouse_over((0, 0)) is False
 
+    def test_set_hover(self):
+        button = ui.UniversalButton(10, 10, 32, 32, pg.Color(0, 255, 0), pg.Color(255, 0, 0))
+        assert button.hover is False
+        button.set_hover(True)
+        assert button.hover is True
+        button.set_hover(False)
+        assert button.hover is False
+
 # def test_button_draw() -> None:
 #     """Checks if buttons were drawn properly"""
 #     (screen, buttons) = ui.construct_display()
