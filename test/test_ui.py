@@ -59,6 +59,25 @@ class TestUniversalButton:
         button.set_hover(False)
         assert button.hover is False
 
+    def test_update(self):
+        button = ui.UniversalButton(10, 10, 32, 32, pg.Color(0, 255, 0), pg.Color(255, 0, 0))
+        button.update([True, (0, 0)])
+        assert button.hover is False
+        assert button.clicked is False
+
+        button.update([True, (30, 30)])
+        assert button.hover is True
+        assert button.clicked is True
+
+        button.update([False, (0, 0)])
+        assert button.hover is False
+        assert button.clicked is False
+
+        button.update([False, (30, 30)])
+        assert button.hover is True
+        assert button.clicked is False
+
+
 # def test_button_draw() -> None:
 #     """Checks if buttons were drawn properly"""
 #     (screen, buttons) = ui.construct_display()
