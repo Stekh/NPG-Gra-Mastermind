@@ -3,7 +3,7 @@ import pygame as pg
 from src import board
 
 
-class TestHeuristics:
+class TestBoard:
     def test_pick_color_for_pin(self):
         test_board = board.Board(2, 2, 0, 0)
         test_board.state.place_color_pin(2, 0)
