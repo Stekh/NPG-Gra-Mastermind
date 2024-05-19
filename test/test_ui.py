@@ -1,7 +1,15 @@
+import pygame as pg
 from src import ui
 
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
+
+
+class TestPin:
+    def test_constructor(self):
+        pin = ui.Pin(10, 10, 32, 32)
+        assert pin.hover is False
+        assert pin.rect == pg.Rect(10, 10, 32, 32)
 
 # def test_button_draw() -> None:
 #     """Checks if buttons were drawn properly"""
