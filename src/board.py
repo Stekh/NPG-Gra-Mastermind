@@ -78,7 +78,7 @@ class Board:
         :param mouse_state: including mouse button state and cursor position
         :return: None
         """
-
+        #print(mouse_state[1])  # only for tests
         modified_row: int = self.state.get_active_row_no()
         for i in range(0, self.cols):
             """Check if the cursor is over the button"""
