@@ -11,6 +11,12 @@ class TestPin:
         assert pin.hover is False
         assert pin.rect == pg.Rect(10, 10, 32, 32)
 
+    def test_draw(self):
+        pin = ui.Pin(10, 10, 32, 32)
+        screen = ui.construct_display()
+        pin.draw(screen, pg.Color(100, 100, 100))
+        assert pg.Color(100, 100, 100) == screen.get_at((15, 15))
+
 # def test_button_draw() -> None:
 #     """Checks if buttons were drawn properly"""
 #     (screen, buttons) = ui.construct_display()
