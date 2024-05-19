@@ -99,7 +99,7 @@ def construct_buttons() -> list[Button]:
 """
 
 
-def construct_display() -> pg.display:  # -> (pg.display, list[Button]):
+def construct_display() -> pg.Surface:  # -> (pg.display, list[Button]):
     """Constructs everything necessary to be displayed on the screen
 
     :return: screen -the surface to display and buttons - the list of buttons"""
