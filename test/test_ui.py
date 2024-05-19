@@ -32,24 +32,24 @@ class TestPin:
 
 class TestUniversalButton:
     def test_constructor(self):
-        pin = ui.UniversalButton(10, 10, 32, 32, pg.Color(0, 255, 0), pg.Color(255, 0, 0))
-        assert pin.hover is False
-        assert pin.clicked is False
-        assert pin.rect == pg.Rect(10, 10, 32, 32)
+        button = ui.UniversalButton(10, 10, 32, 32, pg.Color(0, 255, 0), pg.Color(255, 0, 0))
+        assert button.hover is False
+        assert button.clicked is False
+        assert button.rect == pg.Rect(10, 10, 32, 32)
 
     def test_draw(self):
-        pin = ui.UniversalButton(10, 10, 32, 32, pg.Color(0, 255, 0), pg.Color(255, 0, 0))
+        button = ui.UniversalButton(10, 10, 32, 32, pg.Color(0, 255, 0), pg.Color(255, 0, 0))
         screen = ui.construct_display()
-        pin.draw(screen)
+        button.draw(screen)
         assert pg.Color(0, 255, 0) == screen.get_at((15, 15))
-        pin.hover = True
-        pin.draw(screen)
+        button.hover = True
+        button.draw(screen)
         assert pg.Color(255, 0, 0) == screen.get_at((15, 15))
 
     def test_is_mouse_over(self):
-        pin = ui.UniversalButton(10, 10, 32, 32, pg.Color(0, 255, 0), pg.Color(255, 0, 0))
-        assert pin.is_mouse_over((30, 30)) is True
-        assert pin.is_mouse_over((0, 0)) is False
+        button = ui.UniversalButton(10, 10, 32, 32, pg.Color(0, 255, 0), pg.Color(255, 0, 0))
+        assert button.is_mouse_over((30, 30)) is True
+        assert button.is_mouse_over((0, 0)) is False
 
 # def test_button_draw() -> None:
 #     """Checks if buttons were drawn properly"""
