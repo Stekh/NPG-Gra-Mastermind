@@ -38,6 +38,7 @@ def test_end_of_space():
 
 def test_set_random_combination():
     game = state.Game(10, 4)
-    game.set_random_combination()
-    for pin in game.get_combination():
-        assert 1 <= pin < len(COLOR_PINS_COLORS)
+    for _ in range(10):
+        game.set_random_combination()
+        for pin in game.get_combination():
+            assert 1 <= pin < len(COLOR_PINS_COLORS)
