@@ -73,6 +73,10 @@ class Game:
         """
         self.__combination = new_combination
 
+    def set_random_combination(self) -> None:
+        """Generates a random combination."""
+        pass
+
     def place_color_pin(self, color: int, pos: int) -> None:
         """Places a color pin in given position of active row.
         :param color: color of the pin
