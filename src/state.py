@@ -1,5 +1,5 @@
 import random
-from board import COLOR_PINS_COLORS
+from src import board
 
 
 class Game:
@@ -81,7 +81,7 @@ class Game:
 
     def set_random_combination(self) -> None:
         """Generates a random combination."""
-        self.__combination = [random.randint(1, len(COLOR_PINS_COLORS) + 1) for _ in range(self.__no_cols)]
+        self.__combination = [random.randint(1, len(board.COLOR_PINS_COLORS) + 1) for _ in range(self.__no_cols)]
 
     def place_color_pin(self, color: int, pos: int) -> None:
         """Places a color pin in given position of active row.
