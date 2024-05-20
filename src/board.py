@@ -111,6 +111,12 @@ class Board:
         """Variable used to create the new combination of secret line - after clicking or hovering a button.
         Everything just like in the loop above, but for secret line"""
         current_combination: list[int] = self.state.get_combination()
+        if current_combination[0] != 0:
+            for i in range(self.cols):
+                pos_x: float = self.x + CELL_SIZE / 2 + i * CELL_SIZE - self.color_pin_size / 2
+                pos_y: float = self.y + CELL_SIZE / 2 + self.rows * CELL_SIZE - self.color_pin_size / 2
+                self.secret_line[i].rect = pg.Rect(pos_x, pos_y, self.color_pin_size, self.color_pin_size)
+
         new_combination: list[int] = []
         for i in range(0, self.cols):
             pos: (int, int) = mouse_state[1]
