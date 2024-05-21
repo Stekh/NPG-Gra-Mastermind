@@ -1,5 +1,6 @@
 import pytest
 from src import state
+from src.board import COLOR_PINS_COLORS
 
 
 def test_getters():
@@ -33,3 +34,11 @@ def test_end_of_space():
     game.advance_active_row()
     assert game.get_active_row_no() == 9
     assert game.end_row_reached
+
+
+def test_set_random_combination():
+    game = state.Game(10, 4)
+    for _ in range(10):
+        game.set_random_combination()
+        for pin in game.get_combination():
+            assert 1 <= pin < len(COLOR_PINS_COLORS)

@@ -1,3 +1,7 @@
+import random
+from src import board
+
+
 class Game:
     """The core game state class.
 
@@ -8,8 +12,10 @@ class Game:
     Initialise with the size of the game and the target combination.
     """
 
-    def __init__(self, no_rows: int, no_cols: int, combination: list[int]):
+    def __init__(self, no_rows: int, no_cols: int, combination: list[int] = None):
 
+        if combination is None:
+            combination = [0 for _ in range(no_cols)]
         self.__active_row: int = 0
         self.__no_rows: int = no_rows  # Doubles as turn limit
         self.__no_cols: int = no_cols
@@ -72,6 +78,10 @@ class Game:
         """temporary, for test
         """
         self.__combination = new_combination
+
+    def set_random_combination(self) -> None:
+        """Generates a random combination."""
+        self.__combination = [random.randint(1, len(board.COLOR_PINS_COLORS) - 1) for _ in range(self.__no_cols)]
 
     def place_color_pin(self, color: int, pos: int) -> None:
         """Places a color pin in given position of active row.
