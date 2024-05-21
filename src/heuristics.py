@@ -50,8 +50,7 @@ def assign_points(player: list[int], secret: list[int], round_no: int, round_lim
     points: int = 0
     if round_no == round_limit:
         points = 2
-        endscreen: pg.Surface = pg.Surface((ui.SCREEN_WIDTH, ui.SCREEN_HEIGHT))
-        endtext = pg.font.render("You lose", True, "white", None, 400)
+        pg.display.message_box("End of turn", "P2 wins", "info")
     elif black_pins < 4:
         points = 1
     elif black_pins == 4:
