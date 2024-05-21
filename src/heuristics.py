@@ -1,5 +1,6 @@
 from src import board
-
+from src import ui
+import pygame as pg
 
 def evaluate_row(player: list[int], secret: list[int]) -> (int, int):
     """Evaluate given row against the given secret row
@@ -49,9 +50,13 @@ def assign_points(player: list[int], secret: list[int], round_no: int, round_lim
     points: int = 0
     if round_no == round_limit:
         points = 2
+        endscreen: pg.Surface = pg.Surface((ui.SCREEN_WIDTH, ui.SCREEN_HEIGHT))
+        endtext = pg.font.render("You lose", True, "white", None, 400)
     elif black_pins < 4:
         points = 1
-
+    elif black_pins == 4:
+        endscreen: pg.Surface = pg.Surface((ui.SCREEN_WIDTH, ui.SCREEN_HEIGHT))
+        endtext = pg.font.render("You lose", True, "white", None, 400)
     return points, black_pins, white_pins
 
 
