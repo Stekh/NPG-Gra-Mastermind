@@ -47,7 +47,7 @@ def assign_points(player: list[int], secret: list[int], round_no: int, round_lim
     white_pins: int
     black_pins, white_pins = evaluate_row(player, secret)
     points: int = 0
-    if round_no == round_limit:
+    if round_no == round_limit - 1:
         points = 2
     elif black_pins < 4:
         points = 1

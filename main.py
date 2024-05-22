@@ -17,6 +17,7 @@ adv_button: ui.UniversalButton = ui.UniversalButton(700, 50, 80, 40, pg.Color(25
 # evaluate_board = board.Board(4, 10, 10, 280, (252, 178, 50), board.SMALL_PIN_WIDTH, board.SMALL_PIN_HEIGHT,
 #                             board.RESPONSE_PINS_LIST)
 font = pg.font.Font(None, 80)
+points: int = -1
 
 run: bool = True
 while run:
@@ -51,7 +52,6 @@ while run:
             mod: int = event.mod
             # event handling for specific key
 
-    points: int = -1
     adv_button.update([clicked, pg.mouse.get_pos()])
     if adv_button.clicked:
         points: int = hr.advance_row(main_board)
