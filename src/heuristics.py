@@ -1,6 +1,5 @@
 from src import board
-from src import ui
-import pygame as pg
+
 
 def evaluate_row(player: list[int], secret: list[int]) -> (int, int):
     """Evaluate given row against the given secret row
@@ -50,24 +49,23 @@ def assign_points(player: list[int], secret: list[int], round_no: int, round_lim
     points: int = 0
     if round_no == round_limit:
         points = 2
-        pg.display.message_box("End of turn", "P2 wins", "info")
     elif black_pins < 4:
         points = 1
-    elif black_pins == 4:
-        endscreen: pg.Surface = pg.Surface((ui.SCREEN_WIDTH, ui.SCREEN_HEIGHT))
-        endtext = pg.font.render("You lose", True, "white", None, 400)
     return points, black_pins, white_pins
 
 
-def advance_row(board1: board.Board) -> None:
+def advance_row(board1: board.Board) -> int:
     """Evaluates current round, places response pins and moves to the next row
     :param board1: object that describes the current state of the board"""
-    score: (int, int) = evaluate_row(board1.state.get_active_color_row(), board1.state.get_combination())
-    for i in range(score[0]):
-        board1.state.place_response_pin(2, i)
+    score: (int, int, int) = assign_points(board1.state.get_active_color_row(), board1.state.get_combination(),
+                                           board1.state.get_active_row_no(), board1.state.get_no_rows_turn_limit())
+
     for i in range(score[1]):
-        board1.state.place_response_pin(1, score[0] + i)
-    for i in range(score[1] + score[0], board1.cols):
+        board1.state.place_response_pin(2, i)
+    for i in range(score[2]):
+        board1.state.place_response_pin(1, score[1] + i)
+    for i in range(score[2] + score[1], board1.cols):
         board1.state.place_response_pin(0, i)
     board1.update_state_before_row_advance()
     board1.state.advance_active_row()
+    return score[0]

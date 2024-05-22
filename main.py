@@ -1,8 +1,8 @@
 import pygame as pg
 
-from src import ui
 from src import board
 from src import heuristics as hr
+from src import ui
 
 # SCREEN_WIDTH = 800
 # SCREEN_HEIGHT = 600
@@ -49,6 +49,7 @@ while run:
             key: int = event.key
             mod: int = event.mod
             # event handling for specific key
+    font = pg.font.Font(None, 80)
 
     adv_button.update([clicked, pg.mouse.get_pos()])
     if adv_button.clicked:
