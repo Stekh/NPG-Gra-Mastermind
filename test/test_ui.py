@@ -1,4 +1,5 @@
 import pygame as pg
+
 from src import ui
 
 SCREEN_WIDTH = 800
@@ -76,7 +77,6 @@ class TestUniversalButton:
         button.update([False, (30, 30)])
         assert button.hover is True
         assert button.clicked is False
-
 
 # def test_button_draw() -> None:
 #     """Checks if buttons were drawn properly"""

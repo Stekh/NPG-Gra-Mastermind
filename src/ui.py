@@ -119,6 +119,11 @@ def construct_display() -> pg.Surface:  # -> (pg.display, list[Button]):
 
 
 def draw_endscreen(screen: pg.Surface, font: pg.font.Font, end_message: str) -> None:
+    """Draws given endscreen message on the screen
+
+    :param screen: surface to draw on
+    :param font: font of the message
+    :param end_message: message to be displayed"""
     text = font.render(end_message, True, "white", None, 1000)
     text_block = text.get_rect()
     text_block.center = (200, 200)

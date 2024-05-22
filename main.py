@@ -16,7 +16,7 @@ main_board.set_random_secret()
 adv_button: ui.UniversalButton = ui.UniversalButton(700, 50, 80, 40, pg.Color(252, 178, 50), pg.Color(200, 178, 50), )
 # evaluate_board = board.Board(4, 10, 10, 280, (252, 178, 50), board.SMALL_PIN_WIDTH, board.SMALL_PIN_HEIGHT,
 #                             board.RESPONSE_PINS_LIST)
-font = pg.font.Font(None, 80)
+font: pg.font.Font = pg.font.Font(None, 80)
 points: int = -1
 
 run: bool = True
