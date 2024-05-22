@@ -16,6 +16,7 @@ main_board.set_random_secret()
 adv_button: ui.UniversalButton = ui.UniversalButton(700, 50, 80, 40, pg.Color(252, 178, 50), pg.Color(200, 178, 50), )
 # evaluate_board = board.Board(4, 10, 10, 280, (252, 178, 50), board.SMALL_PIN_WIDTH, board.SMALL_PIN_HEIGHT,
 #                             board.RESPONSE_PINS_LIST)
+font = pg.font.Font(None, 80)
 
 run: bool = True
 while run:
@@ -49,15 +50,20 @@ while run:
             key: int = event.key
             mod: int = event.mod
             # event handling for specific key
-    font = pg.font.Font(None, 80)
 
     adv_button.update([clicked, pg.mouse.get_pos()])
     if adv_button.clicked:
         points: int = hr.advance_row(main_board)
         if points == 0:
-            pass
+            text = font.render("You win", True, "white", None, 1000)
+            text_block = text.get_rect()
+            text_block.center = (200, 200)
+            screen.blit(text, text_block)
         elif points == 2:
-            pass
+            text = font.render("You lose", True, "white", None, 1000)
+            text_block = text.get_rect()
+            text_block.center = (200, 200)
+            screen.blit(text, text_block)
 
     # ui.ui(screen, (clicked, pg.mouse.get_pos()), buttons)
     main_board.draw(screen, (clicked, pg.mouse.get_pos()))
