@@ -53,7 +53,11 @@ while run:
 
     adv_button.update([clicked, pg.mouse.get_pos()])
     if adv_button.clicked:
-        hr.advance_row(main_board)
+        points: int = hr.advance_row(main_board)
+        if points == 0:
+            pass
+        elif points == 2:
+            pass
 
     # ui.ui(screen, (clicked, pg.mouse.get_pos()), buttons)
     main_board.draw(screen, (clicked, pg.mouse.get_pos()))
