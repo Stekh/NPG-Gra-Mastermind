@@ -1,8 +1,8 @@
 import pygame as pg
 
-from src import ui
 from src import board
 from src import heuristics as hr
+from src import ui
 
 # SCREEN_WIDTH = 800
 # SCREEN_HEIGHT = 600
@@ -16,6 +16,8 @@ main_board.set_random_secret()
 adv_button: ui.UniversalButton = ui.UniversalButton(700, 50, 80, 40, pg.Color(252, 178, 50), pg.Color(200, 178, 50), )
 # evaluate_board = board.Board(4, 10, 10, 280, (252, 178, 50), board.SMALL_PIN_WIDTH, board.SMALL_PIN_HEIGHT,
 #                             board.RESPONSE_PINS_LIST)
+font: pg.font.Font = pg.font.Font(None, 80)
+points: int = -1
 
 run: bool = True
 while run:
@@ -52,12 +54,16 @@ while run:
 
     adv_button.update([clicked, pg.mouse.get_pos()])
     if adv_button.clicked:
-        hr.advance_row(main_board)
+        points: int = hr.advance_row(main_board)
 
     # ui.ui(screen, (clicked, pg.mouse.get_pos()), buttons)
     main_board.draw(screen, (clicked, pg.mouse.get_pos()))
     adv_button.draw(screen)
 
+    if points == 0:
+        ui.draw_endscreen(screen, font, "You win!")
+    elif points == 2:
+        ui.draw_endscreen(screen, font, "You lose!")
     # evaluate_board.draw(screen, (clicked, pg.mouse.get_pos()))
 
     pg.display.flip()
