@@ -16,7 +16,8 @@ main_board.set_random_secret()
 adv_button: ui.UniversalButton = ui.UniversalButton(700, 50, 80, 40, pg.Color(252, 178, 50), pg.Color(200, 178, 50), )
 # evaluate_board = board.Board(4, 10, 10, 280, (252, 178, 50), board.SMALL_PIN_WIDTH, board.SMALL_PIN_HEIGHT,
 #                             board.RESPONSE_PINS_LIST)
-font: pg.font.Font = pg.font.Font(None, 80)
+font_endscreen: pg.font.Font = pg.font.Font(None, 80)
+font: pg.font.Font = pg.font.Font(None, 40)
 points: int = -1
 
 run: bool = True
@@ -62,13 +63,13 @@ while run:
 
     text = font.render("confirm turn", True, "white", None, 1000)
     text_block = text.get_rect()
-    text_block.center = (500, 100)
+    text_block.center = (700, 100)
     screen.blit(text, text_block)
 
     if points == 0:
-        ui.draw_endscreen(screen, font, "You win!")
+        ui.draw_endscreen(screen, font_endscreen, "You win!")
     elif points == 2:
-        ui.draw_endscreen(screen, font, "You lose!")
+        ui.draw_endscreen(screen, font_endscreen, "You lose!")
     # evaluate_board.draw(screen, (clicked, pg.mouse.get_pos()))
 
     pg.display.flip()
