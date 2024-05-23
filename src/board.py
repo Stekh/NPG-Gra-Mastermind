@@ -1,6 +1,7 @@
 import pygame as pg
 from src import ui
 from src import state
+import sys
 
 CELL_SIZE = 64
 COLOR_PIN_SIZE = 32
@@ -61,7 +62,11 @@ class Board:
 
         # State of the game
         self.state: state.Game = state.Game(rows, cols, [0 for _i in range(0, cols)])
-        self.secret_visible: bool = True
+        self.secret_visible: bool
+        if '--debug' in sys.argv:
+            self.secret_visible = True
+        else:
+            self.secret_visible = False
 
         # All pins on the board
         init_pos_x: float = x + (CELL_SIZE - HOLE_SIZE) / 2
