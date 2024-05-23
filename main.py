@@ -60,6 +60,11 @@ while run:
     main_board.draw(screen, (clicked, pg.mouse.get_pos()))
     adv_button.draw(screen)
 
+    text = font.render("confirm turn", True, "white", None, 1000)
+    text_block = text.get_rect()
+    text_block.center = (500, 100)
+    screen.blit(text, text_block)
+
     if points == 0:
         ui.draw_endscreen(screen, font, "You win!")
     elif points == 2:

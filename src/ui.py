@@ -11,7 +11,7 @@ SCREEN_HEIGHT = 600
 
 
 class Pin:
-    """Pim is a singular object that represents an interactable button.
+    """Pin is a singular object that represents an interactable button.
 
 
     :param x: - x coordinate of the button
