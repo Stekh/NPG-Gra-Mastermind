@@ -1,6 +1,6 @@
 import pygame as pg
-from src import ui
 from src import state
+from src import ui
 import sys
 
 CELL_SIZE = 64
