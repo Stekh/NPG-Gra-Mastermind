@@ -1,6 +1,7 @@
 import pygame as pg
-from src import ui
+
 from src import state
+from src import ui
 
 CELL_SIZE = 64
 COLOR_PIN_SIZE = 32

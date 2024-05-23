@@ -61,9 +61,9 @@ while run:
     main_board.draw(screen, (clicked, pg.mouse.get_pos()))
     adv_button.draw(screen)
 
-    text = font.render("confirm turn", True, "white", None, 1000)
+    text = font.render("next turn", True, "white", None, 1000)
     text_block = text.get_rect()
-    text_block.center = (700, 100)
+    text_block.center = (720, 32)
     screen.blit(text, text_block)
 
     if points == 0:
