@@ -28,6 +28,10 @@ class TestBoard:
     def test_screen_state_connection(self):
         test_board = board.Board(8, 4, 10, 10)
 
+        test_board.update_state([True, (104, 553)])
+        assert test_board.state.get_combination() == [0, 0, 0, 0]
+        test_board.secret_visible = True
+
         test_board.update_state([True, (42, 42)])
         assert test_board.state.get_active_color_row() == [1, 0, 0, 0]
         test_board.update_state([True, (50, 50)])
