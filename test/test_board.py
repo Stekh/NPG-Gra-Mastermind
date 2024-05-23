@@ -65,6 +65,7 @@ class TestBoard:
 
     def test_response_pins_behaviour(self):
         test_board = board.Board(8, 4, 10, 10)
+        test_board.secret_visible = True
 
         test_board.update_state([True, (42, 42)])
         test_board.update_state([True, (104, 553)])
