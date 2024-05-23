@@ -11,7 +11,7 @@ SCREEN_HEIGHT = 600
 
 
 class Pin:
-    """Pim is a singular object that represents an interactable button.
+    """Pin is a singular object that represents an interactable button.
 
 
     :param x: - x coordinate of the button
@@ -126,7 +126,7 @@ def draw_endscreen(screen: pg.Surface, font: pg.font.Font, end_message: str) -> 
     :param end_message: message to be displayed"""
     text = font.render(end_message, True, "white", None, 1000)
     text_block = text.get_rect()
-    text_block.center = (200, 200)
+    text_block.center = (270, 207)
     screen.blit(text, text_block)
 
 
