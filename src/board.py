@@ -1,7 +1,7 @@
 import pygame as pg
-
 from src import state
 from src import ui
+import sys
 
 CELL_SIZE = 64
 COLOR_PIN_SIZE = 32
@@ -62,6 +62,11 @@ class Board:
 
         # State of the game
         self.state: state.Game = state.Game(rows, cols, [0 for _i in range(0, cols)])
+        self.secret_visible: bool
+        if '--debug' in sys.argv:
+            self.secret_visible = True
+        else:
+            self.secret_visible = False
 
         # All pins on the board
         init_pos_x: float = x + (CELL_SIZE - HOLE_SIZE) / 2
@@ -111,34 +116,35 @@ class Board:
 
         """Variable used to create the new combination of secret line - after clicking or hovering a button.
         Everything just like in the loop above, but for secret line"""
-        current_combination: list[int] = self.state.get_combination()
-        new_combination: list[int] = []
-        for i in range(0, self.cols):
-            pos: (int, int) = mouse_state[1]
-            is_mouse_over: bool = self.secret_line[i].is_mouse_over(pos)
-            self.secret_line[i].set_hover(is_mouse_over)
+        if self.secret_visible:
+            current_combination: list[int] = self.state.get_combination()
+            new_combination: list[int] = []
+            for i in range(0, self.cols):
+                pos: (int, int) = mouse_state[1]
+                is_mouse_over: bool = self.secret_line[i].is_mouse_over(pos)
+                self.secret_line[i].set_hover(is_mouse_over)
 
-            if is_mouse_over:
-                clicked: bool = mouse_state[0]
-                if clicked:
-                    new_combination.append((current_combination[i] + 1) % 6)
+                if is_mouse_over:
+                    clicked: bool = mouse_state[0]
+                    if clicked:
+                        new_combination.append((current_combination[i] + 1) % 6)
+                    else:
+                        new_combination.append(current_combination[i])
+
+                    if new_combination[i] == 1:
+                        pos_x: float = self.x + CELL_SIZE / 2 + i * CELL_SIZE - self.color_pin_size / 2
+                        pos_y: float = self.y + CELL_SIZE / 2 + self.rows * CELL_SIZE - self.color_pin_size / 2
+                        self.secret_line[i].rect = pg.Rect(pos_x, pos_y, self.color_pin_size, self.color_pin_size)
+
+                    if new_combination[i] == 0:
+                        pos_x: float = self.x + (CELL_SIZE - HOLE_SIZE) / 2 + i * CELL_SIZE
+                        pos_y: float = self.y + (CELL_SIZE - HOLE_SIZE) / 2 + self.rows * CELL_SIZE
+                        self.secret_line[i].rect = pg.Rect(pos_x, pos_y, HOLE_SIZE, HOLE_SIZE)
                 else:
                     new_combination.append(current_combination[i])
 
-                if new_combination[i] == 1:
-                    pos_x: float = self.x + CELL_SIZE / 2 + i * CELL_SIZE - self.color_pin_size / 2
-                    pos_y: float = self.y + CELL_SIZE / 2 + self.rows * CELL_SIZE - self.color_pin_size / 2
-                    self.secret_line[i].rect = pg.Rect(pos_x, pos_y, self.color_pin_size, self.color_pin_size)
-
-                if new_combination[i] == 0:
-                    pos_x: float = self.x + (CELL_SIZE - HOLE_SIZE) / 2 + i * CELL_SIZE
-                    pos_y: float = self.y + (CELL_SIZE - HOLE_SIZE) / 2 + self.rows * CELL_SIZE
-                    self.secret_line[i].rect = pg.Rect(pos_x, pos_y, HOLE_SIZE, HOLE_SIZE)
-            else:
-                new_combination.append(current_combination[i])
-
-        # Combination update
-        self.state.set_combination(new_combination)
+            # Combination update
+            self.state.set_combination(new_combination)
 
     def update_state_before_row_advance(self) -> None:
         """Game state updater to use before row advancement.
@@ -213,7 +219,8 @@ class Board:
         # Draw board core
         pg.draw.rect(screen, self.board_color, self.board)
         pg.draw.rect(screen, self.line_color, self.line)
-        pg.draw.rect(screen, self.board_color, self.secret)
+        if self.secret_visible:
+            pg.draw.rect(screen, self.board_color, self.secret)
         pg.draw.rect(screen, self.backlight_color, self.active_row_backlight)
 
         # Draw color and response pins
@@ -223,8 +230,9 @@ class Board:
                 self.response_pins[i][j].draw(screen, self.pick_color_for_pin("response_pin", i, j))
 
         # Draw secret line
-        for i in range(0, self.cols):
-            self.secret_line[i].draw(screen, self.pick_color_for_pin("secret_pin", i))
+        if self.secret_visible:
+            for i in range(0, self.cols):
+                self.secret_line[i].draw(screen, self.pick_color_for_pin("secret_pin", i))
 
     def set_random_secret(self) -> None:
         """sets the secret to a random combination, and makes the draw function display said combination as pins,
