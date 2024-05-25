@@ -24,9 +24,8 @@ adv_button: ui.UniversalButton = ui.UniversalButton(700, 50, 80, 40, False, pg.C
 font_endscreen: pg.font.Font = pg.font.Font(None, 80)
 font: pg.font.Font = pg.font.Font(None, 40)
 
-# test_button: ui.UniversalButton = ui.UniversalButton(700, 200, 80, 40, True, pg.Color(WHITE), pg.Color(252, 100, 252),
-#                                                     False, "test", font)
-
+menu: ui.Menu = ui.Menu(screen, font)
+stage: str = "Menu"
 points: int = -1
 
 run: bool = True
@@ -61,36 +60,41 @@ while run:
             key: int = event.key
             mod: int = event.mod
             # event handling for specific key
-
+    pg.draw.rect(screen, (0, 0, 0), (0, 0, 800, 600))
     adv_button.update([clicked, pg.mouse.get_pos()])
     if adv_button.clicked:
         points: int = hr.advance_row(main_board)
+    match stage:
+        case "Menu":
+            menu.update([clicked, pg.mouse.get_pos()])
+            menu.draw()
+            if menu.Easy.clicked:
+                stage = "Game"
+            if menu.Medium.clicked:
+                stage = "Game"
+            if menu.Hard.clicked:
+                stage = "Game"
+            if menu.Exit.clicked:
+                run = False
+        case "Game":
+            # ui.ui(screen, (clicked, pg.mouse.get_pos()), buttons)
+            main_board.draw(screen, (clicked, pg.mouse.get_pos()))
+            adv_button.draw(screen)
 
-    # ui.ui(screen, (clicked, pg.mouse.get_pos()), buttons)
-    main_board.draw(screen, (clicked, pg.mouse.get_pos()))
-    adv_button.draw(screen)
+            # text for "next turn" button
+            text = font.render("next turn", True, "white", None, 1000)
+            text_block = text.get_rect()
+            text_block.center = (720, 32)
+            screen.blit(text, text_block)
 
-    # text for "next turn" button
-    text = font.render("next turn", True, "white", None, 1000)
-    text_block = text.get_rect()
-    text_block.center = (720, 32)
-    screen.blit(text, text_block)
-
-    """
-    # test
-    test_button.update([clicked, pg.mouse.get_pos()])
-    test_button.draw(screen)
-    if test_button.clicked:
-        print("click!")
-    """
-
-    # endscreen text printing
-    if points == 0:
-        ui.draw_endscreen(screen, font_endscreen, "You win!")
-    elif points == 2:
-        ui.draw_endscreen(screen, font_endscreen, "You lose!")
-    # evaluate_board.draw(screen, (clicked, pg.mouse.get_pos()))
-
+            # endscreen text printing
+            if points == 0:
+                ui.draw_endscreen(screen, font_endscreen, "You win!")
+            elif points == 2:
+                ui.draw_endscreen(screen, font_endscreen, "You lose!")
+            # evaluate_board.draw(screen, (clicked, pg.mouse.get_pos()))
+        case _:
+            stage = "Menu"
     pg.display.flip()
 
 pg.quit()
