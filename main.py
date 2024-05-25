@@ -10,7 +10,10 @@ from src import ui
 # (screen, buttons) = ui.construct_display()
 screen = ui.construct_display()
 
-main_board: board.Board = board.Board(8, 4, 10, 10)
+rows: int = 8
+cols: int = 4
+
+main_board: board.Board = board.Board(rows, cols, 10, 10)
 main_board.set_random_secret()
 
 adv_button: ui.UniversalButton = ui.UniversalButton(700, 50, 80, 40, pg.Color(252, 178, 50), pg.Color(200, 178, 50), )
