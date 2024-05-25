@@ -238,7 +238,7 @@ class Board:
         """sets the secret to a random combination, and makes the draw function display said combination as pins,
         rather than colorful holes"""
         self.state.set_random_combination()
-        init_pos_x: float = self.secret.centerx - self.color_pin_size * 3.5
+        init_pos_x: float = CELL_SIZE / 2.5
         init_pos_y: float = self.secret.centery - self.color_pin_size / 2
         self.secret_line: list[ui.Pin] = [
             ui.Pin(init_pos_x + i * CELL_SIZE, init_pos_y, self.color_pin_size, self.color_pin_size) for i in
