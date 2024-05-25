@@ -2,6 +2,7 @@ import pygame as pg
 
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
+WHITE = (255, 255, 255)
 
 
 # BIG_BUTTON_WIDTH = 32
@@ -144,7 +145,7 @@ class UniversalButton:
     def __init__(self, x: int, y: int, width: int, height: int, is_pure_text: bool,
                  color: pg.Color, hover_color: pg.Color,
                  hover: bool = False, text: str = None, font: pg.font.Font = None,
-                 text_color: pg.Color = pg.Color(252, 252, 252),
+                 text_color: pg.Color = pg.Color(WHITE),
                  text_hover_color: pg.Color = pg.Color(252, 178, 50)):
         self.x: int = x
         self.y: int = y
@@ -174,13 +175,11 @@ class UniversalButton:
         if self.text is not None:
             if self.hover:
                 text = self.font.render(self.text, True, self.text_hover_color, None, 1000)
-                text_block = self.rect.copy()
-                text_block.center = (self.x + self.width/2, self.y + self.height/2)
+                text_block = self.rect
                 screen.blit(text, text_block)
             else:
                 text = self.font.render(self.text, True, self.text_color, None, 1000)
-                text_block = self.rect.copy()
-                text_block.center = (self.x + self.width/2, self.y + self.height/2)
+                text_block = self.rect
                 screen.blit(text, text_block)
 
     def is_mouse_over(self, pos: (int, int)) -> bool:
@@ -212,11 +211,35 @@ class UniversalButton:
             self.clicked = False
 
 
-def draw_menu(screen: pg.Surface, mouse_state: [bool, (int, int)]) -> None:
-    """Draws the main menu.
+class Menu:
 
-    :param screen: - surface to draw on
-    :param mouse_state: - holds full information about the mouse (clicked status, position)
-    :return: None
-    """
-    pos: (int, int) = mouse_state[1]
+    def __init__(self, screen: pg.Surface, font: pg.font.Font):
+        self.screen: pg.Surface = screen
+        self.font: pg.font.Font = font
+        self.Easy = UniversalButton(370, 250, 100, 50, True, pg.Color(WHITE), pg.Color(21, 183, 232), False,
+                                    "Easy", font)
+        self.Medium = UniversalButton(349, 300, 150, 50, True, pg.Color(WHITE), pg.Color(21, 183, 232), False,
+                                      "Medium", font)
+        self.Hard = UniversalButton(370, 350, 100, 50, True, pg.Color(WHITE), pg.Color(21, 183, 232), False,
+                                    "Hard", font)
+        self.Exit = UniversalButton(368, 500, 100, 50, True, pg.Color(WHITE), pg.Color(21, 183, 232), False,
+                                    "Exit", pg.font.Font(None, 60))
+        self.buttons: list = [self.Easy, self.Medium, self.Hard, self.Exit]
+        self.mm_font = pg.font.Font(None, 80)
+        self.mm_text = self.mm_font.render("Mastermind", False, WHITE, None)
+        self.mm_block = self.mm_text.get_rect()
+        self.start_font = pg.font.Font(None, 60)
+        self.mm_block.center = (400, 50)
+        self.start_text = self.start_font.render("Start", False, WHITE, None)
+        self.start_block = self.start_text.get_rect()
+        self.start_block.center = (400, 200)
+
+    def update(self, mouse_state: [bool, (int, int)]) -> None:
+        for button in self.buttons:
+            button.update(mouse_state)
+
+    def draw(self) -> None:
+        for button in self.buttons:
+            button.draw(self.screen)
+        self.screen.blit(self.mm_text, self.mm_block)
+        self.screen.blit(self.start_text, self.start_block)

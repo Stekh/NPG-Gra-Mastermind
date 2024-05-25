@@ -7,6 +7,8 @@ from src import ui
 # SCREEN_WIDTH = 800
 # SCREEN_HEIGHT = 600
 
+WHITE = (255, 255, 255)
+
 # (screen, buttons) = ui.construct_display()
 screen = ui.construct_display()
 
@@ -21,6 +23,9 @@ adv_button: ui.UniversalButton = ui.UniversalButton(700, 50, 80, 40, False, pg.C
 # list of used fonts:
 font_endscreen: pg.font.Font = pg.font.Font(None, 80)
 font: pg.font.Font = pg.font.Font(None, 40)
+
+# test_button: ui.UniversalButton = ui.UniversalButton(700, 200, 80, 40, True, pg.Color(WHITE), pg.Color(252, 100, 252),
+#                                                     False, "test", font)
 
 points: int = -1
 
@@ -70,6 +75,14 @@ while run:
     text_block = text.get_rect()
     text_block.center = (720, 32)
     screen.blit(text, text_block)
+
+    """
+    # test
+    test_button.update([clicked, pg.mouse.get_pos()])
+    test_button.draw(screen)
+    if test_button.clicked:
+        print("click!")
+    """
 
     # endscreen text printing
     if points == 0:
