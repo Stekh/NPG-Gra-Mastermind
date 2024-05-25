@@ -38,8 +38,10 @@ class Board:
         self.rows: int = rows
         self.cols: int = cols
         if self.rows > 8:
+            rows = 8
             self.rows = 8
         if self.cols > 5:
+            cols = 5
             self.cols = 5
 
         # Position of the board
