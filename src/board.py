@@ -37,6 +37,10 @@ class Board:
         # Size of the game
         self.rows: int = rows
         self.cols: int = cols
+        if self.rows > 8:
+            self.rows = 8
+        if self.cols > 5:
+            self.cols = 5
 
         # Position of the board
         self.x: float = x
