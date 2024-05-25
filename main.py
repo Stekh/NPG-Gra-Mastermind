@@ -1,3 +1,4 @@
+import sys
 import pygame as pg
 
 from src import board
@@ -12,6 +13,11 @@ screen = ui.construct_display()
 
 rows: int = 8
 cols: int = 4
+
+if "--rows" in sys.argv:
+    rows = int(sys.argv[sys.argv.index("--rows") + 1])
+if "--cols" in sys.argv:
+    cols = int(sys.argv[sys.argv.index("--cols") + 1])
 
 main_board: board.Board = board.Board(rows, cols, 10, 10)
 main_board.set_random_secret()
