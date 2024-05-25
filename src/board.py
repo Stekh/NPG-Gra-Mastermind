@@ -61,7 +61,7 @@ class Board:
         self.backlight_color: pg.Color = pg.Color(BACKLIGHT_COLOR)
 
         # State of the game
-        self.state: state.Game = state.Game(rows, cols, [0 for _i in range(0, cols)])
+        self.state: state.Game = state.Game(rows, cols)
         self.secret_visible: bool
         if '--debug' in sys.argv:
             self.secret_visible = True
