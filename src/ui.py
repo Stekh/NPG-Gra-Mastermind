@@ -141,8 +141,11 @@ class UniversalButton:
     :param color: - color of the button
     :param hover_color: - color of the button when hovered"""
 
-    def __init__(self, x: int, y: int, width: int, height: int,
-                 color: pg.Color, hover_color: pg.Color, hover: bool = False):
+    def __init__(self, x: int, y: int, width: int, height: int, is_pure_text: bool,
+                 color: pg.Color, hover_color: pg.Color,
+                 hover: bool = False, text: str = None, font: pg.font.Font = None,
+                 text_color: pg.Color = pg.Color(252, 252, 252),
+                 text_hover_color: pg.Color = pg.Color(252, 178, 50)):
         self.x: int = x
         self.y: int = y
         self.width: int = width
@@ -152,16 +155,33 @@ class UniversalButton:
         self.clicked: bool = False
         self.hover: bool = hover
         self.rect: pg.Rect = pg.Rect(x, y, width, height)
+        self.text: str = text
+        self.font: pg.font.Font = font
+        self.is_pure_text: bool = is_pure_text
+        self.text_color: pg.Color = color if is_pure_text else text_color
+        self.text_hover_color: pg.Color = hover_color if is_pure_text else text_hover_color
 
     def draw(self, screen: pg.Surface) -> None:
         """Puts the button on the screen in its place
 
         :param screen: - surface on which the button is being drawn
         :return: None"""
-        if self.hover:
-            pg.draw.rect(screen, self.hover_color, self.rect)
-        else:
-            pg.draw.rect(screen, self.color, self.rect)
+        if self.is_pure_text == 0:
+            if self.hover:
+                pg.draw.rect(screen, self.hover_color, self.rect)
+            else:
+                pg.draw.rect(screen, self.color, self.rect)
+        if self.text is not None:
+            if self.hover:
+                text = self.font.render(self.text, True, self.text_hover_color, None, 1000)
+                text_block = self.rect.copy()
+                text_block.center = (self.x + self.width/2, self.y + self.height/2)
+                screen.blit(text, text_block)
+            else:
+                text = self.font.render(self.text, True, self.text_color, None, 1000)
+                text_block = self.rect.copy()
+                text_block.center = (self.x + self.width/2, self.y + self.height/2)
+                screen.blit(text, text_block)
 
     def is_mouse_over(self, pos: (int, int)) -> bool:
         """Checks for mouse hover position relative to the button
@@ -190,3 +210,13 @@ class UniversalButton:
             self.clicked = True
         else:
             self.clicked = False
+
+
+def draw_menu(screen: pg.Surface, mouse_state: [bool, (int, int)]) -> None:
+    """Draws the main menu.
+
+    :param screen: - surface to draw on
+    :param mouse_state: - holds full information about the mouse (clicked status, position)
+    :return: None
+    """
+    pos: (int, int) = mouse_state[1]
