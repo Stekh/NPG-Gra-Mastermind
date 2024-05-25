@@ -60,10 +60,11 @@ while run:
             key: int = event.key
             mod: int = event.mod
             # event handling for specific key
+
+    # background:
     pg.draw.rect(screen, (0, 0, 0), (0, 0, 800, 600))
-    adv_button.update([clicked, pg.mouse.get_pos()])
-    if adv_button.clicked:
-        points: int = hr.advance_row(main_board)
+
+    # main program loop:
     match stage:
         case "Menu":
             menu.update([clicked, pg.mouse.get_pos()])
@@ -87,6 +88,11 @@ while run:
             text_block.center = (720, 32)
             screen.blit(text, text_block)
 
+            # turn advance button:
+            adv_button.update([clicked, pg.mouse.get_pos()])
+            if adv_button.clicked:
+                points: int = hr.advance_row(main_board)
+
             # endscreen text printing
             if points == 0:
                 ui.draw_endscreen(screen, font_endscreen, "You win!")
@@ -95,6 +101,7 @@ while run:
             # evaluate_board.draw(screen, (clicked, pg.mouse.get_pos()))
         case _:
             stage = "Menu"
+
     pg.display.flip()
 
 pg.quit()

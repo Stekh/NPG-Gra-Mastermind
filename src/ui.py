@@ -212,6 +212,11 @@ class UniversalButton:
 
 
 class Menu:
+    """Main menu class
+
+    :param screen: surface to draw on
+    :param font: font for buttons
+    """
 
     def __init__(self, screen: pg.Surface, font: pg.font.Font):
         self.screen: pg.Surface = screen
@@ -235,10 +240,19 @@ class Menu:
         self.start_block.center = (400, 200)
 
     def update(self, mouse_state: [bool, (int, int)]) -> None:
+        """Updates buttons.
+
+        :param mouse_state: - holds full information about the mouse
+        :return: None
+        """
         for button in self.buttons:
             button.update(mouse_state)
 
     def draw(self) -> None:
+        """Draws the menu.
+
+        :return: None
+        """
         for button in self.buttons:
             button.draw(self.screen)
         self.screen.blit(self.mm_text, self.mm_block)
