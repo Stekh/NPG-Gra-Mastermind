@@ -1,3 +1,4 @@
+import sys
 import pygame as pg
 
 from src import board
@@ -12,7 +13,15 @@ WHITE = (255, 255, 255)
 # (screen, buttons) = ui.construct_display()
 screen = ui.construct_display()
 
-main_board: board.Board = board.Board(8, 4, 10, 10)
+rows: int = 8
+cols: int = 4
+
+if "--rows" in sys.argv:
+    rows = int(sys.argv[sys.argv.index("--rows") + 1])
+if "--cols" in sys.argv:
+    cols = int(sys.argv[sys.argv.index("--cols") + 1])
+
+main_board: board.Board = board.Board(rows, cols, 10, 10)
 main_board.set_random_secret()
 
 adv_button: ui.UniversalButton = ui.UniversalButton(700, 50, 80, 40, False, pg.Color(252, 178, 50),

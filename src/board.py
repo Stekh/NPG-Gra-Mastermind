@@ -37,6 +37,12 @@ class Board:
         # Size of the game
         self.rows: int = rows
         self.cols: int = cols
+        if self.rows > 8:
+            rows = 8
+            self.rows = 8
+        if self.cols > 5:
+            cols = 5
+            self.cols = 5
 
         # Position of the board
         self.x: float = x
@@ -61,7 +67,7 @@ class Board:
         self.backlight_color: pg.Color = pg.Color(BACKLIGHT_COLOR)
 
         # State of the game
-        self.state: state.Game = state.Game(rows, cols, [0 for _i in range(0, cols)])
+        self.state: state.Game = state.Game(rows, cols)
         self.secret_visible: bool
         if '--debug' in sys.argv:
             self.secret_visible = True
@@ -238,7 +244,7 @@ class Board:
         """sets the secret to a random combination, and makes the draw function display said combination as pins,
         rather than colorful holes"""
         self.state.set_random_combination()
-        init_pos_x: float = self.secret.centerx - self.color_pin_size * 3.5
+        init_pos_x: float = CELL_SIZE / 2.5
         init_pos_y: float = self.secret.centery - self.color_pin_size / 2
         self.secret_line: list[ui.Pin] = [
             ui.Pin(init_pos_x + i * CELL_SIZE, init_pos_y, self.color_pin_size, self.color_pin_size) for i in
