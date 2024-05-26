@@ -8,13 +8,13 @@ from src import ui
 # SCREEN_WIDTH = 800
 # SCREEN_HEIGHT = 600
 
-WHITE = (255, 255, 255)
-
 # (screen, buttons) = ui.construct_display()
 screen = ui.construct_display()
 
 rows: int = 8
 cols: int = 4
+no_rds: int = 5
+start_as_guessing: bool = True
 
 if "--rows" in sys.argv:
     rows = int(sys.argv[sys.argv.index("--rows") + 1])
@@ -34,7 +34,8 @@ font_endscreen: pg.font.Font = pg.font.Font(None, 80)
 font: pg.font.Font = pg.font.Font(None, 40)
 
 menu: ui.Menu = ui.Menu(screen, font)
-stage: str = "Menu"
+menu2: ui.Menu2 = ui.Menu2(screen, font, no_rds)
+stage: str = "Menu2"
 points: int = -1
 
 run: bool = True
@@ -79,12 +80,27 @@ while run:
             menu.update([clicked, pg.mouse.get_pos()])
             menu.draw()
             if menu.Easy.clicked:
-                stage = "Game"
+                rows = 8
+                cols = 3
+                stage = "Menu2"
             if menu.Medium.clicked:
-                stage = "Game"
+                rows = 8
+                cols = 4
+                stage = "Menu2"
             if menu.Hard.clicked:
-                stage = "Game"
+                rows = 8
+                cols = 5
+                stage = "Menu2"
             if menu.Exit.clicked:
+                run = False
+        case "Menu2":
+            menu2.update([clicked, pg.mouse.get_pos()])
+            no_rds = menu2.no_rounds
+            start_as_guessing = menu2.guessing_status
+            menu2.draw()
+            if menu2.Start.clicked:
+                stage = "Game"
+            if menu2.Exit.clicked:
                 run = False
         case "Game":
             # ui.ui(screen, (clicked, pg.mouse.get_pos()), buttons)

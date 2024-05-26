@@ -2,7 +2,6 @@ import pygame as pg
 
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
-WHITE = (255, 255, 255)
 
 
 # BIG_BUTTON_WIDTH = 32
@@ -145,7 +144,7 @@ class UniversalButton:
     def __init__(self, x: int, y: int, width: int, height: int, is_pure_text: bool,
                  color: pg.Color, hover_color: pg.Color,
                  hover: bool = False, text: str = None, font: pg.font.Font = None,
-                 text_color: pg.Color = pg.Color(WHITE),
+                 text_color: pg.Color = pg.Color("white"),
                  text_hover_color: pg.Color = pg.Color(252, 178, 50)):
         self.x: int = x
         self.y: int = y
@@ -212,7 +211,7 @@ class UniversalButton:
 
 
 class Menu:
-    """Main menu class
+    """Main menu class.
 
     :param screen: surface to draw on
     :param font: font for buttons
@@ -221,21 +220,25 @@ class Menu:
     def __init__(self, screen: pg.Surface, font: pg.font.Font):
         self.screen: pg.Surface = screen
         self.font: pg.font.Font = font
-        self.Easy = UniversalButton(370, 250, 100, 50, True, pg.Color(WHITE), pg.Color(21, 183, 232), False,
-                                    "Easy", font)
-        self.Medium = UniversalButton(349, 300, 150, 50, True, pg.Color(WHITE), pg.Color(21, 183, 232), False,
-                                      "Medium", font)
-        self.Hard = UniversalButton(370, 350, 100, 50, True, pg.Color(WHITE), pg.Color(21, 183, 232), False,
-                                    "Hard", font)
-        self.Exit = UniversalButton(368, 500, 100, 50, True, pg.Color(WHITE), pg.Color(21, 183, 232), False,
-                                    "Exit", pg.font.Font(None, 60))
-        self.buttons: list = [self.Easy, self.Medium, self.Hard, self.Exit]
+        self.Easy: UniversalButton = UniversalButton(370, 250, 100, 50, True, pg.Color("white"), pg.Color(21, 183, 232),
+                                                     False,
+                                                     "Easy", font)
+        self.Medium: UniversalButton = UniversalButton(349, 300, 150, 50, True, pg.Color("white"),
+                                                       pg.Color(21, 183, 232), False,
+                                                       "Medium", font)
+        self.Hard: UniversalButton = UniversalButton(370, 350, 100, 50, True, pg.Color("white"), pg.Color(21, 183, 232),
+                                                     False,
+                                                     "Hard", font)
+        self.Exit: UniversalButton = UniversalButton(368, 500, 100, 50, True, pg.Color("white"), pg.Color(21, 183, 232),
+                                                     False,
+                                                     "Exit", pg.font.Font(None, 60))
+        self.buttons = [self.Easy, self.Medium, self.Hard, self.Exit]
         self.mm_font = pg.font.Font(None, 80)
-        self.mm_text = self.mm_font.render("Mastermind", False, WHITE, None)
+        self.mm_text = self.mm_font.render("Mastermind", False, "white", None)
         self.mm_block = self.mm_text.get_rect()
-        self.start_font = pg.font.Font(None, 60)
         self.mm_block.center = (400, 50)
-        self.start_text = self.start_font.render("Start", False, WHITE, None)
+        self.start_font = pg.font.Font(None, 60)
+        self.start_text = self.start_font.render("Start", False, "white", None)
         self.start_block = self.start_text.get_rect()
         self.start_block.center = (400, 200)
 
@@ -257,3 +260,80 @@ class Menu:
             button.draw(self.screen)
         self.screen.blit(self.mm_text, self.mm_block)
         self.screen.blit(self.start_text, self.start_block)
+
+
+class Menu2:
+    def __init__(self, screen: pg.Surface, font: pg.font.Font, no_rounds: int = 5, guessing_status: bool = True):
+        self.screen: pg.Surface = screen
+        self.font: pg.font.Font = font
+        self.no_rounds: int = no_rounds
+        self.mm_font = pg.font.Font(None, 80)
+        self.mm_text = self.mm_font.render("Mastermind", False, "white", None)
+        self.mm_block = self.mm_text.get_rect()
+        self.mm_block.center = (400, 50)
+        self.nor_font = font
+        self.nor_text = self.nor_font.render("Number of rounds:", False, "white", None)
+        self.nor_block = self.nor_text.get_rect()
+        self.nor_block.center = (400, 150)
+        self.start_as_font = font
+        self.start_as_text = self.start_as_font.render("Start as:", False, "white", None)
+        self.start_as_block = self.start_as_text.get_rect()
+        self.start_as_block.center = (400, 250)
+        self.nor_num_font = pg.font.Font(None, 50)
+        self.nor_num_text = self.nor_num_font.render(str(no_rounds), False, "white", None)
+        self.nor_num_block = self.nor_num_text.get_rect()
+        self.nor_num_block.center = (400, 200)
+        self.Start: UniversalButton = UniversalButton(350, 400, 100, 50, True, pg.Color("white"),
+                                                      pg.Color(21, 183, 232), False, "Start!", pg.font.Font(None, 60))
+        self.Exit: UniversalButton = UniversalButton(368, 500, 100, 50, True, pg.Color("white"), pg.Color(21, 183, 232),
+                                                     False,
+                                                     "Exit", pg.font.Font(None, 60))
+        self.guessing_status: bool = guessing_status
+        self.Guessing: UniversalButton = UniversalButton(250, 275, 120, 50, True,
+                                                         pg.Color(21, 183, 232) if self.guessing_status else pg.Color(
+                                                             "white"), pg.Color(21, 183, 232), False, "Guessing", font)
+        self.Setting: UniversalButton = UniversalButton(450, 275, 120, 50, True,
+                                                        pg.Color(21, 183,
+                                                                 232) if not self.guessing_status else pg.Color(
+                                                            "white"), pg.Color(21, 183, 232), False, "Setting", font)
+        self.plus: UniversalButton = UniversalButton(350, 180, 50, 50, True, pg.Color("white"), pg.Color(21, 183, 232),
+                                                     False, "+", font)
+        self.minus: UniversalButton = UniversalButton(440, 180, 50, 50, True, pg.Color("white"), pg.Color(21, 183, 232),
+                                                      False, "-", font)
+        self.buttons = [self.Start, self.Exit, self.Guessing, self.Setting, self.plus, self.minus]
+
+    def update(self, mouse_state: [bool, (int, int)]) -> None:
+        """Updates buttons and number of rounds.
+
+        :param mouse_state: - holds full information about the mouse
+        :return: None
+        """
+        for button in self.buttons:
+            button.update(mouse_state)
+        if self.Guessing.clicked:
+            self.guessing_status = True
+            self.Guessing.color.update(21, 183, 232)
+            self.Setting.color.update("white")
+        if self.Setting.clicked:
+            self.guessing_status = False
+            self.Guessing.color.update("white")
+            self.Setting.color.update(21, 183, 232)
+        if self.no_rounds < 10:
+            self.no_rounds += 1 if self.plus.clicked else 0
+        if self.no_rounds > 1:
+            self.no_rounds -= 1 if self.minus.clicked else 0
+        self.nor_num_text = self.nor_num_font.render(str(self.no_rounds), False, "white", None)
+        self.nor_num_block = self.nor_num_text.get_rect()
+        self.nor_num_block.center = (400, 200)
+
+    def draw(self) -> None:
+        """Draws the menu.
+
+        :return: None
+        """
+        for button in self.buttons:
+            button.draw(self.screen)
+        self.screen.blit(self.mm_text, self.mm_block)
+        self.screen.blit(self.nor_text, self.nor_block)
+        self.screen.blit(self.start_as_text, self.start_as_block)
+        self.screen.blit(self.nor_num_text, self.nor_num_block)
