@@ -14,6 +14,7 @@ screen = ui.construct_display()
 rows: int = 8
 cols: int = 4
 no_rds: int = 5
+max_rds: int = 10
 start_as_guessing: bool = True
 
 if "--rows" in sys.argv:
@@ -34,7 +35,7 @@ font_endscreen: pg.font.Font = pg.font.Font(None, 80)
 font: pg.font.Font = pg.font.Font(None, 40)
 
 menu: ui.Menu = ui.Menu(screen, font)
-menu2: ui.Menu2 = ui.Menu2(screen, font, no_rds)
+menu2: ui.Menu2 = ui.Menu2(screen, font, no_rds, max_rds)
 stage: str = "Menu"
 diff: int = 0
 points: int = -1

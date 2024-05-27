@@ -220,6 +220,7 @@ class Menu:
     def __init__(self, screen: pg.Surface, font: pg.font.Font):
         self.screen: pg.Surface = screen
         self.font: pg.font.Font = font
+        # Buttons
         self.Easy: UniversalButton = UniversalButton(370, 250, 100, 50, True, pg.Color("white"), pg.Color(21, 183, 232),
                                                      False,
                                                      "Easy", font)
@@ -233,10 +234,12 @@ class Menu:
                                                      False,
                                                      "Exit", pg.font.Font(None, 60))
         self.buttons = [self.Easy, self.Medium, self.Hard, self.Exit]
+        # Mastermind text
         self.mm_font: pg.font = pg.font.Font(None, 80)
         self.mm_text: pg.Surface = self.mm_font.render("Mastermind", False, "white", None)
         self.mm_block: pg.Rect = self.mm_text.get_rect()
         self.mm_block.center = (400, 50)
+        # Start text
         self.start_font: pg.font = pg.font.Font(None, 60)
         self.start_text: pg.Surface = self.start_font.render("Start", False, "white", None)
         self.start_block: pg.Rect = self.start_text.get_rect()
@@ -269,26 +272,32 @@ class Menu2:
     :param font: font for buttons
     """
 
-    def __init__(self, screen: pg.Surface, font: pg.font.Font, no_rounds: int = 5, guessing_status: bool = True):
+    def __init__(self, screen: pg.Surface, font: pg.font.Font, no_rounds: int = 5, no_rounds_max: int = 10, guessing_status: bool = True):
         self.screen: pg.Surface = screen
         self.font: pg.font = font
         self.no_rounds: int = no_rounds
+        self.no_rounds_max = no_rounds_max
+        # Mastermind text
         self.mm_font: pg.font = pg.font.Font(None, 80)
         self.mm_text: pg.Surface = self.mm_font.render("Mastermind", False, "white", None)
         self.mm_block: pg.Rect = self.mm_text.get_rect()
         self.mm_block.center = (400, 50)
+        # Number of rounds text
         self.nor_font: pg.font = font
         self.nor_text: pg.Surface = self.nor_font.render("Number of rounds:", False, "white", None)
         self.nor_block: pg.Rect = self.nor_text.get_rect()
         self.nor_block.center = (400, 150)
+        # "Start as" text
         self.start_as_font: pg.font = font
         self.start_as_text: pg.Surface = self.start_as_font.render("Start as:", False, "white", None)
         self.start_as_block: pg.Rect = self.start_as_text.get_rect()
         self.start_as_block.center = (400, 250)
+        # Number of rounds.... number
         self.nor_num_font: pg.font = pg.font.Font(None, 50)
         self.nor_num_text: pg.Surface = self.nor_num_font.render(str(no_rounds), False, "white", None)
         self.nor_num_block: pg.Rect = self.nor_num_text.get_rect()
         self.nor_num_block.center = (400, 200)
+        # Buttons
         self.Start: UniversalButton = UniversalButton(350, 400, 100, 50, True, pg.Color("white"),
                                                       pg.Color(21, 183, 232), False, "Start!", pg.font.Font(None, 60))
         self.Exit: UniversalButton = UniversalButton(368, 500, 100, 50, True, pg.Color("white"), pg.Color(21, 183, 232),
@@ -316,6 +325,8 @@ class Menu2:
         """
         for button in self.buttons:
             button.update(mouse_state)
+
+        # Start as variants
         if self.Guessing.clicked:
             self.guessing_status = True
             self.Guessing.color.update(21, 183, 232)
@@ -324,7 +335,8 @@ class Menu2:
             self.guessing_status = False
             self.Guessing.color.update("white")
             self.Setting.color.update(21, 183, 232)
-        if self.no_rounds < 10:
+        # Number of rounds, checks against max and 0
+        if self.no_rounds < self.no_rounds_max:
             self.no_rounds += 1 if self.plus.clicked else 0
         if self.no_rounds > 1:
             self.no_rounds -= 1 if self.minus.clicked else 0
