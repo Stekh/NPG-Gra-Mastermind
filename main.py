@@ -35,7 +35,8 @@ font: pg.font.Font = pg.font.Font(None, 40)
 
 menu: ui.Menu = ui.Menu(screen, font)
 menu2: ui.Menu2 = ui.Menu2(screen, font, no_rds)
-stage: str = "Menu2"
+stage: str = "Menu"
+diff: int = 0
 points: int = -1
 
 run: bool = True
@@ -80,16 +81,13 @@ while run:
             menu.update([clicked, pg.mouse.get_pos()])
             menu.draw()
             if menu.Easy.clicked:
-                rows = 8
-                cols = 3
+                diff = 0
                 stage = "Menu2"
             if menu.Medium.clicked:
-                rows = 8
-                cols = 4
+                diff = 1
                 stage = "Menu2"
             if menu.Hard.clicked:
-                rows = 8
-                cols = 5
+                diff = 2
                 stage = "Menu2"
             if menu.Exit.clicked:
                 run = False
