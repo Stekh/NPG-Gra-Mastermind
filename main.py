@@ -22,8 +22,7 @@ if "--rows" in sys.argv:
 if "--cols" in sys.argv:
     cols = int(sys.argv[sys.argv.index("--cols") + 1])
 
-main_board: board.Board = board.Board(rows, cols, 10, 10)
-main_board.set_random_secret()
+main_board: board.Board
 
 adv_button: ui.UniversalButton = ui.UniversalButton(700, 50, 80, 40, False, pg.Color(252, 178, 50),
                                                     pg.Color(200, 178, 50), )
@@ -83,12 +82,18 @@ while run:
             menu.draw()
             if menu.Easy.clicked:
                 diff = 0
+                main_board = board.Board(8, 3, 10, 10)
+                main_board.set_random_secret()
                 stage = "Menu2"
             if menu.Medium.clicked:
                 diff = 1
+                main_board = board.Board(7, 4, 10, 10)
+                main_board.set_random_secret()
                 stage = "Menu2"
             if menu.Hard.clicked:
                 diff = 2
+                main_board = board.Board(6, 5, 10, 10)
+                main_board.set_random_secret()
                 stage = "Menu2"
             if menu.Exit.clicked:
                 run = False
