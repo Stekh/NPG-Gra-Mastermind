@@ -158,6 +158,8 @@ while run:
             scoreboard.draw(wins, losses)
             screen.blit(game_over_text, game_over_block)
             if clicked:
+                no_rds: int = 5
+                rd_ctr = 0
                 wins = 0
                 losses = 0
                 stage = "Menu"

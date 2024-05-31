@@ -337,28 +337,28 @@ class Menu2:
 class Scoreboard:
     """Scoreboard class.
 
-       :param screen: surface to draw on
-       :param font: font for buttons
-       """
+    :param screen: surface to draw on
+    :param font: font for buttons
+    """
     def __init__(self, screen: pg.display, font: pg.font.Font):
         self.screen: pg.Surface = screen
         self.font: pg.font.Font = font
         # wins text
         self.wins_text: pg.Surface = self.font.render("Wins:", False, "white", None)
         self.wins_block: pg.Rect = self.wins_text.get_rect()
-        self.wins_block.center = (600, 200)
+        self.wins_block.center = (700, 200)
         # losses text
         self.losses_text: pg.Surface = self.font.render("Losses:", False, "white", None)
         self.losses_block: pg.Rect = self.losses_text.get_rect()
-        self.losses_block.center = (600, 300)
+        self.losses_block.center = (710, 300)
         # wins number
         self.no_wins_text: pg.Surface = self.font.render("0", False, "white", None)
         self.no_wins_block: pg.Rect = self.no_wins_text.get_rect()
-        self.no_wins_block.center = (650, 200)
+        self.no_wins_block.center = (750, 200)
         # losses number
         self.no_losses_text: pg.Surface = self.font.render("0", False, "white", None)
         self.no_losses_block: pg.Rect = self.no_losses_text.get_rect()
-        self.no_losses_block.center = (650, 300)
+        self.no_losses_block.center = (780, 300)
 
     def draw(self, wins: int, losses: int) -> None:
         """Draws the scoreboard
@@ -368,11 +368,11 @@ class Scoreboard:
         """
         self.no_wins_text: pg.Surface = self.font.render(str(wins), False, "white", None)
         self.no_wins_block: pg.Rect = self.no_wins_text.get_rect()
-        self.no_wins_block.center = (650, 200)
+        self.no_wins_block.center = (750, 200)
 
         self.no_losses_text: pg.Surface = self.font.render(str(losses), False, "white", None)
         self.no_losses_block: pg.Rect = self.no_losses_text.get_rect()
-        self.no_losses_block.center = (660, 300)
+        self.no_losses_block.center = (770, 300)
 
         self.screen.blit(self.wins_text, self.wins_block)
         self.screen.blit(self.losses_text, self.losses_block)
