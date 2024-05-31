@@ -272,7 +272,7 @@ class Menu2:
     :param font: font for buttons
     """
 
-    def __init__(self, screen: pg.Surface, font: pg.font.Font, no_rounds: int = 5, no_rounds_max: int = 10, guessing_status: bool = True):
+    def __init__(self, screen: pg.Surface, font: pg.font.Font, no_rounds: int = 5, no_rounds_max: int = 10):
         self.screen: pg.Surface = screen
         self.font: pg.font = font
         self.no_rounds: int = no_rounds
@@ -286,36 +286,23 @@ class Menu2:
         self.nor_font: pg.font = font
         self.nor_text: pg.Surface = self.nor_font.render("Number of rounds:", False, "white", None)
         self.nor_block: pg.Rect = self.nor_text.get_rect()
-        self.nor_block.center = (400, 150)
-        # "Start as" text
-        self.start_as_font: pg.font = font
-        self.start_as_text: pg.Surface = self.start_as_font.render("Start as:", False, "white", None)
-        self.start_as_block: pg.Rect = self.start_as_text.get_rect()
-        self.start_as_block.center = (400, 250)
+        self.nor_block.center = (400, 175)
         # Number of rounds.... number
         self.nor_num_font: pg.font = pg.font.Font(None, 50)
         self.nor_num_text: pg.Surface = self.nor_num_font.render(str(no_rounds), False, "white", None)
         self.nor_num_block: pg.Rect = self.nor_num_text.get_rect()
-        self.nor_num_block.center = (400, 200)
+        self.nor_num_block.center = (400, 240)
         # Buttons
-        self.Start: UniversalButton = UniversalButton(350, 400, 100, 50, True, pg.Color("white"),
+        self.Start: UniversalButton = UniversalButton(350, 300, 100, 50, True, pg.Color("white"),
                                                       pg.Color(21, 183, 232), False, "Start!", pg.font.Font(None, 60))
         self.Exit: UniversalButton = UniversalButton(368, 500, 100, 50, True, pg.Color("white"), pg.Color(21, 183, 232),
                                                      False,
                                                      "Exit", pg.font.Font(None, 60))
-        self.guessing_status: bool = guessing_status
-        self.Guessing: UniversalButton = UniversalButton(250, 275, 120, 50, True,
-                                                         pg.Color(21, 183, 232) if self.guessing_status else pg.Color(
-                                                             "white"), pg.Color(21, 183, 232), False, "Guessing", font)
-        self.Setting: UniversalButton = UniversalButton(450, 275, 120, 50, True,
-                                                        pg.Color(21, 183,
-                                                                 232) if not self.guessing_status else pg.Color(
-                                                            "white"), pg.Color(21, 183, 232), False, "Setting", font)
-        self.plus: UniversalButton = UniversalButton(350, 180, 50, 50, True, pg.Color("white"), pg.Color(21, 183, 232),
+        self.plus: UniversalButton = UniversalButton(350, 220, 50, 50, True, pg.Color("white"), pg.Color(21, 183, 232),
                                                      False, "+", font)
-        self.minus: UniversalButton = UniversalButton(440, 180, 50, 50, True, pg.Color("white"), pg.Color(21, 183, 232),
+        self.minus: UniversalButton = UniversalButton(440, 220, 50, 50, True, pg.Color("white"), pg.Color(21, 183, 232),
                                                       False, "-", font)
-        self.buttons = [self.Start, self.Exit, self.Guessing, self.Setting, self.plus, self.minus]
+        self.buttons = [self.Start, self.Exit, self.plus, self.minus]
 
     def update(self, mouse_state: [bool, (int, int)]) -> None:
         """Updates buttons and number of rounds.
@@ -326,15 +313,6 @@ class Menu2:
         for button in self.buttons:
             button.update(mouse_state)
 
-        # Start as variants
-        if self.Guessing.clicked:
-            self.guessing_status = True
-            self.Guessing.color.update(21, 183, 232)
-            self.Setting.color.update("white")
-        if self.Setting.clicked:
-            self.guessing_status = False
-            self.Guessing.color.update("white")
-            self.Setting.color.update(21, 183, 232)
         # Number of rounds, checks against max and 0
         if self.no_rounds < self.no_rounds_max:
             self.no_rounds += 1 if self.plus.clicked else 0
@@ -342,7 +320,7 @@ class Menu2:
             self.no_rounds -= 1 if self.minus.clicked else 0
         self.nor_num_text = self.nor_num_font.render(str(self.no_rounds), False, "white", None)
         self.nor_num_block = self.nor_num_text.get_rect()
-        self.nor_num_block.center = (400, 200)
+        self.nor_num_block.center = (400, 240)
 
     def draw(self) -> None:
         """Draws the menu.
@@ -353,5 +331,50 @@ class Menu2:
             button.draw(self.screen)
         self.screen.blit(self.mm_text, self.mm_block)
         self.screen.blit(self.nor_text, self.nor_block)
-        self.screen.blit(self.start_as_text, self.start_as_block)
         self.screen.blit(self.nor_num_text, self.nor_num_block)
+
+
+class Scoreboard:
+    """Scoreboard class.
+
+       :param screen: surface to draw on
+       :param font: font for buttons
+       """
+    def __init__(self, screen: pg.display, font: pg.font.Font):
+        self.screen: pg.Surface = screen
+        self.font: pg.font.Font = font
+        # wins text
+        self.wins_text: pg.Surface = self.font.render("Wins:", False, "white", None)
+        self.wins_block: pg.Rect = self.wins_text.get_rect()
+        self.wins_block.center = (600, 200)
+        # losses text
+        self.losses_text: pg.Surface = self.font.render("Losses:", False, "white", None)
+        self.losses_block: pg.Rect = self.losses_text.get_rect()
+        self.losses_block.center = (600, 300)
+        # wins number
+        self.no_wins_text: pg.Surface = self.font.render("0", False, "white", None)
+        self.no_wins_block: pg.Rect = self.no_wins_text.get_rect()
+        self.no_wins_block.center = (650, 200)
+        # losses number
+        self.no_losses_text: pg.Surface = self.font.render("0", False, "white", None)
+        self.no_losses_block: pg.Rect = self.no_losses_text.get_rect()
+        self.no_losses_block.center = (650, 300)
+
+    def draw(self, wins: int, losses: int) -> None:
+        """Draws the scoreboard
+
+        :param wins: number of wins
+        :param losses: number of losses
+        """
+        self.no_wins_text: pg.Surface = self.font.render(str(wins), False, "white", None)
+        self.no_wins_block: pg.Rect = self.no_wins_text.get_rect()
+        self.no_wins_block.center = (650, 200)
+
+        self.no_losses_text: pg.Surface = self.font.render(str(losses), False, "white", None)
+        self.no_losses_block: pg.Rect = self.no_losses_text.get_rect()
+        self.no_losses_block.center = (660, 300)
+
+        self.screen.blit(self.wins_text, self.wins_block)
+        self.screen.blit(self.losses_text, self.losses_block)
+        self.screen.blit(self.no_wins_text, self.no_wins_block)
+        self.screen.blit(self.no_losses_text, self.no_losses_block)

@@ -109,3 +109,13 @@ class Game:
         :param pos: the active row's destination
         """
         self.__active_row = pos
+
+    def reset(self):
+
+        for i in range(self.__no_cols):
+            for j in range(self.__no_rows ):
+                self.__color_pin_matrix[j][i] = 0
+                self.__response_pin_matrix[j][i] = 0
+        for i in range(self.__no_cols):
+            self.__combination[i] = 0
+        self.__active_row = 0
