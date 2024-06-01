@@ -109,3 +109,5 @@ class Game:
         :param pos: the active row's destination
         """
         self.__active_row = pos
+
+

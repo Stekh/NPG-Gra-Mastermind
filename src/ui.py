@@ -141,8 +141,11 @@ class UniversalButton:
     :param color: - color of the button
     :param hover_color: - color of the button when hovered"""
 
-    def __init__(self, x: int, y: int, width: int, height: int,
-                 color: pg.Color, hover_color: pg.Color, hover: bool = False):
+    def __init__(self, x: int, y: int, width: int, height: int, is_pure_text: bool,
+                 color: pg.Color, hover_color: pg.Color,
+                 hover: bool = False, text: str = None, font: pg.font.Font = None,
+                 text_color: pg.Color = pg.Color("white"),
+                 text_hover_color: pg.Color = pg.Color(252, 178, 50)):
         self.x: int = x
         self.y: int = y
         self.width: int = width
@@ -152,16 +155,31 @@ class UniversalButton:
         self.clicked: bool = False
         self.hover: bool = hover
         self.rect: pg.Rect = pg.Rect(x, y, width, height)
+        self.text: str = text
+        self.font: pg.font.Font = font
+        self.is_pure_text: bool = is_pure_text
+        self.text_color: pg.Color = color if is_pure_text else text_color
+        self.text_hover_color: pg.Color = hover_color if is_pure_text else text_hover_color
 
     def draw(self, screen: pg.Surface) -> None:
         """Puts the button on the screen in its place
 
         :param screen: - surface on which the button is being drawn
         :return: None"""
-        if self.hover:
-            pg.draw.rect(screen, self.hover_color, self.rect)
-        else:
-            pg.draw.rect(screen, self.color, self.rect)
+        if self.is_pure_text == 0:
+            if self.hover:
+                pg.draw.rect(screen, self.hover_color, self.rect)
+            else:
+                pg.draw.rect(screen, self.color, self.rect)
+        if self.text is not None:
+            if self.hover:
+                text = self.font.render(self.text, True, self.text_hover_color, None, 1000)
+                text_block = self.rect
+                screen.blit(text, text_block)
+            else:
+                text = self.font.render(self.text, True, self.text_color, None, 1000)
+                text_block = self.rect
+                screen.blit(text, text_block)
 
     def is_mouse_over(self, pos: (int, int)) -> bool:
         """Checks for mouse hover position relative to the button
@@ -190,3 +208,173 @@ class UniversalButton:
             self.clicked = True
         else:
             self.clicked = False
+
+
+class Menu:
+    """Main menu class.
+
+    :param screen: surface to draw on
+    :param font: font for buttons
+    """
+
+    def __init__(self, screen: pg.Surface, font: pg.font.Font):
+        self.screen: pg.Surface = screen
+        self.font: pg.font.Font = font
+        # Buttons
+        self.Easy: UniversalButton = UniversalButton(370, 250, 100, 50, True, pg.Color("white"), pg.Color(21, 183, 232),
+                                                     False,
+                                                     "Easy", font)
+        self.Medium: UniversalButton = UniversalButton(349, 300, 150, 50, True, pg.Color("white"),
+                                                       pg.Color(21, 183, 232), False,
+                                                       "Medium", font)
+        self.Hard: UniversalButton = UniversalButton(370, 350, 100, 50, True, pg.Color("white"), pg.Color(21, 183, 232),
+                                                     False,
+                                                     "Hard", font)
+        self.Exit: UniversalButton = UniversalButton(368, 500, 100, 50, True, pg.Color("white"), pg.Color(21, 183, 232),
+                                                     False,
+                                                     "Exit", pg.font.Font(None, 60))
+        self.buttons = [self.Easy, self.Medium, self.Hard, self.Exit]
+        # Mastermind text
+        self.mm_font: pg.font = pg.font.Font(None, 80)
+        self.mm_text: pg.Surface = self.mm_font.render("Mastermind", False, "white", None)
+        self.mm_block: pg.Rect = self.mm_text.get_rect()
+        self.mm_block.center = (400, 50)
+        # Start text
+        self.start_font: pg.font = pg.font.Font(None, 60)
+        self.start_text: pg.Surface = self.start_font.render("Start", False, "white", None)
+        self.start_block: pg.Rect = self.start_text.get_rect()
+        self.start_block.center = (400, 200)
+
+    def update(self, mouse_state: [bool, (int, int)]) -> None:
+        """Updates buttons.
+
+        :param mouse_state: - holds full information about the mouse
+        :return: None
+        """
+        for button in self.buttons:
+            button.update(mouse_state)
+
+    def draw(self) -> None:
+        """Draws the menu.
+
+        :return: None
+        """
+        for button in self.buttons:
+            button.draw(self.screen)
+        self.screen.blit(self.mm_text, self.mm_block)
+        self.screen.blit(self.start_text, self.start_block)
+
+
+class Menu2:
+    """Second stage menu class.
+
+    :param screen: surface to draw on
+    :param font: font for buttons
+    """
+
+    def __init__(self, screen: pg.Surface, font: pg.font.Font, no_rounds: int = 5, no_rounds_max: int = 10):
+        self.screen: pg.Surface = screen
+        self.font: pg.font = font
+        self.no_rounds: int = no_rounds
+        self.no_rounds_max = no_rounds_max
+        # Mastermind text
+        self.mm_font: pg.font = pg.font.Font(None, 80)
+        self.mm_text: pg.Surface = self.mm_font.render("Mastermind", False, "white", None)
+        self.mm_block: pg.Rect = self.mm_text.get_rect()
+        self.mm_block.center = (400, 50)
+        # Number of rounds text
+        self.nor_font: pg.font = font
+        self.nor_text: pg.Surface = self.nor_font.render("Number of rounds:", False, "white", None)
+        self.nor_block: pg.Rect = self.nor_text.get_rect()
+        self.nor_block.center = (400, 175)
+        # Number of rounds.... number
+        self.nor_num_font: pg.font = pg.font.Font(None, 50)
+        self.nor_num_text: pg.Surface = self.nor_num_font.render(str(no_rounds), False, "white", None)
+        self.nor_num_block: pg.Rect = self.nor_num_text.get_rect()
+        self.nor_num_block.center = (400, 240)
+        # Buttons
+        self.Start: UniversalButton = UniversalButton(350, 300, 100, 50, True, pg.Color("white"),
+                                                      pg.Color(21, 183, 232), False, "Start!", pg.font.Font(None, 60))
+        self.Exit: UniversalButton = UniversalButton(368, 500, 100, 50, True, pg.Color("white"), pg.Color(21, 183, 232),
+                                                     False,
+                                                     "Exit", pg.font.Font(None, 60))
+        self.plus: UniversalButton = UniversalButton(350, 220, 50, 50, True, pg.Color("white"), pg.Color(21, 183, 232),
+                                                     False, "+", font)
+        self.minus: UniversalButton = UniversalButton(440, 220, 50, 50, True, pg.Color("white"), pg.Color(21, 183, 232),
+                                                      False, "-", font)
+        self.buttons = [self.Start, self.Exit, self.plus, self.minus]
+
+    def update(self, mouse_state: [bool, (int, int)]) -> None:
+        """Updates buttons and number of rounds.
+
+        :param mouse_state: - holds full information about the mouse
+        :return: None
+        """
+        for button in self.buttons:
+            button.update(mouse_state)
+
+        # Number of rounds, checks against max and 0
+        if self.no_rounds < self.no_rounds_max:
+            self.no_rounds += 1 if self.plus.clicked else 0
+        if self.no_rounds > 1:
+            self.no_rounds -= 1 if self.minus.clicked else 0
+        self.nor_num_text = self.nor_num_font.render(str(self.no_rounds), False, "white", None)
+        self.nor_num_block = self.nor_num_text.get_rect()
+        self.nor_num_block.center = (400, 240)
+
+    def draw(self) -> None:
+        """Draws the menu.
+
+        :return: None
+        """
+        for button in self.buttons:
+            button.draw(self.screen)
+        self.screen.blit(self.mm_text, self.mm_block)
+        self.screen.blit(self.nor_text, self.nor_block)
+        self.screen.blit(self.nor_num_text, self.nor_num_block)
+
+
+class Scoreboard:
+    """Scoreboard class.
+
+    :param screen: surface to draw on
+    :param font: font for buttons
+    """
+    def __init__(self, screen: pg.display, font: pg.font.Font):
+        self.screen: pg.Surface = screen
+        self.font: pg.font.Font = font
+        # wins text
+        self.wins_text: pg.Surface = self.font.render("Wins:", False, "white", None)
+        self.wins_block: pg.Rect = self.wins_text.get_rect()
+        self.wins_block.center = (700, 200)
+        # losses text
+        self.losses_text: pg.Surface = self.font.render("Losses:", False, "white", None)
+        self.losses_block: pg.Rect = self.losses_text.get_rect()
+        self.losses_block.center = (710, 300)
+        # wins number
+        self.no_wins_text: pg.Surface = self.font.render("0", False, "white", None)
+        self.no_wins_block: pg.Rect = self.no_wins_text.get_rect()
+        self.no_wins_block.center = (750, 200)
+        # losses number
+        self.no_losses_text: pg.Surface = self.font.render("0", False, "white", None)
+        self.no_losses_block: pg.Rect = self.no_losses_text.get_rect()
+        self.no_losses_block.center = (780, 300)
+
+    def draw(self, wins: int, losses: int) -> None:
+        """Draws the scoreboard
+
+        :param wins: number of wins
+        :param losses: number of losses
+        """
+        self.no_wins_text: pg.Surface = self.font.render(str(wins), False, "white", None)
+        self.no_wins_block: pg.Rect = self.no_wins_text.get_rect()
+        self.no_wins_block.center = (750, 200)
+
+        self.no_losses_text: pg.Surface = self.font.render(str(losses), False, "white", None)
+        self.no_losses_block: pg.Rect = self.no_losses_text.get_rect()
+        self.no_losses_block.center = (770, 300)
+
+        self.screen.blit(self.wins_text, self.wins_block)
+        self.screen.blit(self.losses_text, self.losses_block)
+        self.screen.blit(self.no_wins_text, self.no_wins_block)
+        self.screen.blit(self.no_losses_text, self.no_losses_block)

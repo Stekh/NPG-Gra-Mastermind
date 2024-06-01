@@ -33,13 +33,13 @@ class TestPin:
 
 class TestUniversalButton:
     def test_constructor(self):
-        button = ui.UniversalButton(10, 10, 32, 32, pg.Color(0, 255, 0), pg.Color(255, 0, 0))
+        button = ui.UniversalButton(10, 10, 32, 32, False, pg.Color(0, 255, 0), pg.Color(255, 0, 0))
         assert button.hover is False
         assert button.clicked is False
         assert button.rect == pg.Rect(10, 10, 32, 32)
 
     def test_draw(self):
-        button = ui.UniversalButton(10, 10, 32, 32, pg.Color(0, 255, 0), pg.Color(255, 0, 0))
+        button = ui.UniversalButton(10, 10, 32, 32, False, pg.Color(0, 255, 0), pg.Color(255, 0, 0))
         screen = ui.construct_display()
         button.draw(screen)
         assert pg.Color(0, 255, 0) == screen.get_at((15, 15))
@@ -48,12 +48,12 @@ class TestUniversalButton:
         assert pg.Color(255, 0, 0) == screen.get_at((15, 15))
 
     def test_is_mouse_over(self):
-        button = ui.UniversalButton(10, 10, 32, 32, pg.Color(0, 255, 0), pg.Color(255, 0, 0))
+        button = ui.UniversalButton(10, 10, 32, 32, False, pg.Color(0, 255, 0), pg.Color(255, 0, 0))
         assert button.is_mouse_over((30, 30)) is True
         assert button.is_mouse_over((0, 0)) is False
 
     def test_set_hover(self):
-        button = ui.UniversalButton(10, 10, 32, 32, pg.Color(0, 255, 0), pg.Color(255, 0, 0))
+        button = ui.UniversalButton(10, 10, 32, 32, False, pg.Color(0, 255, 0), pg.Color(255, 0, 0))
         assert button.hover is False
         button.set_hover(True)
         assert button.hover is True
@@ -61,7 +61,7 @@ class TestUniversalButton:
         assert button.hover is False
 
     def test_update(self):
-        button = ui.UniversalButton(10, 10, 32, 32, pg.Color(0, 255, 0), pg.Color(255, 0, 0))
+        button = ui.UniversalButton(10, 10, 32, 32, False, pg.Color(0, 255, 0), pg.Color(255, 0, 0))
         button.update([True, (0, 0)])
         assert button.hover is False
         assert button.clicked is False
