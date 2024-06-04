@@ -92,16 +92,22 @@ while run:
             menu.draw()
             if menu.Easy.clicked:
                 diff = 0
+                rows = 8
+                cols = 3
                 main_board = board.Board(8, 3, 10, 10)
                 main_board.set_random_secret()
                 stage = "Menu2"
             if menu.Medium.clicked:
                 diff = 1
+                rows = 7
+                cols = 4
                 main_board = board.Board(7, 4, 10, 10)
                 main_board.set_random_secret()
                 stage = "Menu2"
             if menu.Hard.clicked:
                 diff = 2
+                rows = 6
+                cols = 5
                 main_board = board.Board(6, 5, 10, 10)
                 main_board.set_random_secret()
                 stage = "Menu2"
